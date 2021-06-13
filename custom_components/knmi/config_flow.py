@@ -1,20 +1,20 @@
-"""Adds config flow for Blueprint."""
+"""Adds config flow for knmi."""
 from homeassistant import config_entries
+from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
+import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 
-from .api import IntegrationBlueprintApiClient
+from .api import KnmiApiClient
 from .const import (
-    CONF_PASSWORD,
-    CONF_USERNAME,
     DOMAIN,
     PLATFORMS,
 )
 
 
-class BlueprintFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config flow for Blueprint."""
+class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+    """Config flow for knmi."""
 
     VERSION = 1
     CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
@@ -32,15 +32,17 @@ class BlueprintFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         #     return self.async_abort(reason="single_instance_allowed")
 
         if user_input is not None:
-            valid = await self._test_credentials(
-                user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
+            valid = await self._test_user_input(
+                user_input[CONF_API_KEY],
+                user_input[CONF_LATITUDE],
+                user_input[CONF_LONGITUDE],
             )
             if valid:
                 return self.async_create_entry(
-                    title=user_input[CONF_USERNAME], data=user_input
+                    title=user_input[CONF_NAME], data=user_input
                 )
             else:
-                self._errors["base"] = "auth"
+                self._errors["base"] = "api_key"
 
             return await self._show_config_form(user_input)
 
@@ -49,23 +51,28 @@ class BlueprintFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(config_entry):
-        return BlueprintOptionsFlowHandler(config_entry)
+        return KnmiOptionsFlowHandler(config_entry)
 
     async def _show_config_form(self, user_input):  # pylint: disable=unused-argument
         """Show the configuration form to edit location data."""
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
-                {vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str}
+                {
+                    vol.Required(CONF_NAME): str,
+                    vol.Required(CONF_LATITUDE): cv.latitude,
+                    vol.Required(CONF_LONGITUDE): cv.longitude,
+                    vol.Required(CONF_API_KEY): str,
+                }
             ),
             errors=self._errors,
         )
 
-    async def _test_credentials(self, username, password):
+    async def _test_user_input(self, apiKey: str, latitude: str, longitude: str):
         """Return true if credentials is valid."""
         try:
             session = async_create_clientsession(self.hass)
-            client = IntegrationBlueprintApiClient(username, password, session)
+            client = KnmiApiClient(apiKey, latitude, longitude, session)
             await client.async_get_data()
             return True
         except Exception:  # pylint: disable=broad-except
@@ -73,8 +80,8 @@ class BlueprintFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         return False
 
 
-class BlueprintOptionsFlowHandler(config_entries.OptionsFlow):
-    """Blueprint config flow options handler."""
+class KnmiOptionsFlowHandler(config_entries.OptionsFlow):
+    """knmi config flow options handler."""
 
     def __init__(self, config_entry):
         """Initialize HACS options flow."""
@@ -104,5 +111,5 @@ class BlueprintOptionsFlowHandler(config_entries.OptionsFlow):
     async def _update_options(self):
         """Update config entry options."""
         return self.async_create_entry(
-            title=self.config_entry.data.get(CONF_USERNAME), data=self.options
+            title=self.config_entry.data.get(CONF_NAME), data=self.options
         )

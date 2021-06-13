@@ -1,0 +1,32 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "KNMI",
+                "description": "Aanmelden voor een gratis API key: https://weerlive.nl/delen.php",
+                "data": {
+                    "api_key": "API key",
+                    "latitude": "Breedtegraad",
+                    "longitude": "Lengtegraad",
+                    "name": "Naam"
+                }
+            }
+        },
+        "error": {
+            "api_key": "De opgegeven API key is incorrect."
+        },
+        "abort": {
+            "single_instance_allowed": "Slechts een enkel exemplaar is toegestaan."
+        }
+    },
+    "options": {
+        "step": {
+            "user": {
+                "data": {
+                    "binary_sensor": "Binaire sensor ingeschakeld",
+                    "weather": "Weer ingeschakeld"
+                }
+            }
+        }
+    }
+}

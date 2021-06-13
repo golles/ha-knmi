@@ -1,16 +1,16 @@
-"""Test integration_blueprint config flow."""
+"""Test knmi config flow."""
 from unittest.mock import patch
 
 from homeassistant import config_entries, data_entry_flow
+from homeassistant.const import CONF_NAME
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.integration_blueprint.const import (
+from custom_components.knmi.const import (
     BINARY_SENSOR,
     DOMAIN,
     PLATFORMS,
-    SENSOR,
-    SWITCH,
+    WEATHER,
 )
 
 from .const import MOCK_CONFIG
@@ -23,10 +23,10 @@ from .const import MOCK_CONFIG
 def bypass_setup_fixture():
     """Prevent setup."""
     with patch(
-        "custom_components.integration_blueprint.async_setup",
+        "custom_components.knmi.async_setup",
         return_value=True,
     ), patch(
-        "custom_components.integration_blueprint.async_setup_entry",
+        "custom_components.knmi.async_setup_entry",
         return_value=True,
     ):
         yield
@@ -46,8 +46,7 @@ async def test_successful_config_flow(hass, bypass_get_data):
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
     assert result["step_id"] == "user"
 
-    # If a user were to enter `test_username` for username and `test_password`
-    # for password, it would result in this function call
+    # If a user were to fill in all fields, it would result in this function call
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"], user_input=MOCK_CONFIG
     )
@@ -55,7 +54,7 @@ async def test_successful_config_flow(hass, bypass_get_data):
     # Check that the config flow is complete and a new entry is created with
     # the input data
     assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "test_username"
+    assert result["title"] == MOCK_CONFIG[CONF_NAME]
     assert result["data"] == MOCK_CONFIG
     assert result["result"]
 
@@ -78,7 +77,7 @@ async def test_failed_config_flow(hass, error_on_get_data):
     )
 
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
-    assert result["errors"] == {"base": "auth"}
+    assert result["errors"] == {"base": "api_key"}
 
 
 # Our config flow also has an options flow, so we must test it as well.
@@ -99,12 +98,12 @@ async def test_options_flow(hass):
     # Enter some fake data into the form
     result = await hass.config_entries.options.async_configure(
         result["flow_id"],
-        user_input={platform: platform != SENSOR for platform in PLATFORMS},
+        user_input={platform: platform != WEATHER for platform in PLATFORMS},
     )
 
     # Verify that the flow finishes
     assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "test_username"
+    assert result["title"] == MOCK_CONFIG[CONF_NAME]
 
     # Verify that the options were updated
-    assert entry.options == {BINARY_SENSOR: True, SENSOR: False, SWITCH: True}
+    assert entry.options == {BINARY_SENSOR: True, WEATHER: False,}

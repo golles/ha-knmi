@@ -1,4 +1,4 @@
-"""Sample API Client."""
+"""KnmiApiClient"""
 import logging
 import asyncio
 import socket
@@ -11,46 +11,35 @@ TIMEOUT = 10
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
-HEADERS = {"Content-type": "application/json; charset=UTF-8"}
 
-
-class IntegrationBlueprintApiClient:
+class KnmiApiClient:
     def __init__(
-        self, username: str, password: str, session: aiohttp.ClientSession
+        self, apiKey: str, latitude: str, longitude: str, session: aiohttp.ClientSession
     ) -> None:
         """Sample API Client."""
-        self._username = username
-        self._password = password
+        self.apiKey = apiKey
+        self.latitude = latitude
+        self.longitude = longitude
         self._session = session
 
     async def async_get_data(self) -> dict:
         """Get data from the API."""
-        url = "https://jsonplaceholder.typicode.com/posts/1"
+        url = f"http://weerlive.nl/api/json-data-10min.php?key={self.apiKey}&locatie={self.latitude},{self.longitude}"
         return await self.api_wrapper("get", url)
 
-    async def async_set_title(self, value: str) -> None:
-        """Get data from the API."""
-        url = "https://jsonplaceholder.typicode.com/posts/1"
-        await self.api_wrapper("patch", url, data={"title": value}, headers=HEADERS)
-
-    async def api_wrapper(
-        self, method: str, url: str, data: dict = {}, headers: dict = {}
-    ) -> dict:
+    async def api_wrapper(self, method: str, url: str) -> dict:
         """Get information from the API."""
         try:
             async with async_timeout.timeout(TIMEOUT, loop=asyncio.get_event_loop()):
                 if method == "get":
-                    response = await self._session.get(url, headers=headers)
-                    return await response.json()
+                    response = await self._session.get(url)
+                    # The API has no proper error handling for a wrong API key.
+                    # Instead a 200 with a message is returned, try to detect that here.
+                    if "Vraag eerst een API-key op" in await response.text():
+                        raise KnmiApiKeyException("Invalid API key")
 
-                elif method == "put":
-                    await self._session.put(url, headers=headers, json=data)
-
-                elif method == "patch":
-                    await self._session.patch(url, headers=headers, json=data)
-
-                elif method == "post":
-                    await self._session.post(url, headers=headers, json=data)
+                    data = await response.json()
+                    return data.get("liveweer")[0]
 
         except asyncio.TimeoutError as exception:
             _LOGGER.error(
@@ -71,5 +60,13 @@ class IntegrationBlueprintApiClient:
                 url,
                 exception,
             )
+        except KnmiApiKeyException as exception:
+            _LOGGER.error("Error with configuration! - %s", exception)
+            # Raise to pass on to the user.
+            raise exception
         except Exception as exception:  # pylint: disable=broad-except
             _LOGGER.error("Something really wrong happened! - %s", exception)
+
+
+class KnmiApiKeyException(Exception):
+    pass

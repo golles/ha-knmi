@@ -2,16 +2,18 @@
     "config": {
         "step": {
             "user": {
-                "title": "Blueprint",
-                "description": "If you need help with the configuration have a look here: https://github.com/custom-components/integration_blueprint",
+                "title": "KNMI",
+                "description": "To get your free API key, visit: https://weerlive.nl/delen.php",
                 "data": {
-                    "username": "Username",
-                    "password": "Password"
+                    "api_key": "API key",
+                    "latitude": "Latitude",
+                    "longitude": "Longitude",
+                    "name": "Name"
                 }
             }
         },
         "error": {
-            "auth": "Username/Password is wrong."
+            "api_key": "The given API key is incorrect."
         },
         "abort": {
             "single_instance_allowed": "Only a single instance is allowed."
@@ -22,8 +24,7 @@
             "user": {
                 "data": {
                     "binary_sensor": "Binary sensor enabled",
-                    "sensor": "Sensor enabled",
-                    "switch": "Switch enabled"
+                    "weather": "Weather enabled"
                 }
             }
         }
