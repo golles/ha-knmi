@@ -16,7 +16,7 @@ from homeassistant.const import (
     TEMP_CELSIUS,
 )
 
-from .const import CONDITIONS_MAP, DEFAULT_NAME, DOMAIN
+from .const import CONDITIONS_MAP, DEFAULT_NAME, DOMAIN, WIND_DIRECTION_MAP
 from .entity import KnmiEntity
 
 
@@ -73,12 +73,12 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     @property
     def wind_bearing(self):
         """Return the wind direction."""
-        return self.coordinator.data["windr"]
+        return WIND_DIRECTION_MAP[self.coordinator.data["windr"]]
 
     @property
     def visibility(self):
         """Return the wind direction."""
-        return self.coordinator.data["zicht"]
+        return float(self.coordinator.data["zicht"])
 
     @property
     def forecast(self):
@@ -90,13 +90,17 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
             date = today + timedelta(days=i)
             nextDay = {
                 ATTR_FORECAST_TIME: date.isoformat(),
-                ATTR_FORECAST_CONDITION: CONDITIONS_MAP[self.coordinator.data[f"d{i}weer"]],
+                ATTR_FORECAST_CONDITION: CONDITIONS_MAP[
+                    self.coordinator.data[f"d{i}weer"]
+                ],
                 ATTR_FORECAST_TEMP_LOW: float(self.coordinator.data[f"d{i}tmin"]),
                 ATTR_FORECAST_TEMP: float(self.coordinator.data[f"d{i}tmax"]),
                 ATTR_FORECAST_PRECIPITATION: float(
                     self.coordinator.data[f"d{i}neerslag"]
                 ),
-                ATTR_FORECAST_WIND_BEARING: self.coordinator.data[f"d{i}windr"],
+                ATTR_FORECAST_WIND_BEARING: WIND_DIRECTION_MAP[
+                    self.coordinator.data[f"d{i}windr"]
+                ],
                 ATTR_FORECAST_WIND_SPEED: float(self.coordinator.data[f"d{i}windkmh"]),
             }
             forecast.append(nextDay)
