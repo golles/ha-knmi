@@ -16,7 +16,7 @@ from homeassistant.components.weather import (
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
 # Icons.
@@ -52,19 +52,24 @@ CONDITIONS_MAP = {
 
 # Map wind direction from KNMI string to number.
 WIND_DIRECTION_MAP = {
+    "VAR": 0,
     "N": 360,
+    "Noord": 360,
     "NNO": 22.5,
     "NO": 45,
     "ONO": 67.5,
     "O": 90,
+    "Ooost": 90,
     "OZO": 112.5,
     "ZO": 135,
     "ZZO": 157.5,
     "Z": 180,
+    "Zuid": 180,
     "ZZW": 202.5,
     "ZW": 225,
     "WZW": 247.5,
     "W": 270,
+    "West": 270,
     "WNW": 292.5,
     "NW": 315,
     "NNW": 337.5,
