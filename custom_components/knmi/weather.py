@@ -78,7 +78,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     @property
     def visibility(self):
         """Return the wind direction."""
-        return float(self.coordinator.data["zicht"])
+        return float(self.coordinator.data["zicht"]) / 10
 
     @property
     def forecast(self):
