@@ -53,7 +53,7 @@ CONDITIONS_MAP = {
 
 # Map wind direction from KNMI string to number.
 WIND_DIRECTION_MAP = {
-    "VAR": 0,
+    "VAR": None,
     "N": 360,
     "Noord": 360,
     "NNO": 22.5,
