@@ -58,7 +58,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [buymecoffee]: https://www.buymeacoffee.com/golles
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/golles/ha-knmi.svg?style=for-the-badge
-[commits]: https://github.com/golles/ha-knmi/commits/master
+[commits]: https://github.com/golles/ha-knmi/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
