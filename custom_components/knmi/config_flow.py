@@ -60,8 +60,12 @@ class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_NAME): str,
-                    vol.Required(CONF_LATITUDE): cv.latitude,
-                    vol.Required(CONF_LONGITUDE): cv.longitude,
+                    vol.Required(
+                        CONF_LATITUDE, default=self.hass.config.latitude
+                    ): cv.latitude,
+                    vol.Required(
+                        CONF_LONGITUDE, default=self.hass.config.longitude
+                    ): cv.longitude,
                     vol.Required(CONF_API_KEY): str,
                 }
             ),

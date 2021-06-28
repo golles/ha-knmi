@@ -16,7 +16,7 @@ from homeassistant.components.weather import (
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
 # Icons.
