@@ -46,8 +46,11 @@ custom_components/knmi/weather.py
 
 ## Configuration is done in the UI
 
-<!---->
+You can configure and setup KNMI in your integrations page, look for KNMI in the add integrations dialog.
 
+## Known limitations
+
+The free API only provides forecasts for 2 days ahead. To make the weather card aesthetically not look too bad, the forecast for today is also shown, resulting in showing only 3 days.
 ## Contributions are welcome!
 
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
