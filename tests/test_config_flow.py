@@ -10,6 +10,7 @@ from custom_components.knmi.const import (
     BINARY_SENSOR,
     DOMAIN,
     PLATFORMS,
+    SENSOR,
     WEATHER,
 )
 
@@ -106,4 +107,4 @@ async def test_options_flow(hass):
     assert result["title"] == MOCK_CONFIG[CONF_NAME]
 
     # Verify that the options were updated
-    assert entry.options == {BINARY_SENSOR: True, WEATHER: False,}
+    assert entry.options == {BINARY_SENSOR: True, SENSOR: True, WEATHER: False,}

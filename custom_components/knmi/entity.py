@@ -12,12 +12,12 @@ class KnmiEntity(CoordinatorEntity):
     @property
     def unique_id(self):
         """Return a unique ID to use for this entity."""
-        return self.config_entry.entry_id
+        return f"{self.config_entry.entry_id}-{self.name}"
 
     @property
     def device_info(self):
         return {
-            "identifiers": {(DOMAIN, self.unique_id)},
+            "identifiers": {(DOMAIN, self.config_entry.entry_id)},
             "name": NAME,
             "model": VERSION,
             "manufacturer": NAME,

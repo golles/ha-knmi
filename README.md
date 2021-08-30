@@ -18,6 +18,7 @@ _Component to integrate with [knmi][knmi]._
 Platform | Description
 -- | --
 `binary_sensor` | Weather alert `True` or `False`, the alert itself is an attribute.
+`sensor` | a few weather related sensors.
 `weather` | Weather data provided by KNMI, https://weerlive.nl/.
 
 ## Installation
@@ -40,7 +41,9 @@ custom_components/knmi/api.py
 custom_components/knmi/binary_sensor.py
 custom_components/knmi/config_flow.py
 custom_components/knmi/const.py
+custom_components/knmi/entity.py
 custom_components/knmi/manifest.json
+custom_components/knmi/sensor.py
 custom_components/knmi/weather.py
 ```
 
