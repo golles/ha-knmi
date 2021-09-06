@@ -16,7 +16,7 @@ from homeassistant.components.weather import (
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
 # Platforms.
@@ -27,7 +27,7 @@ PLATFORMS = [BINARY_SENSOR, SENSOR, WEATHER]
 
 # Binary sensors
 BINARY_SENSORS = [
-    {"name": "Waarschuwing", "unit": "", "icon": "mdi:alert", "key": "alarmtxt"}
+    {"name": "Waarschuwing", "unit": "", "icon": "mdi:alert", "key": "alarm"}
 ]
 
 # Sensors
