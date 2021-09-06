@@ -15,9 +15,9 @@ _Component to integrate with [knmi][knmi]._
 
 Platform | Description
 -- | --
-`binary_sensor` | Show something `True` or `False`.
-`sensor` | Show info from API.
-`switch` | Switch something `True` or `False`.
+`binary_sensor` | Weather alert `True` or `False`, the alert itself is an attribute.
+`sensor` | a few weather related sensors.
+`weather` | Weather data provided by KNMI, https://weerlive.nl/.
 
 {% if not installed %}
 ## Installation
