@@ -21,6 +21,8 @@ class KnmiEntity(CoordinatorEntity):
             "name": NAME,
             "model": VERSION,
             "manufacturer": NAME,
+            "entry_type": "service",
+            "configuration_url": "http://weerlive.nl/api/toegang/account.php",
         }
 
     @property
