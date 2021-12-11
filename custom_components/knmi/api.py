@@ -30,7 +30,7 @@ class KnmiApiClient:
     async def api_wrapper(self, method: str, url: str) -> dict:
         """Get information from the API."""
         try:
-            async with async_timeout.timeout(TIMEOUT, loop=asyncio.get_event_loop()):
+            async with async_timeout.timeout(TIMEOUT):
                 if method == "get":
                     response = await self._session.get(url)
                     # The API has no proper error handling for a wrong API key.

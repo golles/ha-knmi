@@ -1,4 +1,5 @@
 """KnmiEntity class"""
+from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, NAME, VERSION, ATTRIBUTION
@@ -21,12 +22,12 @@ class KnmiEntity(CoordinatorEntity):
             "name": NAME,
             "model": VERSION,
             "manufacturer": NAME,
-            "entry_type": "service",
+            "entry_type": DeviceEntryType.SERVICE,
             "configuration_url": "http://weerlive.nl/api/toegang/account.php",
         }
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return the state attributes."""
         return {
             "attribution": ATTRIBUTION,
