@@ -46,6 +46,13 @@ class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
             return await self._show_config_form(user_input)
 
+        user_input = {}
+        # Provide defaults for form
+        user_input[CONF_API_KEY] = ""
+        user_input[CONF_LATITUDE] = self.hass.config.latitude
+        user_input[CONF_LONGITUDE] = self.hass.config.longitude
+        user_input[CONF_NAME] = self.hass.config.location_name
+
         return await self._show_config_form(user_input)
 
     @staticmethod
@@ -59,16 +66,14 @@ class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema(
                 {
+                    vol.Required(CONF_NAME, default=user_input[CONF_NAME]): str,
                     vol.Required(
-                        CONF_NAME, default=self.hass.config.location_name
-                    ): str,
-                    vol.Required(
-                        CONF_LATITUDE, default=self.hass.config.latitude
+                        CONF_LATITUDE, default=user_input[CONF_LATITUDE]
                     ): cv.latitude,
                     vol.Required(
-                        CONF_LONGITUDE, default=self.hass.config.longitude
+                        CONF_LONGITUDE, default=user_input[CONF_LONGITUDE]
                     ): cv.longitude,
-                    vol.Required(CONF_API_KEY): str,
+                    vol.Required(CONF_API_KEY, default=user_input[CONF_API_KEY]): str,
                 }
             ),
             errors=self._errors,
