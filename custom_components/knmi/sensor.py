@@ -9,7 +9,19 @@ async def async_setup_entry(hass, entry, async_add_devices):
 
     sensors: list[KnmiSensor] = []
     for sensor in SENSORS:
-        sensors.append(KnmiSensor(coordinator, entry, sensor["name"], sensor["unit"], sensor["icon"], sensor["key"]))
+        sensors.append(
+            KnmiSensor(
+                coordinator,
+                entry,
+                sensor.get("name", None),
+                sensor.get("unit_of_measurement", None),
+                sensor.get("icon", None),
+                sensor.get("device_class", None),
+                sensor.get("state_class", None),
+                sensor.get("attributes", []),
+                sensor.get("key", None),
+            )
+        )
 
     async_add_devices(sensors)
 
@@ -18,7 +30,16 @@ class KnmiSensor(KnmiEntity):
     """Knmi Sensor class."""
 
     def __init__(
-        self, coordinator, config_entry, name, unit_of_measurement, icon, data_key
+        self,
+        coordinator,
+        config_entry,
+        name,
+        unit_of_measurement,
+        icon,
+        device_class,
+        state_class,
+        attributes,
+        data_key,
     ):
         super().__init__(coordinator, config_entry)
         self.config_entry = config_entry
@@ -26,6 +47,9 @@ class KnmiSensor(KnmiEntity):
         self._name = name
         self._unit_of_measurement = unit_of_measurement
         self._icon = icon
+        self._device_class = device_class
+        self._state_class = state_class
+        self._attributes = attributes
         self._data_key = data_key
 
     @property
@@ -47,3 +71,24 @@ class KnmiSensor(KnmiEntity):
     def icon(self):
         """Return the icon of the sensor."""
         return self._icon
+
+    @property
+    def device_class(self):
+        """Return the device class."""
+        return self._device_class
+
+    @property
+    def state_class(self):
+        """Return the state class."""
+        return self._state_class
+
+    @property
+    def extra_state_attributes(self):
+        """Return the device state attributes."""
+        attributes = {}
+        for attribute in self._attributes:
+            attributes[attribute.get("name", None)] = self.coordinator.data[
+                attribute.get("key", None)
+            ]
+
+        return attributes

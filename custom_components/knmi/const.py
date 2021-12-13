@@ -1,5 +1,11 @@
 """Constants for knmi."""
 
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorStateClass,
+)
+
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -27,14 +33,49 @@ PLATFORMS = [BINARY_SENSOR, SENSOR, WEATHER]
 
 # Binary sensors
 BINARY_SENSORS = [
-    {"name": "Waarschuwing", "unit": "", "icon": "mdi:alert", "key": "alarm"}
+    {
+        "name": "Waarschuwing",
+        "unit": "",
+        "icon": "mdi:alert",
+        "key": "alarm",
+        "device_class": BinarySensorDeviceClass.SAFETY,
+        "attributes": [
+            {
+                "name": "Waarschuwing",
+                "key": "alarmtxt",
+            },
+        ],
+    },
 ]
 
 # Sensors
 SENSORS = [
-    {"name": "Omschrijving", "unit": "", "icon": "mdi:text", "key": "samenv"},
-    {"name": "Korte dagverwachting", "unit": "", "icon": "mdi:text", "key": "verw"},
-    {"name": "Dauwpunt", "unit": "°C", "icon": "mdi:thermometer", "key": "dauwp"},
+    {
+        "name": "Omschrijving",
+        "icon": "mdi:text",
+        "key": "samenv",
+    },
+    {
+        "name": "Korte dagverwachting",
+        "icon": "mdi:text",
+        "key": "verw",
+    },
+    {
+        "name": "Dauwpunt",
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer",
+        "key": "dauwp",
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "state_class": SensorStateClass.MEASUREMENT,
+    },
+    {
+        "name": "Gevoelstemperatuur",
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer",
+        "key": "gtemp",
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "state_class": SensorStateClass.MEASUREMENT,
+    },
 ]
 
 # Defaults
