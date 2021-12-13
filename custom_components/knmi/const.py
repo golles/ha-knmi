@@ -1,11 +1,15 @@
 """Constants for knmi."""
 
-from homeassistant.components.binary_sensor import BinarySensorDeviceClass
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorStateClass,
+from homeassistant.const import (
+    DEVICE_CLASS_TEMPERATURE,
+    TEMP_CELSIUS,
 )
-
+from homeassistant.components.binary_sensor import (
+    DEVICE_CLASS_SAFETY,
+)
+from homeassistant.components.sensor import (
+    STATE_CLASS_MEASUREMENT,
+)
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -38,7 +42,7 @@ BINARY_SENSORS = [
         "unit": "",
         "icon": "mdi:alert",
         "key": "alarm",
-        "device_class": BinarySensorDeviceClass.SAFETY,
+        "device_class": DEVICE_CLASS_SAFETY,
         "attributes": [
             {
                 "name": "Waarschuwing",
@@ -62,19 +66,19 @@ SENSORS = [
     },
     {
         "name": "Dauwpunt",
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": TEMP_CELSIUS,
         "icon": "mdi:thermometer",
         "key": "dauwp",
-        "device_class": SensorDeviceClass.TEMPERATURE,
-        "state_class": SensorStateClass.MEASUREMENT,
+        "device_class": DEVICE_CLASS_TEMPERATURE,
+        "state_class": STATE_CLASS_MEASUREMENT,
     },
     {
         "name": "Gevoelstemperatuur",
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": TEMP_CELSIUS,
         "icon": "mdi:thermometer",
         "key": "gtemp",
-        "device_class": SensorDeviceClass.TEMPERATURE,
-        "state_class": SensorStateClass.MEASUREMENT,
+        "device_class": DEVICE_CLASS_TEMPERATURE,
+        "state_class": STATE_CLASS_MEASUREMENT,
     },
 ]
 
