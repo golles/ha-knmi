@@ -14,7 +14,17 @@ async def async_setup_entry(hass, entry, async_add_devices):
     coordinator = hass.data[DOMAIN][entry.entry_id]
     sensors: list[KnmiBinarySensor] = []
     for sensor in BINARY_SENSORS:
-        sensors.append(KnmiBinarySensor(coordinator, entry, sensor["name"], sensor["unit"], sensor["icon"], sensor["key"]))
+        sensors.append(
+            KnmiBinarySensor(
+                coordinator,
+                entry,
+                sensor.get("name", None),
+                sensor.get("icon", None),
+                sensor.get("device_class", None),
+                sensor.get("attributes", []),
+                sensor.get("key", None),
+            )
+        )
 
     async_add_devices(sensors)
 
@@ -23,14 +33,22 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
     """knmi binary_sensor class."""
 
     def __init__(
-        self, coordinator, config_entry, name, unit_of_measurement, icon, data_key
+        self,
+        coordinator,
+        config_entry,
+        name,
+        icon,
+        device_class,
+        attributes,
+        data_key,
     ):
         super().__init__(coordinator, config_entry)
         self.config_entry = config_entry
         self.location_name = self.coordinator.data["plaats"]
         self._name = name
-        self._unit_of_measurement = unit_of_measurement
         self._icon = icon
+        self._device_class = device_class
+        self._attributes = attributes
         self._data_key = data_key
 
     @property
@@ -44,11 +62,25 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
         return self.coordinator.data[self._data_key] != "0"
 
     @property
-    def extra_state_attributes(self):
-        """Return the device state attributes."""
-        return {self._name: self.coordinator.data["alarmtxt"]}
-
-    @property
     def icon(self):
         """Return the icon of the sensor."""
         return self._icon
+
+    @property
+    def device_class(self):
+        """Return the device class."""
+        return self._device_class
+
+    @property
+    def extra_state_attributes(self):
+        """Return the device state attributes."""
+        attributes = super().extra_state_attributes
+        for attribute in self._attributes:
+            value = None
+            if "key" in attribute:
+                value = self.coordinator.data[attribute.get("key", None)]
+            if "value" in attribute:
+                value = attribute.get("value", None)
+            attributes[attribute.get("name", None)] = value
+
+        return attributes

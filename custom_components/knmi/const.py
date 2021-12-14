@@ -1,5 +1,12 @@
 """Constants for knmi."""
 
+from homeassistant.const import (
+    DEVICE_CLASS_TEMPERATURE,
+    TEMP_CELSIUS,
+)
+from homeassistant.components.binary_sensor import (
+    DEVICE_CLASS_SAFETY,
+)
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -13,10 +20,13 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SUNNY,
 )
 
+# Todo, import next: from homeassistant.components.sensor import SensorStateClass
+MEASUREMENT = "measurement"
+
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
-VERSION = "1.1.3"
+VERSION = "1.1.4"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
 # Platforms.
@@ -27,14 +37,59 @@ PLATFORMS = [BINARY_SENSOR, SENSOR, WEATHER]
 
 # Binary sensors
 BINARY_SENSORS = [
-    {"name": "Waarschuwing", "unit": "", "icon": "mdi:alert", "key": "alarm"}
+    {
+        "name": "Waarschuwing",
+        "unit": "",
+        "icon": "mdi:alert",
+        "key": "alarm",
+        "device_class": DEVICE_CLASS_SAFETY,
+        "attributes": [
+            {
+                "name": "Waarschuwing",
+                "key": "alarmtxt",
+            },
+        ],
+    },
 ]
 
 # Sensors
 SENSORS = [
-    {"name": "Omschrijving", "unit": "", "icon": "mdi:text", "key": "samenv"},
-    {"name": "Korte dagverwachting", "unit": "", "icon": "mdi:text", "key": "verw"},
-    {"name": "Dauwpunt", "unit": "°C", "icon": "mdi:thermometer", "key": "dauwp"},
+    {
+        "name": "Omschrijving",
+        "icon": "mdi:text",
+        "key": "samenv",
+    },
+    {
+        "name": "Korte dagverwachting",
+        "icon": "mdi:text",
+        "key": "verw",
+    },
+    {
+        "name": "Dauwpunt",
+        "unit_of_measurement": TEMP_CELSIUS,
+        "icon": "mdi:thermometer",
+        "key": "dauwp",
+        "device_class": DEVICE_CLASS_TEMPERATURE,
+        "attributes": [
+            {
+                "name": "state_class",
+                "value": MEASUREMENT,
+            },
+        ],
+    },
+    {
+        "name": "Gevoelstemperatuur",
+        "unit_of_measurement": TEMP_CELSIUS,
+        "icon": "mdi:thermometer",
+        "key": "gtemp",
+        "device_class": DEVICE_CLASS_TEMPERATURE,
+        "attributes": [
+            {
+                "name": "state_class",
+                "value": MEASUREMENT,
+            },
+        ],
+    },
 ]
 
 # Defaults

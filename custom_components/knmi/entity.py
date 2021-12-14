@@ -31,6 +31,5 @@ class KnmiEntity(CoordinatorEntity):
         """Return the state attributes."""
         return {
             "attribution": ATTRIBUTION,
-            "id": str(self.coordinator.data.get("id")),
             "integration": DOMAIN,
         }

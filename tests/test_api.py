@@ -2,7 +2,7 @@
 import asyncio
 
 import aiohttp
-from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME
+from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from custom_components.knmi.api import KnmiApiClient
