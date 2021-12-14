@@ -17,7 +17,6 @@ async def async_setup_entry(hass, entry, async_add_devices):
                 sensor.get("unit_of_measurement", None),
                 sensor.get("icon", None),
                 sensor.get("device_class", None),
-                sensor.get("state_class", None),
                 sensor.get("attributes", []),
                 sensor.get("key", None),
             )
@@ -37,7 +36,6 @@ class KnmiSensor(KnmiEntity):
         unit_of_measurement,
         icon,
         device_class,
-        state_class,
         attributes,
         data_key,
     ):
@@ -48,7 +46,6 @@ class KnmiSensor(KnmiEntity):
         self._unit_of_measurement = unit_of_measurement
         self._icon = icon
         self._device_class = device_class
-        self._state_class = state_class
         self._attributes = attributes
         self._data_key = data_key
 
@@ -78,17 +75,15 @@ class KnmiSensor(KnmiEntity):
         return self._device_class
 
     @property
-    def state_class(self):
-        """Return the state class."""
-        return self._state_class
-
-    @property
     def extra_state_attributes(self):
         """Return the device state attributes."""
         attributes = super().extra_state_attributes
         for attribute in self._attributes:
-            attributes[attribute.get("name", None)] = self.coordinator.data[
-                attribute.get("key", None)
-            ]
+            value = None
+            if "key" in attribute:
+                value = self.coordinator.data[attribute.get("key", None)]
+            if "value" in attribute:
+                value = attribute.get("value", None)
+            attributes[attribute.get("name", None)] = value
 
         return attributes

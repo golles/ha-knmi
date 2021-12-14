@@ -7,9 +7,6 @@ from homeassistant.const import (
 from homeassistant.components.binary_sensor import (
     DEVICE_CLASS_SAFETY,
 )
-from homeassistant.components.sensor import (
-    STATE_CLASS_MEASUREMENT,
-)
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -22,6 +19,9 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
 )
+
+# Todo, import next: from homeassistant.components.sensor import SensorStateClass
+MEASUREMENT = "measurement"
 
 # Base component constants.
 NAME = "KNMI"
@@ -70,7 +70,12 @@ SENSORS = [
         "icon": "mdi:thermometer",
         "key": "dauwp",
         "device_class": DEVICE_CLASS_TEMPERATURE,
-        "state_class": STATE_CLASS_MEASUREMENT,
+        "attributes": [
+            {
+                "name": "state_class",
+                "value": MEASUREMENT,
+            },
+        ],
     },
     {
         "name": "Gevoelstemperatuur",
@@ -78,7 +83,12 @@ SENSORS = [
         "icon": "mdi:thermometer",
         "key": "gtemp",
         "device_class": DEVICE_CLASS_TEMPERATURE,
-        "state_class": STATE_CLASS_MEASUREMENT,
+        "attributes": [
+            {
+                "name": "state_class",
+                "value": MEASUREMENT,
+            },
+        ],
     },
 ]
 

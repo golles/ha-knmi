@@ -76,8 +76,11 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
         """Return the device state attributes."""
         attributes = super().extra_state_attributes
         for attribute in self._attributes:
-            attributes[attribute.get("name", None)] = self.coordinator.data[
-                attribute.get("key", None)
-            ]
+            value = None
+            if "key" in attribute:
+                value = self.coordinator.data[attribute.get("key", None)]
+            if "value" in attribute:
+                value = attribute.get("value", None)
+            attributes[attribute.get("name", None)] = value
 
         return attributes
