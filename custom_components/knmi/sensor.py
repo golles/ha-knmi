@@ -85,7 +85,7 @@ class KnmiSensor(KnmiEntity):
     @property
     def extra_state_attributes(self):
         """Return the device state attributes."""
-        attributes = {}
+        attributes = super().extra_state_attributes
         for attribute in self._attributes:
             attributes[attribute.get("name", None)] = self.coordinator.data[
                 attribute.get("key", None)
