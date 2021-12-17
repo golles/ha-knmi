@@ -1,4 +1,4 @@
-# knmi
+# KNMI
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
@@ -53,7 +53,17 @@ You can configure and setup KNMI in your integrations page, look for KNMI in the
 
 ## Known limitations
 
-The free API only provides forecasts for 2 days ahead. To make the weather card aesthetically not look too bad, the forecast for today is also shown, resulting in showing only 3 days.
+ - This integration is translated into English and Dutch, the entity names and the data (from the API) is only available in Dutch.
+ - The free API only provides a forecast for 2 days ahead. To make the weather card aesthetically not look too bad, the forecast for today is also shown, resulting in showing only 3 days (see example below).  
+
+## Examples
+Weather card:  
+<img width="471" alt="Weather card" src="https://user-images.githubusercontent.com/2211503/146539992-49a75ec1-9b11-4702-b843-88d18c592675.png">  
+Weather entity:  
+<img width="388" alt="Weather entity" src="https://user-images.githubusercontent.com/2211503/146540094-a9ac6e44-a45a-49bb-91b5-b3d684c6a249.png">  
+Integration with all entities:  
+<img width="666" alt="Integration" src="https://user-images.githubusercontent.com/2211503/146540088-ae2609d0-b317-4dab-8c4d-4a72e6598500.png">  
+
 ## Contributions are welcome!
 
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
