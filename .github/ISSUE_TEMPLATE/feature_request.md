@@ -1,17 +1,39 @@
----
 name: Feature request
-about: Suggest an idea for this project
+description: Suggest an idea for this project
+labels: [enhancement]
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Did you read the instructions?
+      description: Please read the instructions carefully, thank you.
+      options:
+        - label: I have read the [README](../blob/master/README.md).
+          required: true
 
----
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: The request
+      description: >-
+        Describe your feature request here to communicate to the
+        maintainers. Tell us what you were trying to do and why.
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+        Provide a clear and concise description of what the feature request is. What would you like to happen?
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+  - type: markdown
+    attributes:
+      value: |
+        ## Details
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: If you have any additional information for us, use the field below. Please note, you can attach screenshots or screen recordings here, by dragging and dropping files in the field below.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!

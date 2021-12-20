@@ -1,33 +1,71 @@
----
-name: Issue
-about: Create a report to help us improve
+name: Bug Report
+description: Create a report to help us improve the integration
+labels: [bug]
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Did you read the instructions?
+      description: Please read the instructions carefully, thank you.
+      options:
+        - label: I have read the [README](../blob/main/README.md), including the [known-limitations](../blob/main/README.md#known-limitations) section.
+          required: true
 
----
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: The problem
+      description: >-
+        Describe the issue you are experiencing here to communicate to the
+        maintainers. Tell us what you were trying to do and what happened.
 
-<!-- Before you open a new issue, search through the existing issues to see if others have had the same problem.
+        Provide a clear and concise description of what the problem is. What did you expect to happen?
 
-Issues not containing the minimum requirements will be closed:
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment
 
-- Issues without component version will be closed.
-- Issues without a description (using the header is not good enough) will be closed.
-- Issues without debug logging will be closed.
+  - type: input
+    id: version
+    validations:
+      required: true
+    attributes:
+      label: What version of this integration has the issue?
+      placeholder: 1.1.4
+      description: >
+        Can be found in the Configuration panel -> Info.
 
--->
+  - type: input
+    id: ha_version
+    validations:
+      required: true
+    attributes:
+      label: What version of Home Assistant Core has the issue?
+      placeholder: core-2021.12.3
+      description: >
+        Can be found in the Configuration panel -> Info.
 
-## Version of the custom_component
-<!-- If you are not using the newest version, download and try that before opening an issue
-If you are unsure about the version check the const.py or manifest.json file.
--->
-1.0.0
+  - type: markdown
+    attributes:
+      value: |
+        ## Details
 
-## Describe the bug
-<!-- A clear and concise description of what the bug is. -->
+  - type: textarea
+    id: logs
+    attributes:
+      label: Home Assistant log
+      description: Paste your full log here.
+      render: shell
 
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: If you have any additional information for us, use the field below. Please note, you can attach screenshots or screen recordings here, by dragging and dropping files in the field below.
 
-## Debug log
-<!-- To enable debug logs check this https://www.home-assistant.io/components/logger/ -->
-
-```text
-Add your logs here.
-
-```
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
