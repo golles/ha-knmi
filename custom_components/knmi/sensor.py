@@ -1,4 +1,5 @@
 """Sensor platform for knmi."""
+from homeassistant.const import CONF_NAME
 from .const import DEFAULT_NAME, DOMAIN, SENSORS
 from .entity import KnmiEntity
 
@@ -40,8 +41,7 @@ class KnmiSensor(KnmiEntity):
         data_key,
     ):
         super().__init__(coordinator, config_entry)
-        self.config_entry = config_entry
-        self.location_name = self.coordinator.data["plaats"]
+        self.entry_name = config_entry.data.get(CONF_NAME)
         self._name = name
         self._unit_of_measurement = unit_of_measurement
         self._icon = icon
@@ -52,12 +52,12 @@ class KnmiSensor(KnmiEntity):
     @property
     def name(self):
         """Return the name of the sensor."""
-        return f"{DEFAULT_NAME} {self.location_name} {self._name}"
+        return f"{DEFAULT_NAME} {self.entry_name} {self._name}"
 
     @property
     def state(self):
         """Return the state of the sensor."""
-        return self.coordinator.data[self._data_key]
+        return super().getData(self._data_key)
 
     @property
     def unit_of_measurement(self):
@@ -81,7 +81,7 @@ class KnmiSensor(KnmiEntity):
         for attribute in self._attributes:
             value = None
             if "key" in attribute:
-                value = self.coordinator.data[attribute.get("key", None)]
+                value = super().getData(attribute.get("key", None))
             if "value" in attribute:
                 value = attribute.get("value", None)
             attributes[attribute.get("name", None)] = value

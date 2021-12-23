@@ -13,6 +13,7 @@ from homeassistant.components.weather import (
     WeatherEntity,
 )
 from homeassistant.const import (
+    CONF_NAME,
     TEMP_CELSIUS,
 )
 
@@ -29,11 +30,14 @@ async def async_setup_entry(hass, entry, async_add_devices):
 class KnmiWeather(KnmiEntity, WeatherEntity):
     """knmi Weather class."""
 
+    def __init__(self, coordinator, config_entry):
+        super().__init__(coordinator, config_entry)
+        self.entry_name = config_entry.data.get(CONF_NAME)
+
     @property
     def name(self):
         """Return the name of the sensor."""
-        location = self.coordinator.data["plaats"]
-        return f"{DEFAULT_NAME} {location}"
+        return f"{DEFAULT_NAME} {self.entry_name}"
 
     @property
     def state(self):
@@ -43,12 +47,14 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     @property
     def condition(self):
         """Return the current condition."""
-        return CONDITIONS_MAP[self.coordinator.data["d0weer"]]
+        if super().getData("d0weer") is not None:
+            return CONDITIONS_MAP[super().getData("d0weer")]
 
     @property
     def temperature(self):
         """Return the temperature."""
-        return float(self.coordinator.data["temp"])
+        if super().getData("temp") is not None:
+            return float(super().getData("temp"))
 
     @property
     def temperature_unit(self):
@@ -58,27 +64,32 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     @property
     def pressure(self):
         """Return the pressure."""
-        return float(self.coordinator.data["luchtd"])
+        if super().getData("luchtd") is not None:
+            return float(super().getData("luchtd"))
 
     @property
     def humidity(self):
         """Return the humidity."""
-        return float(self.coordinator.data["lv"])
+        if super().getData("lv") is not None:
+            return float(super().getData("lv"))
 
     @property
     def wind_speed(self):
         """Return the wind speed."""
-        return float(self.coordinator.data["windkmh"])
+        if super().getData("windkmh") is not None:
+            return float(super().getData("windkmh"))
 
     @property
     def wind_bearing(self):
         """Return the wind direction."""
-        return WIND_DIRECTION_MAP[self.coordinator.data["windr"]]
+        if super().getData("windr") is not None:
+            return WIND_DIRECTION_MAP[super().getData("windr")]
 
     @property
     def visibility(self):
         """Return the wind direction."""
-        return float(self.coordinator.data["zicht"]) / 10
+        if super().getData("zicht") is not None:
+            return float(super().getData("zicht")) / 10
 
     @property
     def forecast(self):
@@ -88,21 +99,45 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
 
         for i in range(0, 3):
             date = today + timedelta(days=i)
-            nextDay = {
+            condition = (
+                CONDITIONS_MAP[super().getData(f"d{i}weer")]
+                if super().getData(f"d{i}weer") is not None
+                else None
+            )
+            wind_bearing = (
+                WIND_DIRECTION_MAP[super().getData(f"d{i}windr")]
+                if super().getData(f"d{i}windr") is not None
+                else None
+            )
+            temp_low = (
+                float(super().getData(f"d{i}tmin"))
+                if super().getData(f"d{i}tmin") is not None
+                else None
+            )
+            temp = (
+                float(super().getData(f"d{i}tmin"))
+                if super().getData(f"d{i}tmin") is not None
+                else None
+            )
+            precipitation = (
+                float(super().getData(f"d{i}neerslag"))
+                if super().getData(f"d{i}neerslag") is not None
+                else None
+            )
+            wind_speed = (
+                float(super().getData(f"d{i}windkmh"))
+                if super().getData(f"d{i}windkmh") is not None
+                else None
+            )
+            next_day = {
                 ATTR_FORECAST_TIME: date.isoformat(),
-                ATTR_FORECAST_CONDITION: CONDITIONS_MAP[
-                    self.coordinator.data[f"d{i}weer"]
-                ],
-                ATTR_FORECAST_TEMP_LOW: float(self.coordinator.data[f"d{i}tmin"]),
-                ATTR_FORECAST_TEMP: float(self.coordinator.data[f"d{i}tmax"]),
-                ATTR_FORECAST_PRECIPITATION: float(
-                    self.coordinator.data[f"d{i}neerslag"]
-                ),
-                ATTR_FORECAST_WIND_BEARING: WIND_DIRECTION_MAP[
-                    self.coordinator.data[f"d{i}windr"]
-                ],
-                ATTR_FORECAST_WIND_SPEED: float(self.coordinator.data[f"d{i}windkmh"]),
+                ATTR_FORECAST_CONDITION: condition,
+                ATTR_FORECAST_TEMP_LOW: temp_low,
+                ATTR_FORECAST_TEMP: temp,
+                ATTR_FORECAST_PRECIPITATION: precipitation,
+                ATTR_FORECAST_WIND_BEARING: wind_bearing,
+                ATTR_FORECAST_WIND_SPEED: wind_speed,
             }
-            forecast.append(nextDay)
+            forecast.append(next_day)
 
         return forecast

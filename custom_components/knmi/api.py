@@ -38,6 +38,9 @@ class KnmiApiClient:
                     if "Vraag eerst een API-key op" in await response.text():
                         raise KnmiApiKeyException("Invalid API key")
 
+                    if "Dagelijkse limiet" in await response.text():
+                        raise KnmiApiKeyException("Exceeded Daily Limit")
+
                     data = await response.json()
                     return data.get("liveweer")[0]
 
@@ -61,7 +64,7 @@ class KnmiApiClient:
                 exception,
             )
         except KnmiApiKeyException as exception:
-            _LOGGER.error("Error with configuration! - %s", exception)
+            _LOGGER.error("Error in API! - %s", exception)
             # Raise to pass on to the user.
             raise exception
         except Exception as exception:  # pylint: disable=broad-except
