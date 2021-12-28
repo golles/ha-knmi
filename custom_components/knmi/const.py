@@ -26,7 +26,7 @@ MEASUREMENT = "measurement"
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
-VERSION = "1.1.4"
+VERSION = "1.1.5"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
 # Platforms.

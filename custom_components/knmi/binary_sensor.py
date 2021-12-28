@@ -1,5 +1,6 @@
 """Binary sensor platform for knmi."""
 from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.const import CONF_NAME
 
 from .const import (
     BINARY_SENSORS,
@@ -43,8 +44,7 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
         data_key,
     ):
         super().__init__(coordinator, config_entry)
-        self.config_entry = config_entry
-        self.location_name = self.coordinator.data["plaats"]
+        self.entry_name = config_entry.data.get(CONF_NAME)
         self._name = name
         self._icon = icon
         self._device_class = device_class
@@ -54,12 +54,13 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
     @property
     def name(self):
         """Return the name of the binary_sensor."""
-        return f"{DEFAULT_NAME} {self.location_name} {self._name}"
+        return f"{DEFAULT_NAME} {self.entry_name} {self._name}"
 
     @property
     def is_on(self):
         """Return true if the binary_sensor is on."""
-        return self.coordinator.data[self._data_key] != "0"
+        if super().getData(self._data_key) is not None:
+            return super().getData(self._data_key) != "0"
 
     @property
     def icon(self):
@@ -78,7 +79,7 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
         for attribute in self._attributes:
             value = None
             if "key" in attribute:
-                value = self.coordinator.data[attribute.get("key", None)]
+                value = super().getData(attribute.get("key", None))
             if "value" in attribute:
                 value = attribute.get("value", None)
             attributes[attribute.get("name", None)] = value
