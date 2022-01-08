@@ -36,10 +36,10 @@ class KnmiApiClient:
                     # The API has no proper error handling for a wrong API key.
                     # Instead a 200 with a message is returned, try to detect that here.
                     if "Vraag eerst een API-key op" in await response.text():
-                        raise KnmiApiKeyException("Invalid API key")
+                        raise KnmiApiException("Invalid API key")
 
                     if "Dagelijkse limiet" in await response.text():
-                        raise KnmiApiKeyException("Exceeded Daily Limit")
+                        raise KnmiApiException("Exceeded Daily Limit")
 
                     data = await response.json()
                     return data.get("liveweer")[0]
@@ -63,7 +63,7 @@ class KnmiApiClient:
                 url,
                 exception,
             )
-        except KnmiApiKeyException as exception:
+        except KnmiApiException as exception:
             _LOGGER.error("Error in API! - %s", exception)
             # Raise to pass on to the user.
             raise exception
@@ -71,5 +71,5 @@ class KnmiApiClient:
             _LOGGER.error("Something really wrong happened! - %s", exception)
 
 
-class KnmiApiKeyException(Exception):
+class KnmiApiException(Exception):
     pass
