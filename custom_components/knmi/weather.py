@@ -115,8 +115,8 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
                 else None
             )
             temp = (
-                float(super().getData(f"d{i}tmin"))
-                if super().getData(f"d{i}tmin") is not None
+                float(super().getData(f"d{i}tmax"))
+                if super().getData(f"d{i}tmax") is not None
                 else None
             )
             precipitation = (
