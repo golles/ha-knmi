@@ -8,7 +8,7 @@ body:
       label: Did you read the instructions?
       description: Please read the instructions carefully, thank you.
       options:
-        - label: I have read the [README](../blob/master/README.md).
+        - label: I have read the [README](../blob/main/README.md), including the [known-limitations](../blob/main/README.md#known-limitations) section.
           required: true
 
   - type: textarea
