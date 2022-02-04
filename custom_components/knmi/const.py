@@ -7,8 +7,10 @@ from homeassistant.const import (
 from homeassistant.components.binary_sensor import (
     DEVICE_CLASS_SAFETY,
 )
-from homeassistant.components.sensor import STATE_CLASS_MEASUREMENT
-from homeassistant.components.sensor.const import CONF_STATE_CLASS
+from homeassistant.components.sensor import (
+    STATE_CLASS_MEASUREMENT,
+    ATTR_STATE_CLASS,
+)
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -71,7 +73,7 @@ SENSORS = [
         "device_class": DEVICE_CLASS_TEMPERATURE,
         "attributes": [
             {
-                "name": CONF_STATE_CLASS,
+                "name": ATTR_STATE_CLASS,
                 "value": STATE_CLASS_MEASUREMENT,
             },
         ],
@@ -84,7 +86,7 @@ SENSORS = [
         "device_class": DEVICE_CLASS_TEMPERATURE,
         "attributes": [
             {
-                "name": CONF_STATE_CLASS,
+                "name": ATTR_STATE_CLASS,
                 "value": STATE_CLASS_MEASUREMENT,
             },
         ],
