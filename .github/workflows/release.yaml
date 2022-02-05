@@ -13,3 +13,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Release
         uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          files: |
+            custom_components/*
+            LICENSE
+          generate_release_notes: true

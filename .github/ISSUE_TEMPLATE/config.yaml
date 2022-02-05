@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: API key request
+    url: https://weerlive.nl/api/toegang/index.php
+    about: Request your free API key.
+
+  - name: API documentation
+    url: https://weerlive.nl/delen.php
+    about: Weerlive API documentation.
