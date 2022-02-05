@@ -129,6 +129,11 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
                 if super().getData(f"d{i}windkmh") is not None
                 else None
             )
+            sun_chance = (
+                float(super().getData(f"d{i}zon"))
+                if super().getData(f"d{i}zon") is not None
+                else None
+            )
             next_day = {
                 ATTR_FORECAST_TIME: date.isoformat(),
                 ATTR_FORECAST_CONDITION: condition,
@@ -137,6 +142,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
                 ATTR_FORECAST_PRECIPITATION: precipitation,
                 ATTR_FORECAST_WIND_BEARING: wind_bearing,
                 ATTR_FORECAST_WIND_SPEED: wind_speed,
+                "sun_chance": sun_chance,
             }
             forecast.append(next_day)
 

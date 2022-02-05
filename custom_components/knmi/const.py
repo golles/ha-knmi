@@ -7,6 +7,10 @@ from homeassistant.const import (
 from homeassistant.components.binary_sensor import (
     DEVICE_CLASS_SAFETY,
 )
+from homeassistant.components.sensor import (
+    STATE_CLASS_MEASUREMENT,
+    ATTR_STATE_CLASS,
+)
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -19,9 +23,6 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
 )
-
-# Todo, import next: from homeassistant.components.sensor import SensorStateClass
-MEASUREMENT = "measurement"
 
 # Base component constants.
 NAME = "KNMI"
@@ -72,8 +73,8 @@ SENSORS = [
         "device_class": DEVICE_CLASS_TEMPERATURE,
         "attributes": [
             {
-                "name": "state_class",
-                "value": MEASUREMENT,
+                "name": ATTR_STATE_CLASS,
+                "value": STATE_CLASS_MEASUREMENT,
             },
         ],
     },
@@ -85,8 +86,8 @@ SENSORS = [
         "device_class": DEVICE_CLASS_TEMPERATURE,
         "attributes": [
             {
-                "name": "state_class",
-                "value": MEASUREMENT,
+                "name": ATTR_STATE_CLASS,
+                "value": STATE_CLASS_MEASUREMENT,
             },
         ],
     },
