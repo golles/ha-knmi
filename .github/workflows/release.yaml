@@ -14,6 +14,13 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          body: |
+            **Changes:**
+            - Change 1
+            - Change 2
+            
+            **Important notes:**
+            Why is this important
           draft: true
           files: |
             custom_components/*
