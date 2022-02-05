@@ -22,7 +22,4 @@ jobs:
             **Important notes:**
             Why is this important
           draft: true
-          files: |
-            custom_components/*
-            LICENSE
           generate_release_notes: true
