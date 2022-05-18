@@ -2,7 +2,7 @@
     "config": {
         "step": {
             "user": {
-                "title": "KNMI",
+                "title": "KNMI weather",
                 "description": "To get your free API key, visit: https://weerlive.nl/delen.php",
                 "data": {
                     "api_key": "API key",
