@@ -1,5 +1,7 @@
 """Sensor platform for knmi."""
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import CONF_NAME
+
 from .const import DEFAULT_NAME, DOMAIN, SENSORS
 from .entity import KnmiEntity
 
@@ -26,7 +28,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
     async_add_devices(sensors)
 
 
-class KnmiSensor(KnmiEntity):
+class KnmiSensor(KnmiEntity, SensorEntity):
     """Knmi Sensor class."""
 
     def __init__(
@@ -55,12 +57,12 @@ class KnmiSensor(KnmiEntity):
         return f"{DEFAULT_NAME} {self.entry_name} {self._name}"
 
     @property
-    def state(self):
-        """Return the state of the sensor."""
+    def native_value(self):
+        """Return the native_value of the sensor."""
         return super().getData(self._data_key)
 
     @property
-    def unit_of_measurement(self):
+    def native_unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
         return self._unit_of_measurement
 
