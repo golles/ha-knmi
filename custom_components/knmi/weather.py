@@ -7,7 +7,7 @@ from homeassistant.components.weather import (
     ATTR_FORECAST_TEMP,
     ATTR_FORECAST_TEMP_LOW,
     ATTR_FORECAST_TIME,
-    ATTR_FORECAST_PRECIPITATION,
+    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_WIND_BEARING,
     ATTR_FORECAST_WIND_SPEED,
     WeatherEntity,
@@ -119,7 +119,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
                 if super().getData(f"d{i}tmax") is not None
                 else None
             )
-            precipitation = (
+            precipitation_probability = (
                 float(super().getData(f"d{i}neerslag"))
                 if super().getData(f"d{i}neerslag") is not None
                 else None
@@ -139,7 +139,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
                 ATTR_FORECAST_CONDITION: condition,
                 ATTR_FORECAST_TEMP_LOW: temp_low,
                 ATTR_FORECAST_TEMP: temp,
-                ATTR_FORECAST_PRECIPITATION: precipitation,
+                ATTR_FORECAST_PRECIPITATION_PROBABILITY: precipitation_probability,
                 ATTR_FORECAST_WIND_BEARING: wind_bearing,
                 ATTR_FORECAST_WIND_SPEED: wind_speed,
                 "sun_chance": sun_chance,
