@@ -24,6 +24,7 @@
             "user": {
                 "data": {
                     "binary_sensor": "Binaire sensor ingeschakeld",
+                    "sensor": "Sensor ingeschakeld",
                     "weather": "Weer ingeschakeld"
                 }
             }

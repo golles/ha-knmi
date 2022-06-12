@@ -24,6 +24,7 @@
             "user": {
                 "data": {
                     "binary_sensor": "Binary sensor enabled",
+                    "sensor": "Sensor enabled",
                     "weather": "Weather enabled"
                 }
             }
