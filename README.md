@@ -11,17 +11,17 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-_Component to integrate with [knmi][knmi]._
-
-**This component will set up the following platforms.**
-
-Platform | Description
--- | --
-`binary_sensor` | Weather alert `True` or `False`, the alert itself is an attribute.
-`sensor` | a few weather related sensors.
-`weather` | Weather data provided by KNMI, https://weerlive.nl/.
+KNMI custom component for Home Assistant.  
+Weather data provided by KNMI, https://weerlive.nl/.
 
 ## Installation
+
+### HACS
+
+This component can be installed in your Home Assistant with HACS.
+
+
+### Manual
 
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
 2. If you do not have a `custom_components` directory (folder) there, you need to create it.
