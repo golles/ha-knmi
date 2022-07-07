@@ -59,8 +59,9 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
     @property
     def is_on(self):
         """Return true if the binary_sensor is on."""
-        if super().getData(self._data_key) is not None:
-            return super().getData(self._data_key) != "0"
+        if super().get_data(self._data_key) is not None:
+            return super().get_data(self._data_key) != "0"
+        return None
 
     @property
     def icon(self):
@@ -79,7 +80,7 @@ class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
         for attribute in self._attributes:
             value = None
             if "key" in attribute:
-                value = super().getData(attribute.get("key", None))
+                value = super().get_data(attribute.get("key", None))
             if "value" in attribute:
                 value = attribute.get("value", None)
             attributes[attribute.get("name", None)] = value

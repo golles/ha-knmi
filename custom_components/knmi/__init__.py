@@ -16,18 +16,14 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import KnmiApiClient
-
-from .const import (
-    DOMAIN,
-    PLATFORMS,
-)
+from .const import DOMAIN, PLATFORMS
 
 SCAN_INTERVAL = timedelta(seconds=300)
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup(hass: HomeAssistant, config: Config):
+async def async_setup(_hass: HomeAssistant, _config: Config):
     """Set up this integration using YAML is not supported."""
     return True
 
@@ -37,12 +33,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
 
-    apiKey = entry.data.get(CONF_API_KEY)
+    api_key = entry.data.get(CONF_API_KEY)
     latitude = entry.data.get(CONF_LATITUDE)
     longitude = entry.data.get(CONF_LONGITUDE)
 
     session = async_get_clientsession(hass)
-    client = KnmiApiClient(apiKey, latitude, longitude, session)
+    client = KnmiApiClient(api_key, latitude, longitude, session)
 
     coordinator = KnmiDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
@@ -66,9 +62,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
-    def __init__(
-        self, hass: HomeAssistant, client: KnmiApiClient
-    ) -> None:
+    def __init__(self, hass: HomeAssistant, client: KnmiApiClient) -> None:
         """Initialize."""
         self.api = client
         self.platforms = []

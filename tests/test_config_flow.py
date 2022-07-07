@@ -23,10 +23,7 @@ from .const import MOCK_CONFIG
 @pytest.fixture(autouse=True)
 def bypass_setup_fixture():
     """Prevent setup."""
-    with patch(
-        "custom_components.knmi.async_setup",
-        return_value=True,
-    ), patch(
+    with patch("custom_components.knmi.async_setup", return_value=True,), patch(
         "custom_components.knmi.async_setup_entry",
         return_value=True,
     ):
@@ -107,4 +104,8 @@ async def test_options_flow(hass):
     assert result["title"] == MOCK_CONFIG[CONF_NAME]
 
     # Verify that the options were updated
-    assert entry.options == {BINARY_SENSOR: True, SENSOR: True, WEATHER: False,}
+    assert entry.options == {
+        BINARY_SENSOR: True,
+        SENSOR: True,
+        WEATHER: False,
+    }

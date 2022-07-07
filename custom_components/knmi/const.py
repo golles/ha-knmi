@@ -24,6 +24,10 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SUNNY,
 )
 
+# API
+API_ENDPOINT = "http://weerlive.nl/api/json-data-10min.php?key={}&locatie={},{}"
+API_TIMEOUT = 10
+
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
