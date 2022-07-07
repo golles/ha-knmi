@@ -14,7 +14,6 @@ from homeassistant.components.weather import (
 )
 from homeassistant.const import (
     CONF_NAME,
-    TEMP_CELSIUS,
 )
 
 from .const import CONDITIONS_MAP, DEFAULT_NAME, DOMAIN, WIND_DIRECTION_MAP
@@ -40,56 +39,53 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         return f"{DEFAULT_NAME} {self.entry_name}"
 
     @property
-    def state(self):
-        """Return the state of the sensor."""
-        return self.condition
-
-    @property
     def condition(self):
         """Return the current condition."""
         if super().getData("d0weer") is not None:
             return CONDITIONS_MAP[super().getData("d0weer")]
+        return None
 
     @property
-    def temperature(self):
+    def native_temperature(self):
         """Return the temperature."""
         if super().getData("temp") is not None:
             return float(super().getData("temp"))
+        return None
 
     @property
-    def temperature_unit(self):
-        """Return the unit of measurement."""
-        return TEMP_CELSIUS
-
-    @property
-    def pressure(self):
+    def native_pressure(self):
         """Return the pressure."""
         if super().getData("luchtd") is not None:
             return float(super().getData("luchtd"))
+        return None
 
     @property
-    def humidity(self):
+    def native_humidity(self):
         """Return the humidity."""
         if super().getData("lv") is not None:
             return float(super().getData("lv"))
+        return None
 
     @property
-    def wind_speed(self):
+    def native_wind_speed(self):
         """Return the wind speed."""
         if super().getData("windkmh") is not None:
             return float(super().getData("windkmh"))
+        return None
 
     @property
     def wind_bearing(self):
         """Return the wind direction."""
         if super().getData("windr") is not None:
             return WIND_DIRECTION_MAP[super().getData("windr")]
+        return None
 
     @property
-    def visibility(self):
+    def native_visibility(self):
         """Return the wind direction."""
         if super().getData("zicht") is not None:
-            return float(super().getData("zicht")) / 10
+            return float(super().getData("zicht"))
+        return None
 
     @property
     def forecast(self):
