@@ -2,35 +2,40 @@
 import logging
 import asyncio
 import socket
-from typing import Optional
 import aiohttp
 import async_timeout
 
-TIMEOUT = 10
+from .const import API_ENDPOINT, API_TIMEOUT
 
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 class KnmiApiClient:
+    """KNMI API wrapper"""
+
     def __init__(
-        self, apiKey: str, latitude: str, longitude: str, session: aiohttp.ClientSession
+        self,
+        api_key: str,
+        latitude: str,
+        longitude: str,
+        session: aiohttp.ClientSession,
     ) -> None:
         """Sample API Client."""
-        self.apiKey = apiKey
+        self.api_key = api_key
         self.latitude = latitude
         self.longitude = longitude
         self._session = session
 
     async def async_get_data(self) -> dict:
         """Get data from the API."""
-        url = f"http://weerlive.nl/api/json-data-10min.php?key={self.apiKey}&locatie={self.latitude},{self.longitude}"
+        url = API_ENDPOINT.format(self.api_key, self.latitude, self.longitude)
         return await self.api_wrapper("get", url)
 
     async def api_wrapper(self, method: str, url: str) -> dict:
         """Get information from the API."""
         try:
-            async with async_timeout.timeout(TIMEOUT):
+            async with async_timeout.timeout(API_TIMEOUT):
                 if method == "get":
                     response = await self._session.get(url)
                     # The API has no proper error handling for a wrong API key.
@@ -72,4 +77,4 @@ class KnmiApiClient:
 
 
 class KnmiApiException(Exception):
-    pass
+    """KNMI API Exception class"""

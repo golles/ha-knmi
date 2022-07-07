@@ -59,7 +59,7 @@ class KnmiSensor(KnmiEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the native_value of the sensor."""
-        return super().getData(self._data_key)
+        return super().get_data(self._data_key)
 
     @property
     def native_unit_of_measurement(self):
@@ -83,7 +83,7 @@ class KnmiSensor(KnmiEntity, SensorEntity):
         for attribute in self._attributes:
             value = None
             if "key" in attribute:
-                value = super().getData(attribute.get("key", None))
+                value = super().get_data(attribute.get("key", None))
             if "value" in attribute:
                 value = attribute.get("value", None)
             attributes[attribute.get("name", None)] = value

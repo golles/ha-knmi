@@ -79,11 +79,11 @@ class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             errors=self._errors,
         )
 
-    async def _test_user_input(self, apiKey: str, latitude: str, longitude: str):
+    async def _test_user_input(self, api_key: str, latitude: str, longitude: str):
         """Return true if credentials is valid."""
         try:
             session = async_create_clientsession(self.hass)
-            client = KnmiApiClient(apiKey, latitude, longitude, session)
+            client = KnmiApiClient(api_key, latitude, longitude, session)
             await client.async_get_data()
             return True
         except Exception:  # pylint: disable=broad-except

@@ -6,12 +6,14 @@ from .const import DOMAIN, NAME, VERSION, ATTRIBUTION
 
 
 class KnmiEntity(CoordinatorEntity):
+    """KNMI CoordinatorEntity"""
+
     def __init__(self, coordinator, config_entry):
         super().__init__(coordinator)
         self.coordinator = coordinator
         self.config_entry = config_entry
 
-    def getData(self, key):
+    def get_data(self, key):
         """Return the data key from the coordinator."""
         if self.coordinator.data is not None:
             return self.coordinator.data[key]

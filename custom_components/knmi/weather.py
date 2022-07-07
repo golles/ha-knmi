@@ -41,50 +41,50 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     @property
     def condition(self):
         """Return the current condition."""
-        if super().getData("d0weer") is not None:
-            return CONDITIONS_MAP[super().getData("d0weer")]
+        if super().get_data("d0weer") is not None:
+            return CONDITIONS_MAP[super().get_data("d0weer")]
         return None
 
     @property
     def native_temperature(self):
         """Return the temperature."""
-        if super().getData("temp") is not None:
-            return float(super().getData("temp"))
+        if super().get_data("temp") is not None:
+            return float(super().get_data("temp"))
         return None
 
     @property
     def native_pressure(self):
         """Return the pressure."""
-        if super().getData("luchtd") is not None:
-            return float(super().getData("luchtd"))
+        if super().get_data("luchtd") is not None:
+            return float(super().get_data("luchtd"))
         return None
 
     @property
     def native_humidity(self):
         """Return the humidity."""
-        if super().getData("lv") is not None:
-            return float(super().getData("lv"))
+        if super().get_data("lv") is not None:
+            return float(super().get_data("lv"))
         return None
 
     @property
     def native_wind_speed(self):
         """Return the wind speed."""
-        if super().getData("windkmh") is not None:
-            return float(super().getData("windkmh"))
+        if super().get_data("windkmh") is not None:
+            return float(super().get_data("windkmh"))
         return None
 
     @property
     def wind_bearing(self):
         """Return the wind direction."""
-        if super().getData("windr") is not None:
-            return WIND_DIRECTION_MAP[super().getData("windr")]
+        if super().get_data("windr") is not None:
+            return WIND_DIRECTION_MAP[super().get_data("windr")]
         return None
 
     @property
     def native_visibility(self):
         """Return the wind direction."""
-        if super().getData("zicht") is not None:
-            return float(super().getData("zicht"))
+        if super().get_data("zicht") is not None:
+            return float(super().get_data("zicht"))
         return None
 
     @property
@@ -96,38 +96,38 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         for i in range(0, 3):
             date = today + timedelta(days=i)
             condition = (
-                CONDITIONS_MAP[super().getData(f"d{i}weer")]
-                if super().getData(f"d{i}weer") is not None
+                CONDITIONS_MAP[super().get_data(f"d{i}weer")]
+                if super().get_data(f"d{i}weer") is not None
                 else None
             )
             wind_bearing = (
-                WIND_DIRECTION_MAP[super().getData(f"d{i}windr")]
-                if super().getData(f"d{i}windr") is not None
+                WIND_DIRECTION_MAP[super().get_data(f"d{i}windr")]
+                if super().get_data(f"d{i}windr") is not None
                 else None
             )
             temp_low = (
-                float(super().getData(f"d{i}tmin"))
-                if super().getData(f"d{i}tmin") is not None
+                float(super().get_data(f"d{i}tmin"))
+                if super().get_data(f"d{i}tmin") is not None
                 else None
             )
             temp = (
-                float(super().getData(f"d{i}tmax"))
-                if super().getData(f"d{i}tmax") is not None
+                float(super().get_data(f"d{i}tmax"))
+                if super().get_data(f"d{i}tmax") is not None
                 else None
             )
             precipitation_probability = (
-                float(super().getData(f"d{i}neerslag"))
-                if super().getData(f"d{i}neerslag") is not None
+                float(super().get_data(f"d{i}neerslag"))
+                if super().get_data(f"d{i}neerslag") is not None
                 else None
             )
             wind_speed = (
-                float(super().getData(f"d{i}windkmh"))
-                if super().getData(f"d{i}windkmh") is not None
+                float(super().get_data(f"d{i}windkmh"))
+                if super().get_data(f"d{i}windkmh") is not None
                 else None
             )
             sun_chance = (
-                float(super().getData(f"d{i}zon"))
-                if super().getData(f"d{i}zon") is not None
+                float(super().get_data(f"d{i}zon"))
+                if super().get_data(f"d{i}zon") is not None
                 else None
             )
             next_day = {
