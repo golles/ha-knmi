@@ -31,7 +31,7 @@ API_TIMEOUT = 10
 # Base component constants.
 NAME = "KNMI"
 DOMAIN = "knmi"
-VERSION = "1.1.9"
+VERSION = "1.1.10"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
 # Defaults
