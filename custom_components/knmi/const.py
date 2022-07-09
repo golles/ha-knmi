@@ -1,15 +1,15 @@
 """Constants for knmi."""
 
 from homeassistant.const import (
-    DEVICE_CLASS_TEMPERATURE,
+    PERCENTAGE,
     TEMP_CELSIUS,
 )
 from homeassistant.components.binary_sensor import (
-    DEVICE_CLASS_SAFETY,
+    BinarySensorDeviceClass,
 )
 from homeassistant.components.sensor import (
-    STATE_CLASS_MEASUREMENT,
-    ATTR_STATE_CLASS,
+    SensorDeviceClass,
+    SensorStateClass,
 )
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
@@ -34,6 +34,9 @@ DOMAIN = "knmi"
 VERSION = "1.1.9"
 ATTRIBUTION = "KNMI Weergegevens via https://weerlive.nl/"
 
+# Defaults
+DEFAULT_NAME = NAME
+
 # Platforms.
 BINARY_SENSOR = "binary_sensor"
 SENSOR = "sensor"
@@ -47,7 +50,7 @@ BINARY_SENSORS = [
         "unit": "",
         "icon": "mdi:alert",
         "key": "alarm",
-        "device_class": DEVICE_CLASS_SAFETY,
+        "device_class": BinarySensorDeviceClass.SAFETY,
         "attributes": [
             {
                 "name": "Waarschuwing",
@@ -74,31 +77,26 @@ SENSORS = [
         "unit_of_measurement": TEMP_CELSIUS,
         "icon": "mdi:thermometer",
         "key": "dauwp",
-        "device_class": DEVICE_CLASS_TEMPERATURE,
-        "attributes": [
-            {
-                "name": ATTR_STATE_CLASS,
-                "value": STATE_CLASS_MEASUREMENT,
-            },
-        ],
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "state_class": SensorStateClass.MEASUREMENT,
     },
     {
         "name": "Gevoelstemperatuur",
         "unit_of_measurement": TEMP_CELSIUS,
         "icon": "mdi:thermometer",
         "key": "gtemp",
-        "device_class": DEVICE_CLASS_TEMPERATURE,
-        "attributes": [
-            {
-                "name": ATTR_STATE_CLASS,
-                "value": STATE_CLASS_MEASUREMENT,
-            },
-        ],
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "state_class": SensorStateClass.MEASUREMENT,
+    },
+    {
+        "name": "Relatieve luchtvochtigheid",
+        "unit_of_measurement": PERCENTAGE,
+        "icon": "mdi:water-percent",
+        "key": "lv",
+        "device_class": SensorDeviceClass.HUMIDITY,
+        "state_class": SensorStateClass.MEASUREMENT,
     },
 ]
-
-# Defaults
-DEFAULT_NAME = NAME
 
 # Map weather conditions from KNMI to HA.
 CONDITIONS_MAP = {
@@ -116,29 +114,4 @@ CONDITIONS_MAP = {
     "nachtmist": ATTR_CONDITION_FOG,
     "helderenacht": ATTR_CONDITION_CLEAR_NIGHT,
     "wolkennacht": ATTR_CONDITION_CLOUDY,
-}
-
-# Map wind direction from KNMI string to number.
-WIND_DIRECTION_MAP = {
-    "VAR": None,
-    "N": 360,
-    "Noord": 360,
-    "NNO": 22.5,
-    "NO": 45,
-    "ONO": 67.5,
-    "O": 90,
-    "Oost": 90,
-    "OZO": 112.5,
-    "ZO": 135,
-    "ZZO": 157.5,
-    "Z": 180,
-    "Zuid": 180,
-    "ZZW": 202.5,
-    "ZW": 225,
-    "WZW": 247.5,
-    "W": 270,
-    "West": 270,
-    "WNW": 292.5,
-    "NW": 315,
-    "NNW": 337.5,
 }

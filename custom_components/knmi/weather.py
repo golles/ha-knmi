@@ -16,7 +16,7 @@ from homeassistant.const import (
     CONF_NAME,
 )
 
-from .const import CONDITIONS_MAP, DEFAULT_NAME, DOMAIN, WIND_DIRECTION_MAP
+from .const import CONDITIONS_MAP, DEFAULT_NAME, DOMAIN
 from .entity import KnmiEntity
 
 
@@ -77,7 +77,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     def wind_bearing(self):
         """Return the wind direction."""
         if super().get_data("windr") is not None:
-            return WIND_DIRECTION_MAP[super().get_data("windr")]
+            return int(super().get_data("windrgr"))
         return None
 
     @property
@@ -101,8 +101,8 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
                 else None
             )
             wind_bearing = (
-                WIND_DIRECTION_MAP[super().get_data(f"d{i}windr")]
-                if super().get_data(f"d{i}windr") is not None
+                int(super().get_data(f"d{i}windrgr"))
+                if super().get_data(f"d{i}windrgr") is not None
                 else None
             )
             temp_low = (
