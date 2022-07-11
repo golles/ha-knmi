@@ -1,88 +1,103 @@
 """Binary sensor platform for knmi."""
-from homeassistant.components.binary_sensor import BinarySensorEntity
-from homeassistant.const import CONF_NAME
 
-from .const import (
-    BINARY_SENSORS,
-    DEFAULT_NAME,
-    DOMAIN,
+from collections.abc import Mapping
+from typing import Any
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import (
+    CoordinatorEntity,
 )
-from .entity import KnmiEntity
+from homeassistant.const import (
+    CONF_NAME,
+)
+from homeassistant.components.sensor import (
+    SensorEntityDescription,
+)
+from homeassistant.components.binary_sensor import (
+    DOMAIN as SENSOR_DOMAIN,
+    BinarySensorDeviceClass,
+    BinarySensorEntity,
+)
+
+from . import KnmiDataUpdateCoordinator
+from .const import DEFAULT_NAME, DOMAIN
+
+ALARM_SENSOR = SensorEntityDescription(
+    key="alarm",
+    name="Waarschuwing",
+    icon="mdi:alert",
+    device_class=BinarySensorDeviceClass.SAFETY,
+)
 
 
-async def async_setup_entry(hass, entry, async_add_devices):
-    """Setup binary_sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
-    sensors: list[KnmiBinarySensor] = []
-    for sensor in BINARY_SENSORS:
-        sensors.append(
-            KnmiBinarySensor(
-                coordinator,
-                entry,
-                sensor.get("name", None),
-                sensor.get("icon", None),
-                sensor.get("device_class", None),
-                sensor.get("attributes", []),
-                sensor.get("key", None),
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up KNMI binary sensors based on a config entry."""
+    async_add_entities(
+        [
+            KnmiBinaryAlarmSensor(
+                conf_name=entry.data.get(CONF_NAME, hass.config.location_name),
+                coordinator=hass.data[DOMAIN][entry.entry_id],
+                entry_id=entry.entry_id,
+                description=ALARM_SENSOR,
             )
-        )
+        ]
+    )
 
-    async_add_devices(sensors)
 
+class KnmiBinarySensor(
+    CoordinatorEntity[KnmiDataUpdateCoordinator], BinarySensorEntity
+):
+    """Defines an KNMI binary sensor."""
 
-class KnmiBinarySensor(KnmiEntity, BinarySensorEntity):
-    """knmi binary_sensor class."""
+    _attr_has_entity_name = True
 
     def __init__(
         self,
-        coordinator,
-        config_entry,
-        name,
-        icon,
-        device_class,
-        attributes,
-        data_key,
-    ):
-        super().__init__(coordinator, config_entry)
-        self.entry_name = config_entry.data.get(CONF_NAME)
-        self._name = name
-        self._icon = icon
-        self._device_class = device_class
-        self._attributes = attributes
-        self._data_key = data_key
+        conf_name: str,
+        coordinator: KnmiDataUpdateCoordinator,
+        entry_id: str,
+        description: SensorEntityDescription,
+    ) -> None:
+        """Initialize KNMI binary sensor."""
+        super().__init__(coordinator=coordinator)
+
+        self.entity_id = (
+            f"{SENSOR_DOMAIN}.{DEFAULT_NAME}_{conf_name}_{description.name}".lower()
+        )
+        self.entity_description = description
+        self._attr_unique_id = f"{entry_id}-{self.name}"
+        self._attr_device_info = coordinator.device_info
 
     @property
-    def name(self):
-        """Return the name of the binary_sensor."""
-        return f"{DEFAULT_NAME} {self.entry_name} {self._name}"
+    def is_on(self) -> bool:
+        """Return True if the entity is on."""
+        return self.coordinator.data.get(self.entity_description.key, None) != "0"
+
+
+class KnmiBinaryAlarmSensor(KnmiBinarySensor):
+    """Defines an KNMI alarm binary sensor."""
+
+    _attr_has_entity_name = True
+
+    def __init__(
+        self,
+        conf_name: str,
+        coordinator: KnmiDataUpdateCoordinator,
+        entry_id: str,
+        description: SensorEntityDescription,
+    ) -> None:
+        """Initialize KNMI binary sensor."""
+        super().__init__(
+            conf_name=conf_name, coordinator=coordinator, entry_id=entry_id, description=description
+        )
 
     @property
-    def is_on(self):
-        """Return true if the binary_sensor is on."""
-        if super().get_data(self._data_key) is not None:
-            return super().get_data(self._data_key) != "0"
-        return None
-
-    @property
-    def icon(self):
-        """Return the icon of the sensor."""
-        return self._icon
-
-    @property
-    def device_class(self):
-        """Return the device class."""
-        return self._device_class
-
-    @property
-    def extra_state_attributes(self):
-        """Return the device state attributes."""
-        attributes = super().extra_state_attributes
-        for attribute in self._attributes:
-            value = None
-            if "key" in attribute:
-                value = super().get_data(attribute.get("key", None))
-            if "value" in attribute:
-                value = attribute.get("value", None)
-            attributes[attribute.get("name", None)] = value
-
-        return attributes
+    def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        return {
+            "Waarschuwing": self.coordinator.data.get("alarmtxt", None),
+        }

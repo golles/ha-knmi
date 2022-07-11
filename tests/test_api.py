@@ -5,7 +5,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from custom_components.knmi.api import KnmiApiClient
 
-from .const import MOCK_CONFIG
+from .const import MOCK_CONFIG, MOCK_JSON
 
 
 async def test_api(hass, aioclient_mock, caplog):
@@ -21,10 +21,11 @@ async def test_api(hass, aioclient_mock, caplog):
 
     # Use aioclient_mock which is provided by `pytest_homeassistant_custom_components`
     # to mock responses to aiohttp requests. In this case we are telling the mock to
-    # return {"test": "test"} when a `GET` call is made to the specified URL. We then
+    # return `MOCK_JSON` when a `GET` call is made to the specified URL. We then
     # call `async_get_data` which will make that `GET` request.
     aioclient_mock.get(
         f"http://weerlive.nl/api/json-data-10min.php?key={MOCK_CONFIG[CONF_API_KEY]}&locatie={MOCK_CONFIG[CONF_LATITUDE]},{MOCK_CONFIG[CONF_LONGITUDE]}",
-        json={"liveweer": [{"weather": "good"}]},
+        json=MOCK_JSON,
     )
-    assert await api.async_get_data() == {"weather": "good"}
+    response = await api.async_get_data()
+    assert response == MOCK_JSON["liveweer"][0]

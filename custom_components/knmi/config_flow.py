@@ -41,9 +41,8 @@ class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_create_entry(
                     title=user_input[CONF_NAME], data=user_input
                 )
-            else:
-                self._errors["base"] = "api_key"
 
+            self._errors["base"] = "api_key"
             return await self._show_config_form(user_input)
 
         user_input = {}
