@@ -93,7 +93,10 @@ class KnmiBinaryAlarmSensor(KnmiBinarySensor):
     ) -> None:
         """Initialize KNMI binary sensor."""
         super().__init__(
-            conf_name=conf_name, coordinator=coordinator, entry_id=entry_id, description=description
+            conf_name=conf_name,
+            coordinator=coordinator,
+            entry_id=entry_id,
+            description=description,
         )
 
     @property

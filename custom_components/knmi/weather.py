@@ -98,37 +98,51 @@ class KnmiWeather(WeatherEntity):
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        return CONDITIONS_MAP[self.coordinator.data.get("d0weer", None)]
+        if self.coordinator.data.get("d0weer") is not None:
+            return CONDITIONS_MAP[self.coordinator.data.get("d0weer")]
+        return None
 
     @property
     def native_temperature(self) -> float | None:
         """Return the temperature in native units."""
-        return self.coordinator.data.get("temp", None)
+        if self.coordinator.data.get("temp") is not None:
+            return float(self.coordinator.data.get("temp"))
+        return None
 
     @property
     def native_pressure(self) -> float | None:
         """Return the pressure in native units."""
-        return self.coordinator.data.get("luchtd", None)
+        if self.coordinator.data.get("luchtd") is not None:
+            return float(self.coordinator.data.get("luchtd"))
+        return None
 
     @property
     def humidity(self) -> float | None:
         """Return the humidity in native units."""
-        return self.coordinator.data.get("lv", None)
+        if self.coordinator.data.get("lv") is not None:
+            return int(self.coordinator.data.get("lv"))
+        return None
 
     @property
     def native_wind_speed(self) -> float | None:
         """Return the wind speed in native units."""
-        return self.coordinator.data.get("windkmh", None)
+        if self.coordinator.data.get("windkmh") is not None:
+            return float(self.coordinator.data.get("windkmh"))
+        return None
 
     @property
     def wind_bearing(self) -> float | str | None:
         """Return the wind bearing."""
-        return self.coordinator.data.get("windrgr", None)
+        if self.coordinator.data.get("windrgr") is not None:
+            return int(self.coordinator.data.get("windrgr"))
+        return None
 
     @property
     def native_visibility(self) -> float | None:
         """Return the visibility in native units."""
-        return self.coordinator.data.get("zicht", None)
+        if self.coordinator.data.get("zicht") is not None:
+            return int(self.coordinator.data.get("zicht"))
+        return None
 
     @property
     def forecast(self) -> list[Forecast] | None:
@@ -142,11 +156,11 @@ class KnmiWeather(WeatherEntity):
             wind_bearing = int(self.coordinator.data.get(f"d{i}windrgr", None))
             temp_low = float(self.coordinator.data.get(f"d{i}tmin", None))
             temp = float(self.coordinator.data.get(f"d{i}tmax", None))
-            precipitation_probability = float(
+            precipitation_probability = int(
                 self.coordinator.data.get(f"d{i}neerslag", None)
             )
             wind_speed = float(self.coordinator.data.get(f"d{i}windkmh", None))
-            sun_chance = float(self.coordinator.data.get(f"d{i}zon", None))
+            sun_chance = int(self.coordinator.data.get(f"d{i}zon", None))
             next_day = {
                 ATTR_FORECAST_TIME: date.isoformat(),
                 ATTR_FORECAST_CONDITION: condition,
@@ -155,7 +169,7 @@ class KnmiWeather(WeatherEntity):
                 ATTR_FORECAST_PRECIPITATION_PROBABILITY: precipitation_probability,
                 ATTR_FORECAST_WIND_BEARING: wind_bearing,
                 ATTR_FORECAST_WIND_SPEED: wind_speed,
-                "sun_chance": sun_chance,
+                "sun_chance": sun_chance,  # Not officially supported, but nice addition.
             }
             forecast.append(next_day)
 
