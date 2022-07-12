@@ -60,7 +60,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         return None
 
     @property
-    def native_humidity(self):
+    def humidity(self):
         """Return the humidity."""
         if super().get_data("lv") is not None:
             return float(super().get_data("lv"))
