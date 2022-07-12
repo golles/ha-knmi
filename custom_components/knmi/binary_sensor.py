@@ -70,7 +70,7 @@ class KnmiBinarySensor(
             f"{SENSOR_DOMAIN}.{DEFAULT_NAME}_{conf_name}_{description.name}".lower()
         )
         self.entity_description = description
-        self._attr_unique_id = f"{entry_id}-{self.name}"
+        self._attr_unique_id = f"{entry_id}-{DEFAULT_NAME} {conf_name} {self.name}"
         self._attr_device_info = coordinator.device_info
 
     @property

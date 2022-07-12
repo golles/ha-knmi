@@ -92,7 +92,7 @@ class KnmiWeather(WeatherEntity):
         self.coordinator = coordinator
 
         self.entity_id = f"{SENSOR_DOMAIN}.{DEFAULT_NAME}_{conf_name}".lower()
-        self._attr_unique_id = f"{entry_id}-{self.name}"
+        self._attr_unique_id = f"{entry_id}-{DEFAULT_NAME} {conf_name}"
         self._attr_device_info = coordinator.device_info
 
     @property
