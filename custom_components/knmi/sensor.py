@@ -74,9 +74,6 @@ async def async_setup_entry(
         for description in SENSORS
     )
 
-import logging
-_LOGGER: logging.Logger = logging.getLogger(__package__)
-
 
 class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
     """Defines an KNMI sensor."""
@@ -99,8 +96,6 @@ class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
         self.entity_description = description
         self._attr_unique_id = f"{entry_id}-{DEFAULT_NAME} {conf_name} {self.name}"
         self._attr_device_info = coordinator.device_info
-
-        _LOGGER.info("unique_id: %s", self._attr_unique_id)
 
     @property
     def native_value(self) -> StateType:
