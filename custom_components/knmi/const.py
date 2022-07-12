@@ -11,7 +11,7 @@ API_TIMEOUT: Final = 10
 # Base component constants.
 NAME: Final = "KNMI"
 DOMAIN: Final = "knmi"
-VERSION: Final = "1.1.10"
+VERSION: Final = "1.1.11"
 
 # Defaults
 _LOGGER: logging.Logger = logging.getLogger(__package__)

@@ -111,7 +111,7 @@ class KnmiWeather(WeatherEntity):
         return self.coordinator.data.get("luchtd", None)
 
     @property
-    def native_humidity(self) -> float | None:
+    def humidity(self) -> float | None:
         """Return the humidity in native units."""
         return self.coordinator.data.get("lv", None)
 
