@@ -60,7 +60,7 @@ async def async_setup_entry(
 class KnmiBinarySensor(
     CoordinatorEntity[KnmiDataUpdateCoordinator], BinarySensorEntity
 ):
-    """Defines an KNMI binary sensor."""
+    """Defines a KNMI binary sensor."""
 
     _attr_has_entity_name = True
 
@@ -88,7 +88,7 @@ class KnmiBinarySensor(
 
 
 class KnmiBinaryAlarmSensor(KnmiBinarySensor):
-    """Defines an KNMI alarm binary sensor."""
+    """Defines a KNMI alarm binary sensor."""
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
@@ -98,7 +98,7 @@ class KnmiBinaryAlarmSensor(KnmiBinarySensor):
 
 
 class KnmiBinarySunSensor(KnmiBinarySensor):
-    """Defines an KNMI sun binary sensor."""
+    """Defines a KNMI sun binary sensor."""
 
     @property
     def is_on(self) -> bool:
@@ -111,7 +111,7 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
 
         now = dt.utcnow()
 
-        if now > sunrise and now < sunset:
+        if sunrise < now < sunset:
             return True
         return False
 

@@ -77,7 +77,7 @@ async def async_setup_entry(
 
 
 class KnmiWeather(WeatherEntity):
-    """KNMI Weather class."""
+    """Defines a KNMI weather entity."""
 
     _attr_attribution = "KNMI Weergegevens via https://weerlive.nl"
     _attr_native_pressure_unit = PRESSURE_HPA

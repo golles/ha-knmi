@@ -25,7 +25,7 @@ async def async_setup(_hass: HomeAssistant, _config: Config) -> bool:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up AccuWeather as config entry."""
+    """Set up KNMI as config entry."""
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
 
@@ -103,7 +103,7 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
             raise UpdateFailed() from exception
 
     def get_value(self, key: str) -> str | None:
-        """ Get a value"""
+        """Get a value retrieved from the api"""
         if self.data is not None:
             return self.data.get(key, None)
         return None
