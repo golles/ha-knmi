@@ -1,17 +1,12 @@
 """Sensor platform for knmi."""
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import StateType
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-)
 from homeassistant.const import (
     CONF_NAME,
     PERCENTAGE,
     TEMP_CELSIUS,
 )
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
 from homeassistant.components.sensor import (
     DOMAIN as SENSOR_DOMAIN,
     SensorDeviceClass,
@@ -19,11 +14,14 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.typing import StateType
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import KnmiDataUpdateCoordinator
 from .const import DEFAULT_NAME, DOMAIN
 
-SENSORS: list[SensorEntityDescription] = [
+DESCRIPTIONS: list[SensorEntityDescription] = [
     SensorEntityDescription(
         key="samenv",
         name="Omschrijving",
@@ -64,19 +62,22 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up KNMI sensors based on a config entry."""
+    conf_name = entry.data.get(CONF_NAME, hass.config.location_name)
+    coordinator = hass.data[DOMAIN][entry.entry_id]
+
     async_add_entities(
         KnmiSensor(
-            conf_name=entry.data.get(CONF_NAME, hass.config.location_name),
-            coordinator=hass.data[DOMAIN][entry.entry_id],
+            conf_name=conf_name,
+            coordinator=coordinator,
             entry_id=entry.entry_id,
             description=description,
         )
-        for description in SENSORS
+        for description in DESCRIPTIONS
     )
 
 
 class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
-    """Defines an KNMI sensor."""
+    """Defines a KNMI sensor."""
 
     _attr_has_entity_name = True
 
@@ -100,4 +101,4 @@ class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
     @property
     def native_value(self) -> StateType:
         """Return the state of the sensor."""
-        return self.coordinator.data.get(self.entity_description.key, None)
+        return self.coordinator.get_value(self.entity_description.key)

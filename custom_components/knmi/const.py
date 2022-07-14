@@ -7,6 +7,7 @@ import logging
 # API
 API_ENDPOINT: Final = "http://weerlive.nl/api/json-data-10min.php?key={}&locatie={},{}"
 API_TIMEOUT: Final = 10
+API_TIMEZONE: Final = "Europe/Amsterdam"
 
 # Base component constants.
 NAME: Final = "KNMI"

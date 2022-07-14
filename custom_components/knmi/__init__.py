@@ -101,3 +101,9 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
             return await self.api.async_get_data()
         except Exception as exception:
             raise UpdateFailed() from exception
+
+    def get_value(self, key: str) -> str | None:
+        """ Get a value"""
+        if self.data is not None:
+            return self.data.get(key, None)
+        return None

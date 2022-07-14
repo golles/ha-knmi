@@ -1,6 +1,7 @@
 """Weather platform for knmi."""
 
-from datetime import datetime, timedelta
+from datetime import timedelta
+import pytz
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -34,9 +35,10 @@ from homeassistant.components.weather import (
     Forecast,
     WeatherEntity,
 )
+from homeassistant.util import dt
 
 from . import KnmiDataUpdateCoordinator
-from .const import DEFAULT_NAME, DOMAIN
+from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
 
 # Map weather conditions from KNMI to HA.
 CONDITIONS_MAP = {
@@ -98,69 +100,98 @@ class KnmiWeather(WeatherEntity):
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        if self.coordinator.data.get("d0weer") is not None:
-            return CONDITIONS_MAP[self.coordinator.data.get("d0weer")]
+        if self.coordinator.get_value("d0weer") is not None:
+            return CONDITIONS_MAP[self.coordinator.get_value("d0weer")]
         return None
 
     @property
     def native_temperature(self) -> float | None:
         """Return the temperature in native units."""
-        if self.coordinator.data.get("temp") is not None:
-            return float(self.coordinator.data.get("temp"))
+        if self.coordinator.get_value("temp") is not None:
+            return float(self.coordinator.get_value("temp"))
         return None
 
     @property
     def native_pressure(self) -> float | None:
         """Return the pressure in native units."""
-        if self.coordinator.data.get("luchtd") is not None:
-            return float(self.coordinator.data.get("luchtd"))
+        if self.coordinator.get_value("luchtd") is not None:
+            return float(self.coordinator.get_value("luchtd"))
         return None
 
     @property
     def humidity(self) -> float | None:
         """Return the humidity in native units."""
-        if self.coordinator.data.get("lv") is not None:
-            return int(self.coordinator.data.get("lv"))
+        if self.coordinator.get_value("lv") is not None:
+            return int(self.coordinator.get_value("lv"))
         return None
 
     @property
     def native_wind_speed(self) -> float | None:
         """Return the wind speed in native units."""
-        if self.coordinator.data.get("windkmh") is not None:
-            return float(self.coordinator.data.get("windkmh"))
+        if self.coordinator.get_value("windkmh") is not None:
+            return float(self.coordinator.get_value("windkmh"))
         return None
 
     @property
     def wind_bearing(self) -> float | str | None:
         """Return the wind bearing."""
-        if self.coordinator.data.get("windrgr") is not None:
-            return int(self.coordinator.data.get("windrgr"))
+        if self.coordinator.get_value("windrgr") is not None:
+            return int(self.coordinator.get_value("windrgr"))
         return None
 
     @property
     def native_visibility(self) -> float | None:
         """Return the visibility in native units."""
-        if self.coordinator.data.get("zicht") is not None:
-            return int(self.coordinator.data.get("zicht"))
+        if self.coordinator.get_value("zicht") is not None:
+            return int(self.coordinator.get_value("zicht"))
         return None
 
     @property
     def forecast(self) -> list[Forecast] | None:
         """Return the forecast in native units."""
         forecast = []
-        today = datetime.now()
+        timezone = pytz.timezone(API_TIMEZONE)
+        today = dt.as_utc(
+            dt.now(timezone).replace(hour=0, minute=0, second=0, microsecond=0)
+        )
 
         for i in range(0, 3):
             date = today + timedelta(days=i)
-            condition = CONDITIONS_MAP[self.coordinator.data.get(f"d{i}weer", None)]
-            wind_bearing = int(self.coordinator.data.get(f"d{i}windrgr", None))
-            temp_low = float(self.coordinator.data.get(f"d{i}tmin", None))
-            temp = float(self.coordinator.data.get(f"d{i}tmax", None))
-            precipitation_probability = int(
-                self.coordinator.data.get(f"d{i}neerslag", None)
+            condition = (
+                CONDITIONS_MAP[self.coordinator.get_value(f"d{i}weer")]
+                if self.coordinator.get_value(f"d{i}weer") is not None
+                else None
             )
-            wind_speed = float(self.coordinator.data.get(f"d{i}windkmh", None))
-            sun_chance = int(self.coordinator.data.get(f"d{i}zon", None))
+            wind_bearing = (
+                int(self.coordinator.get_value(f"d{i}windrgr"))
+                if self.coordinator.get_value(f"d{i}windrgr") is not None
+                else None
+            )
+            temp_low = (
+                float(self.coordinator.get_value(f"d{i}tmin"))
+                if self.coordinator.get_value(f"d{i}tmin") is not None
+                else None
+            )
+            temp = (
+                float(self.coordinator.get_value(f"d{i}tmax"))
+                if self.coordinator.get_value(f"d{i}tmax") is not None
+                else None
+            )
+            precipitation_probability = (
+                float(self.coordinator.get_value(f"d{i}neerslag"))
+                if self.coordinator.get_value(f"d{i}neerslag") is not None
+                else None
+            )
+            wind_speed = (
+                float(self.coordinator.get_value(f"d{i}windkmh"))
+                if self.coordinator.get_value(f"d{i}windkmh") is not None
+                else None
+            )
+            sun_chance = (
+                float(self.coordinator.get_value(f"d{i}zon"))
+                if self.coordinator.get_value(f"d{i}zon") is not None
+                else None
+            )
             next_day = {
                 ATTR_FORECAST_TIME: date.isoformat(),
                 ATTR_FORECAST_CONDITION: condition,
