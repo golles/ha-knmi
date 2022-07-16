@@ -8,7 +8,7 @@
 ![Project Maintenance][maintenance-shield]
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
-KNMI custom component for Home Assistant.
+KNMI custom component for Home Assistant. <br>
 Weather data provided by KNMI, https://weerlive.nl.
 
 ## Installation
@@ -54,15 +54,19 @@ You can configure and setup the KNMI integration in your integrations page, look
  - The free API only provides a forecast for 2 days ahead. To make the weather card aesthetically not look too bad, the forecast for today is also shown, resulting in showing only 3 days (see example below).
 
 ## Examples
-Integration with all entities:
+Integration with all entities: <br>
 <img width="662" alt="Integration" src="https://user-images.githubusercontent.com/2211503/179353840-009a710e-94b9-41a7-9efd-b9dd98ae5b66.png">
-Weather card:
+
+Weather card: <br>
 <img width="472" alt="Weather card" src="https://user-images.githubusercontent.com/2211503/179353837-a535059b-b5b6-462a-8519-3bb15dd3fdab.png">
-Weather entity:
+
+Weather entity: <br>
 <img width="396" alt="Weather entity" src="https://user-images.githubusercontent.com/2211503/179353844-32d9c826-5701-4264-91e4-894c797b4e0d.png">
-Sun entity:
+
+Sun entity: <br>
 <img width="392" alt="Sun entity" src="https://user-images.githubusercontent.com/2211503/179353841-8376e62f-1bd8-4ee2-ae16-14e1dde41c9f.png">
-Warning entity:
+
+Warning entity: <br>
 <img width="370" alt="Warning entity" src="https://user-images.githubusercontent.com/2211503/179353843-fee87e24-eabd-4d44-a58c-b933cfe4625c.png">
 
 
