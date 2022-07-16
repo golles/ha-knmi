@@ -1,91 +1,104 @@
 """Sensor platform for knmi."""
-from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import CONF_NAME
 
-from .const import DEFAULT_NAME, DOMAIN, SENSORS
-from .entity import KnmiEntity
+from homeassistant.const import (
+    CONF_NAME,
+    PERCENTAGE,
+    TEMP_CELSIUS,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.components.sensor import (
+    DOMAIN as SENSOR_DOMAIN,
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.typing import StateType
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from . import KnmiDataUpdateCoordinator
+from .const import DEFAULT_NAME, DOMAIN
+
+DESCRIPTIONS: list[SensorEntityDescription] = [
+    SensorEntityDescription(
+        key="samenv",
+        name="Omschrijving",
+        icon="mdi:text",
+    ),
+    SensorEntityDescription(
+        key="verw",
+        name="Korte dagverwachting",
+        icon="mdi:text",
+    ),
+    SensorEntityDescription(
+        key="dauwp",
+        name="Dauwpunt",
+        native_unit_of_measurement=TEMP_CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="gtemp",
+        name="Gevoelstemperatuur",
+        native_unit_of_measurement=TEMP_CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="lv",
+        name="Relatieve luchtvochtigheid",
+        icon="mdi:water-percent",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+]
 
 
-async def async_setup_entry(hass, entry, async_add_devices):
-    """Setup sensor platform."""
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up KNMI sensors based on a config entry."""
+    conf_name = entry.data.get(CONF_NAME, hass.config.location_name)
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
-    sensors: list[KnmiSensor] = []
-    for sensor in SENSORS:
-        sensors.append(
-            KnmiSensor(
-                coordinator,
-                entry,
-                sensor.get("name", None),
-                sensor.get("unit_of_measurement", None),
-                sensor.get("icon", None),
-                sensor.get("device_class", None),
-                sensor.get("attributes", []),
-                sensor.get("key", None),
-            )
+    async_add_entities(
+        KnmiSensor(
+            conf_name=conf_name,
+            coordinator=coordinator,
+            entry_id=entry.entry_id,
+            description=description,
         )
+        for description in DESCRIPTIONS
+    )
 
-    async_add_devices(sensors)
 
+class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
+    """Defines a KNMI sensor."""
 
-class KnmiSensor(KnmiEntity, SensorEntity):
-    """Knmi Sensor class."""
+    _attr_has_entity_name = True
 
     def __init__(
         self,
-        coordinator,
-        config_entry,
-        name,
-        unit_of_measurement,
-        icon,
-        device_class,
-        attributes,
-        data_key,
-    ):
-        super().__init__(coordinator, config_entry)
-        self.entry_name = config_entry.data.get(CONF_NAME)
-        self._name = name
-        self._unit_of_measurement = unit_of_measurement
-        self._icon = icon
-        self._device_class = device_class
-        self._attributes = attributes
-        self._data_key = data_key
+        conf_name: str,
+        coordinator: KnmiDataUpdateCoordinator,
+        entry_id: str,
+        description: SensorEntityDescription,
+    ) -> None:
+        """Initialize KNMI sensor."""
+        super().__init__(coordinator=coordinator)
+
+        self.entity_id = (
+            f"{SENSOR_DOMAIN}.{DEFAULT_NAME}_{conf_name}_{description.name}".lower()
+        )
+        self.entity_description = description
+        self._attr_unique_id = f"{entry_id}-{DEFAULT_NAME} {conf_name} {self.name}"
+        self._attr_device_info = coordinator.device_info
 
     @property
-    def name(self):
-        """Return the name of the sensor."""
-        return f"{DEFAULT_NAME} {self.entry_name} {self._name}"
-
-    @property
-    def native_value(self):
-        """Return the native_value of the sensor."""
-        return super().get_data(self._data_key)
-
-    @property
-    def native_unit_of_measurement(self):
-        """Return the unit of measurement of this entity, if any."""
-        return self._unit_of_measurement
-
-    @property
-    def icon(self):
-        """Return the icon of the sensor."""
-        return self._icon
-
-    @property
-    def device_class(self):
-        """Return the device class."""
-        return self._device_class
-
-    @property
-    def extra_state_attributes(self):
-        """Return the device state attributes."""
-        attributes = super().extra_state_attributes
-        for attribute in self._attributes:
-            value = None
-            if "key" in attribute:
-                value = super().get_data(attribute.get("key", None))
-            if "value" in attribute:
-                value = attribute.get("value", None)
-            attributes[attribute.get("name", None)] = value
-
-        return attributes
+    def native_value(self) -> StateType:
+        """Return the state of the sensor."""
+        return self.coordinator.get_value(self.entity_description.key)

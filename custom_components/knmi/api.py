@@ -1,14 +1,10 @@
 """KnmiApiClient"""
-import logging
 import asyncio
 import socket
 import aiohttp
 import async_timeout
 
-from .const import API_ENDPOINT, API_TIMEOUT
-
-
-_LOGGER: logging.Logger = logging.getLogger(__package__)
+from .const import _LOGGER, API_ENDPOINT, API_TIMEOUT
 
 
 class KnmiApiClient:
