@@ -1,9 +1,9 @@
 {
   "domain": "knmi",
   "name": "KNMI",
-  "documentation": "https://github.com/golles/ha-knmi/",
+  "documentation": "https://github.com/golles/ha-knmi/blob/main/README.md",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/golles/ha-knmi//issues",
+  "issue_tracker": "https://github.com/golles/ha-knmi/issues",
   "version": "1.1.11",
   "config_flow": true,
   "codeowners": [
