@@ -84,7 +84,7 @@ class KnmiBinarySensor(
     @property
     def is_on(self) -> bool:
         """Return True if the entity is on."""
-        return self.coordinator.get_value(self.entity_description.key) != "0"
+        return self.coordinator.get_value(self.entity_description.key, int) != 0
 
 
 class KnmiBinaryAlarmSensor(KnmiBinarySensor):
@@ -129,21 +129,9 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
                 if self.coordinator.get_value("sunder") is not None
                 else None
             ),
-            "Zonkans vandaag": (
-                self.coordinator.get_value("d0zon") + "%"
-                if self.coordinator.get_value("d0zon") is not None
-                else None
-            ),
-            "Zonkans morgen": (
-                self.coordinator.get_value("d1zon") + "%"
-                if self.coordinator.get_value("d1zon") is not None
-                else None
-            ),
-            "Zonkans overmorgen": (
-                self.coordinator.get_value("d2zon") + "%"
-                if self.coordinator.get_value("d2zon") is not None
-                else None
-            ),
+            "Zonkans vandaag": self.coordinator.get_value("d0zon") + "%",
+            "Zonkans morgen": self.coordinator.get_value("d1zon") + "%",
+            "Zonkans overmorgen": self.coordinator.get_value("d2zon") + "%",
         }
 
     @classmethod

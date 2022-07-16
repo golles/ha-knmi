@@ -4,7 +4,7 @@ Custom integration to integrate knmi with Home Assistant.
 For more details about this integration, please refer to
 https://github.com/golles/ha-knmi/
 """
-from typing import Any
+from typing import Any, Callable
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE, CONF_API_KEY
@@ -102,8 +102,10 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         except Exception as exception:
             raise UpdateFailed() from exception
 
-    def get_value(self, key: str) -> str | None:
-        """Get a value retrieved from the api"""
-        if self.data is not None:
-            return self.data.get(key, None)
+    def get_value(
+        self, key: str, convert_to: Callable = str
+    ) -> float | int | str | None:
+        """Get a value from the retrieved data and convert to given type"""
+        if self.data and self.data[key]:
+            return convert_to(self.data[key])
         return None

@@ -107,44 +107,32 @@ class KnmiWeather(WeatherEntity):
     @property
     def native_temperature(self) -> float | None:
         """Return the temperature in native units."""
-        if self.coordinator.get_value("temp") is not None:
-            return float(self.coordinator.get_value("temp"))
-        return None
+        return self.coordinator.get_value("temp", float)
 
     @property
     def native_pressure(self) -> float | None:
         """Return the pressure in native units."""
-        if self.coordinator.get_value("luchtd") is not None:
-            return float(self.coordinator.get_value("luchtd"))
-        return None
+        return self.coordinator.get_value("luchtd", float)
 
     @property
     def humidity(self) -> float | None:
         """Return the humidity in native units."""
-        if self.coordinator.get_value("lv") is not None:
-            return int(self.coordinator.get_value("lv"))
-        return None
+        return self.coordinator.get_value("lv", float)
 
     @property
     def native_wind_speed(self) -> float | None:
         """Return the wind speed in native units."""
-        if self.coordinator.get_value("windkmh") is not None:
-            return float(self.coordinator.get_value("windkmh"))
-        return None
+        return self.coordinator.get_value("windkmh", float)
 
     @property
     def wind_bearing(self) -> float | str | None:
         """Return the wind bearing."""
-        if self.coordinator.get_value("windrgr") is not None:
-            return int(self.coordinator.get_value("windrgr"))
-        return None
+        return self.coordinator.get_value("windrgr", float)
 
     @property
     def native_visibility(self) -> float | None:
         """Return the visibility in native units."""
-        if self.coordinator.get_value("zicht") is not None:
-            return int(self.coordinator.get_value("zicht"))
-        return None
+        return self.coordinator.get_value("zicht", float)
 
     @property
     def forecast(self) -> list[Forecast] | None:
@@ -162,36 +150,14 @@ class KnmiWeather(WeatherEntity):
                 if self.coordinator.get_value(f"d{i}weer") is not None
                 else None
             )
-            wind_bearing = (
-                int(self.coordinator.get_value(f"d{i}windrgr"))
-                if self.coordinator.get_value(f"d{i}windrgr") is not None
-                else None
+            wind_bearing = self.coordinator.get_value(f"d{i}windrgr", float)
+            temp_low = self.coordinator.get_value(f"d{i}tmin", float)
+            temp = self.coordinator.get_value(f"d{i}tmax", float)
+            precipitation_probability = self.coordinator.get_value(
+                f"d{i}neerslag", float
             )
-            temp_low = (
-                float(self.coordinator.get_value(f"d{i}tmin"))
-                if self.coordinator.get_value(f"d{i}tmin") is not None
-                else None
-            )
-            temp = (
-                float(self.coordinator.get_value(f"d{i}tmax"))
-                if self.coordinator.get_value(f"d{i}tmax") is not None
-                else None
-            )
-            precipitation_probability = (
-                float(self.coordinator.get_value(f"d{i}neerslag"))
-                if self.coordinator.get_value(f"d{i}neerslag") is not None
-                else None
-            )
-            wind_speed = (
-                float(self.coordinator.get_value(f"d{i}windkmh"))
-                if self.coordinator.get_value(f"d{i}windkmh") is not None
-                else None
-            )
-            sun_chance = (
-                float(self.coordinator.get_value(f"d{i}zon"))
-                if self.coordinator.get_value(f"d{i}zon") is not None
-                else None
-            )
+            wind_speed = self.coordinator.get_value(f"d{i}windkmh", float)
+            sun_chance = self.coordinator.get_value(f"d{i}zon", float)
             next_day = {
                 ATTR_FORECAST_TIME: date.isoformat(),
                 ATTR_FORECAST_CONDITION: condition,
