@@ -38,7 +38,6 @@ custom_components/knmi/api.py
 custom_components/knmi/binary_sensor.py
 custom_components/knmi/config_flow.py
 custom_components/knmi/const.py
-custom_components/knmi/entity.py
 custom_components/knmi/manifest.json
 custom_components/knmi/sensor.py
 custom_components/knmi/weather.py
