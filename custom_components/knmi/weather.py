@@ -89,7 +89,7 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
     def visibility(self):
         """Return the wind direction."""
         if super().get_data("zicht") is not None:
-            return float(super().get_data("zicht")) / 10
+            return float(super().get_data("zicht"))
 
     @property
     def forecast(self):
