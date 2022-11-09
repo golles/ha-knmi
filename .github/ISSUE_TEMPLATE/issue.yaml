@@ -56,8 +56,15 @@ body:
     id: logs
     attributes:
       label: Home Assistant log
-      description: Paste your full log here.
+      description: Paste your full log here, [how to enable logs](../blob/main/README.md#collect-logs).
       render: shell
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Paste your diagnostics content here, [how to get diagnostics](https://www.home-assistant.io/integrations/diagnostics/).
+      render: json
 
   - type: textarea
     id: additional-information
