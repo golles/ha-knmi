@@ -59,8 +59,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     for platform in PLATFORMS:
         if entry.options.get(platform, True):
-            coordinator.platforms.append(platform)
-            hass.async_add_job(
+            await hass.async_add_job(
                 hass.config_entries.async_forward_entry_setup(entry, platform)
             )
     return True
@@ -89,7 +88,6 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize."""
         self.api = client
         self.device_info = device_info
-        self.platforms = []
 
         super().__init__(
             hass=hass, logger=_LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL
