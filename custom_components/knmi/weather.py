@@ -158,6 +158,7 @@ class KnmiWeather(WeatherEntity):
             )
             wind_speed = self.coordinator.get_value(f"d{i}windkmh", float)
             sun_chance = self.coordinator.get_value(f"d{i}zon", float)
+            wind_speed_bft = self.coordinator.get_value(f"d{i}windk", float)
             next_day = {
                 ATTR_FORECAST_TIME: date.isoformat(),
                 ATTR_FORECAST_CONDITION: condition,
@@ -166,7 +167,9 @@ class KnmiWeather(WeatherEntity):
                 ATTR_FORECAST_PRECIPITATION_PROBABILITY: precipitation_probability,
                 ATTR_FORECAST_WIND_BEARING: wind_bearing,
                 ATTR_FORECAST_WIND_SPEED: wind_speed,
-                "sun_chance": sun_chance,  # Not officially supported, but nice addition.
+                # Not officially supported, but nice additions.
+                "wind_speed_bft": wind_speed_bft,
+                "sun_chance": sun_chance,
             }
             forecast.append(next_day)
 
