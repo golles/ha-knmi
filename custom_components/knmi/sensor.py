@@ -4,6 +4,7 @@ from homeassistant.const import (
     CONF_NAME,
     PERCENTAGE,
     TEMP_CELSIUS,
+    UnitOfSpeed,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -22,16 +23,6 @@ from . import KnmiDataUpdateCoordinator
 from .const import DEFAULT_NAME, DOMAIN
 
 DESCRIPTIONS: list[SensorEntityDescription] = [
-    SensorEntityDescription(
-        key="samenv",
-        name="Omschrijving",
-        icon="mdi:text",
-    ),
-    SensorEntityDescription(
-        key="verw",
-        name="Korte dagverwachting",
-        icon="mdi:text",
-    ),
     SensorEntityDescription(
         key="dauwp",
         name="Dauwpunt",
@@ -53,6 +44,16 @@ DESCRIPTIONS: list[SensorEntityDescription] = [
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+    SensorEntityDescription(
+        key="samenv",
+        name="Omschrijving",
+        icon="mdi:text",
+    ),
+    SensorEntityDescription(
+        key="verw",
+        name="Korte dagverwachting",
+        icon="mdi:text",
+    ),
 ]
 
 
@@ -65,15 +66,37 @@ async def async_setup_entry(
     conf_name = entry.data.get(CONF_NAME, hass.config.location_name)
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
-    async_add_entities(
-        KnmiSensor(
+    entities: list[KnmiSensor] = []
+
+    # Add all meter sensors described above.
+    for description in DESCRIPTIONS:
+        entities.append(
+            KnmiSensor(
+                conf_name=conf_name,
+                coordinator=coordinator,
+                entry_id=entry.entry_id,
+                description=description,
+            )
+        )
+
+    # Add special wind sensor
+    entities.append(
+        KnmiWindSensor(
             conf_name=conf_name,
             coordinator=coordinator,
             entry_id=entry.entry_id,
-            description=description,
+            description=SensorEntityDescription(
+                key="windkmh",
+                name="Wind",
+                icon="mdi:weather-windy",
+                native_unit_of_measurement=UnitOfSpeed.KILOMETERS_PER_HOUR,
+                device_class=SensorDeviceClass.SPEED,
+                state_class=SensorStateClass.MEASUREMENT,
+            ),
         )
-        for description in DESCRIPTIONS
     )
+
+    async_add_entities(entities)
 
 
 class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
@@ -102,3 +125,29 @@ class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
     def native_value(self) -> StateType:
         """Return the state of the sensor."""
         return self.coordinator.get_value(self.entity_description.key)
+
+
+class KnmiWindSensor(KnmiSensor):
+    """Defines a KNMI wind sensor."""
+
+    def __init__(
+        self,
+        conf_name: str,
+        coordinator: KnmiDataUpdateCoordinator,
+        entry_id: str,
+        description: SensorEntityDescription,
+    ) -> None:
+        """Initialize KNMI wind sensor."""
+        super().__init__(
+            conf_name=conf_name,
+            coordinator=coordinator,
+            entry_id=entry_id,
+            description=description,
+        )
+
+        self._attr_extra_state_attributes = {
+            "richting": self.coordinator.get_value("windr"),
+            "graden": self.coordinator.get_value("windrgr", int),
+            "beaufort": self.coordinator.get_value("winds", float),
+            "knopen": self.coordinator.get_value("windk", float),
+        }
