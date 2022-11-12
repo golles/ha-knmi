@@ -12,7 +12,7 @@ API_TIMEZONE: Final = "Europe/Amsterdam"
 # Base component constants.
 NAME: Final = "KNMI"
 DOMAIN: Final = "knmi"
-VERSION: Final = "1.2.0"
+VERSION: Final = "1.3.1"
 
 # Defaults
 _LOGGER: logging.Logger = logging.getLogger(__package__)
