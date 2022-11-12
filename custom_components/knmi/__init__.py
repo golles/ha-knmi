@@ -104,6 +104,6 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         self, key: str, convert_to: Callable = str
     ) -> float | int | str | None:
         """Get a value from the retrieved data and convert to given type"""
-        if self.data and self.data[key]:
-            return convert_to(self.data[key])
+        if self.data and key in self.data:
+            return convert_to(self.data.get(key, None))
         return None
