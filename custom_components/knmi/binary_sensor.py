@@ -84,11 +84,20 @@ class KnmiBinarySensor(
     @property
     def is_on(self) -> bool:
         """Return True if the entity is on."""
-        return self.coordinator.get_value(self.entity_description.key, int) != 0
+        raise NotImplementedError("Update method not implemented")
 
 
 class KnmiBinaryAlarmSensor(KnmiBinarySensor):
     """Defines a KNMI alarm binary sensor."""
+
+    @property
+    def is_on(self) -> bool:
+        """Return True if the entity is on."""
+        value = self.coordinator.get_value(self.entity_description.key, int)
+
+        if value is not None:
+            return value != 0
+        return None
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
@@ -103,11 +112,14 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
     @property
     def is_on(self) -> bool:
         """Return True if the entity is on."""
-        sunrise = self.time_as_datetime(self.coordinator.get_value("sup"))
-        sunset = self.time_as_datetime(self.coordinator.get_value("sunder"))
+        sup = self.coordinator.get_value("sup")
+        sunder = self.coordinator.get_value("sunder")
 
-        if sunrise is None or sunset is None:
+        if sup is None or sunder is None:
             return None
+
+        sunrise = self.time_as_datetime(sup)
+        sunset = self.time_as_datetime(sunder)
 
         now = dt.utcnow()
 
@@ -118,25 +130,28 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         """Return entity specific state attributes."""
+        sup = self.coordinator.get_value("sup")
+        sunder = self.coordinator.get_value("sunder")
+        d0zon = self.coordinator.get_value("d0zon")
+        d1zon = self.coordinator.get_value("d1zon")
+        d2zon = self.coordinator.get_value("d2zon")
+
         return {
             "Zonsopkomst": (
-                self.time_as_datetime(self.coordinator.get_value("sup")).isoformat()
-                if self.coordinator.get_value("sup") is not None
-                else None
+                self.time_as_datetime(sup).isoformat() if sup is not None else None
             ),
             "Zonondergang": (
-                self.time_as_datetime(self.coordinator.get_value("sunder")).isoformat()
-                if self.coordinator.get_value("sunder") is not None
-                else None
+                self.time_as_datetime(sunder).isoformat() if sup is not None else None
             ),
-            "Zonkans vandaag": self.coordinator.get_value("d0zon") + "%",
-            "Zonkans morgen": self.coordinator.get_value("d1zon") + "%",
-            "Zonkans overmorgen": self.coordinator.get_value("d2zon") + "%",
+            "Zonkans vandaag": (d0zon + "%" if d0zon is not None else None),
+            "Zonkans morgen": (d1zon + "%" if d1zon is not None else None),
+            "Zonkans overmorgen": (d2zon + "%" if d2zon is not None else None),
         }
 
     @classmethod
     def time_as_datetime(cls, time: str) -> datetime.datetime:
-        """Parse a time from a string like "08:13" to a datetime.
+        """
+        Parse a time from a string like "08:13" to a datetime.
         The returned datetime is in UTC, using today as the date.
         """
         time_array = time.split(":")
