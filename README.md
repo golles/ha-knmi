@@ -69,6 +69,18 @@ Warning entity: <br>
 <img width="370" alt="Warning entity" src="https://user-images.githubusercontent.com/2211503/179353843-fee87e24-eabd-4d44-a58c-b933cfe4625c.png">
 
 
+## Collect logs
+
+When you want to report an issue, please add logs from this component. You can enable logging for this component by configuring the logger in Home Assistant as follows:
+```yaml
+logger:
+  default: warn
+  logs:
+    custom_components.knmi: debug
+```
+More info can be found on the [Home Assistant logger integration page](https://www.home-assistant.io/integrations/logger)
+
+
 ## Contributions are welcome!
 
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
