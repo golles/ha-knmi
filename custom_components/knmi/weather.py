@@ -100,9 +100,7 @@ class KnmiWeather(WeatherEntity):
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        if self.coordinator.get_value("d0weer") is not None:
-            return CONDITIONS_MAP[self.coordinator.get_value("d0weer")]
-        return None
+        return CONDITIONS_MAP[self.coordinator.get_value("image")]
 
     @property
     def native_temperature(self) -> float | None:
