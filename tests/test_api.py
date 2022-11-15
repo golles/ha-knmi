@@ -1,5 +1,4 @@
 """Tests for knmi api."""
-
 from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 

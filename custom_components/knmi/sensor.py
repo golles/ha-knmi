@@ -1,13 +1,4 @@
 """Sensor platform for knmi."""
-
-from homeassistant.const import (
-    CONF_NAME,
-    PERCENTAGE,
-    TEMP_CELSIUS,
-    UnitOfSpeed,
-)
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
 from homeassistant.components.sensor import (
     DOMAIN as SENSOR_DOMAIN,
     SensorDeviceClass,
@@ -15,6 +6,9 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_NAME, PERCENTAGE, TEMP_CELSIUS, UnitOfSpeed
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType

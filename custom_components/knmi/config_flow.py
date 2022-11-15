@@ -7,10 +7,7 @@ import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 
 from .api import KnmiApiClient
-from .const import (
-    DOMAIN,
-    PLATFORMS,
-)
+from .const import DOMAIN, PLATFORMS
 
 
 class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
@@ -94,7 +91,7 @@ class KnmiOptionsFlowHandler(config_entries.OptionsFlow):
     """knmi config flow options handler."""
 
     def __init__(self, config_entry):
-        """Initialize HACS options flow."""
+        """Initialize options flow."""
         self.config_entry = config_entry
         self.options = dict(config_entry.options)
 

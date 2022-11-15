@@ -1,8 +1,6 @@
 """Constants for knmi."""
-
-from typing import Final
 from datetime import timedelta
-import logging
+from typing import Final
 
 # API
 API_ENDPOINT: Final = "http://weerlive.nl/api/json-data-10min.php?key={}&locatie={},{}"
@@ -15,7 +13,6 @@ DOMAIN: Final = "knmi"
 VERSION: Final = "1.3.1"
 
 # Defaults
-_LOGGER: logging.Logger = logging.getLogger(__package__)
 DEFAULT_NAME: Final = NAME
 SCAN_INTERVAL = timedelta(seconds=300)
 

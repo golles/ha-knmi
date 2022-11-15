@@ -3,19 +3,20 @@
 from collections.abc import Mapping
 import datetime
 from typing import Any
-import pytz
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_NAME
-from homeassistant.components.sensor import SensorEntityDescription
+
 from homeassistant.components.binary_sensor import (
     DOMAIN as SENSOR_DOMAIN,
     BinarySensorDeviceClass,
     BinarySensorEntity,
 )
+from homeassistant.components.sensor import SensorEntityDescription
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt
+import pytz
 
 from . import KnmiDataUpdateCoordinator
 from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
