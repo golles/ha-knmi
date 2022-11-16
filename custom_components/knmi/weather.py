@@ -1,20 +1,7 @@
 """Weather platform for knmi."""
-
 from datetime import timedelta
-import pytz
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import (
-    CONF_NAME,
-    LENGTH_KILOMETERS,
-    PRESSURE_HPA,
-    SPEED_KILOMETERS_PER_HOUR,
-    TEMP_CELSIUS,
-)
 from homeassistant.components.weather import (
-    DOMAIN as SENSOR_DOMAIN,
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
     ATTR_CONDITION_FOG,
@@ -26,16 +13,28 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
     ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_TEMP,
     ATTR_FORECAST_TEMP_LOW,
     ATTR_FORECAST_TIME,
-    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_WIND_BEARING,
     ATTR_FORECAST_WIND_SPEED,
+    DOMAIN as SENSOR_DOMAIN,
     Forecast,
     WeatherEntity,
 )
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (
+    CONF_NAME,
+    LENGTH_KILOMETERS,
+    PRESSURE_HPA,
+    SPEED_KILOMETERS_PER_HOUR,
+    TEMP_CELSIUS,
+)
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt
+import pytz
 
 from . import KnmiDataUpdateCoordinator
 from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
