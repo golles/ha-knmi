@@ -108,5 +108,11 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> float | int | str | None:
         """Get a value from the retrieved data and convert to given type"""
         if self.data and key in self.data:
-            return convert_to(self.data.get(key, None))
+            try:
+                return convert_to(self.data.get(key, None))
+            except ValueError:
+                _LOGGER.warning("Value %s can't be converted to %s", key, convert_to)
+                return None
+
+        _LOGGER.warning("Value %s is missing in API response", key)
         return None
