@@ -49,12 +49,13 @@ CONDITIONS_MAP = {
     "mist": ATTR_CONDITION_FOG,
     "sneeuw": ATTR_CONDITION_SNOWY,
     "bewolkt": ATTR_CONDITION_CLOUDY,
+    "lichtbewolkt": ATTR_CONDITION_PARTLYCLOUDY,
     "halfbewolkt": ATTR_CONDITION_PARTLYCLOUDY,
-    "halfbewolkt_regen": ATTR_CONDITION_PARTLYCLOUDY,
+    "halfbewolkt_regen": ATTR_CONDITION_RAINY,
     "zwaarbewolkt": ATTR_CONDITION_CLOUDY,
     "nachtmist": ATTR_CONDITION_FOG,
     "helderenacht": ATTR_CONDITION_CLEAR_NIGHT,
-    "wolkennacht": ATTR_CONDITION_CLOUDY,
+    "nachtbewolkt": ATTR_CONDITION_CLOUDY,
 }
 
 
