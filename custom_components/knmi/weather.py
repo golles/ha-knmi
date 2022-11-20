@@ -58,6 +58,8 @@ CONDITIONS_MAP = {
     "nachtmist": ATTR_CONDITION_FOG,
     "helderenacht": ATTR_CONDITION_CLEAR_NIGHT,
     "nachtbewolkt": ATTR_CONDITION_CLOUDY,
+    # TODO: Check with the supplier why this is still in the response while not in the docs.
+    "wolkennacht": ATTR_CONDITION_CLOUDY,
 }
 
 
