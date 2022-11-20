@@ -1,5 +1,6 @@
 """Weather platform for knmi."""
 from datetime import timedelta
+import logging
 
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
@@ -39,6 +40,7 @@ import pytz
 from . import KnmiDataUpdateCoordinator
 from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
 
+_LOGGER: logging.Logger = logging.getLogger(__package__)
 # Map weather conditions from KNMI to HA.
 CONDITIONS_MAP = {
     "zonnig": ATTR_CONDITION_SUNNY,
@@ -56,6 +58,8 @@ CONDITIONS_MAP = {
     "nachtmist": ATTR_CONDITION_FOG,
     "helderenacht": ATTR_CONDITION_CLEAR_NIGHT,
     "nachtbewolkt": ATTR_CONDITION_CLOUDY,
+    # TODO: Check with the supplier why this is still in the response while not in the docs.
+    "wolkennacht": ATTR_CONDITION_CLOUDY,
 }
 
 
@@ -97,10 +101,26 @@ class KnmiWeather(WeatherEntity):
         self._attr_unique_id = f"{entry_id}-{DEFAULT_NAME} {conf_name}"
         self._attr_device_info = coordinator.device_info
 
+    def map_condition(self, key: str | None) -> str | None:
+        """Map weather conditions from KNMI to HA."""
+        value = self.coordinator.get_value(key)
+        if "".__eq__(value):
+            return None
+
+        try:
+            return CONDITIONS_MAP[value]
+        except KeyError:
+            _LOGGER.error(
+                "Weather condition %s (for %s) is unknown, please raise a bug",
+                value,
+                key,
+            )
+        return None
+
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        return CONDITIONS_MAP[self.coordinator.get_value("image")]
+        return self.map_condition("image")
 
     @property
     def native_temperature(self) -> float | None:
@@ -143,11 +163,7 @@ class KnmiWeather(WeatherEntity):
 
         for i in range(0, 3):
             date = today + timedelta(days=i)
-            condition = (
-                CONDITIONS_MAP[self.coordinator.get_value(f"d{i}weer")]
-                if self.coordinator.get_value(f"d{i}weer") is not None
-                else None
-            )
+            condition = self.map_condition(f"d{i}weer")
             wind_bearing = self.coordinator.get_value(f"d{i}windrgr", float)
             temp_low = self.coordinator.get_value(f"d{i}tmin", float)
             temp = self.coordinator.get_value(f"d{i}tmax", float)
