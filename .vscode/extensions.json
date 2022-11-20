@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "github.vscode-pull-request-github",
+    "ms-python.black-formatter",
+    "ms-python.python",
+    "ms-python.isort",
+    "ms-python.vscode-pylance",
+    "ryanluker.vscode-coverage-gutters",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

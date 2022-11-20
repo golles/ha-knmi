@@ -8,6 +8,7 @@
   "extensions": [
     "esbenp.prettier-vscode",
     "github.vscode-pull-request-github",
+    "ms-python.black-formatter",
     "ms-python.python",
     "ms-python.isort",
     "ms-python.vscode-pylance",
@@ -43,10 +44,13 @@
     "[json]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "[yaml]": {
+    "[jsonc]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "[jsonc]": {
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "[yaml]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "cSpell.words": ["baudrate", "hass", "homeassistant", "kamstrup"]
