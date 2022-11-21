@@ -18,7 +18,7 @@
   "editor.formatOnType": true,
   "files.trimTrailingWhitespace": true,
   "files.associations": {
-    "*.yaml": "home-assistant"
+    ".devcontainer/*.yaml": "home-assistant"
   },
   "editor.defaultFormatter": null,
   "[javascript]": {

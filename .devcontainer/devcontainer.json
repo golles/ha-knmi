@@ -1,7 +1,7 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
   "image": "ghcr.io/ludeeus/devcontainer/integration:stable",
-	"name": "HA KNMI development",
+  "name": "HA KNMI development",
   "context": "..",
   "appPort": ["9123:8123"],
   "postCreateCommand": "apt update && apt -y upgrade && pip3 install -r requirements_dev.txt && container install",
@@ -35,7 +35,7 @@
     "editor.formatOnType": true,
     "files.trimTrailingWhitespace": true,
     "files.associations": {
-      "*.yaml": "home-assistant"
+      ".devcontainer/*.yaml": "home-assistant"
     },
     "editor.defaultFormatter": null,
     "[javascript]": {
