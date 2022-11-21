@@ -12,13 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body: |
             **Changes:**
             - Change 1
             - Change 2
-            
+
             **Important notes:**
             Why is this important
           draft: true
