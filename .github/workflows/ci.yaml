@@ -59,6 +59,10 @@ jobs:
             --durations=10 \
             -n auto \
             --cov custom_components.knmi \
+            --cov-report=xml \
             -o console_output_style=count \
             -p no:sugar \
             tests
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
