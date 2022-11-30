@@ -117,6 +117,20 @@ class KnmiWeather(WeatherEntity):
             )
         return None
 
+    def get_wind_bearing(
+        self, wind_dir_key: str, wind_dir_degree_key: str
+    ) -> float | None:
+        """Get the wind bearing, handle variable (VAR) direction as None."""
+        wind_dir = self.coordinator.get_value(wind_dir_key)
+        if wind_dir == "VAR":
+            _LOGGER.debug(
+                "There is light wind from variable wind directions for %s, so no value",
+                wind_dir_key,
+            )
+            return None
+
+        return self.coordinator.get_value(wind_dir_degree_key, float)
+
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
@@ -145,7 +159,7 @@ class KnmiWeather(WeatherEntity):
     @property
     def wind_bearing(self) -> float | str | None:
         """Return the wind bearing."""
-        return self.coordinator.get_value("windrgr", float)
+        return self.get_wind_bearing("windr", "windrgr")
 
     @property
     def native_visibility(self) -> float | None:
@@ -164,7 +178,7 @@ class KnmiWeather(WeatherEntity):
         for i in range(0, 3):
             date = today + timedelta(days=i)
             condition = self.map_condition(f"d{i}weer")
-            wind_bearing = self.coordinator.get_value(f"d{i}windrgr", float)
+            wind_bearing = self.get_wind_bearing(f"d{i}windr", f"d{i}windrgr")
             temp_low = self.coordinator.get_value(f"d{i}tmin", float)
             temp = self.coordinator.get_value(f"d{i}tmax", float)
             precipitation_probability = self.coordinator.get_value(
