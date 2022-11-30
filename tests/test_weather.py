@@ -14,12 +14,11 @@ from homeassistant.components.weather import (
 )
 from homeassistant.const import CONF_NAME
 from pytest_homeassistant_custom_component.common import MockConfigEntry
-from custom_components.knmi import (
-    KnmiDataUpdateCoordinator,
-    async_setup_entry,
-)
+
+from custom_components.knmi import KnmiDataUpdateCoordinator, async_setup_entry
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.weather import KnmiWeather
+
 from .const import MOCK_CONFIG, MOCK_JSON
 
 
