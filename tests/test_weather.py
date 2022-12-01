@@ -37,7 +37,7 @@ async def setup_weather(hass) -> KnmiWeather:
     )
 
 
-async def test_get_wind_bearing(hass, bypass_get_data):
+async def test_get_wind_bearing(hass, bypass_get_data, caplog):
     """Test get wind bearing function."""
     weather = await setup_weather(hass)
 
@@ -46,6 +46,10 @@ async def test_get_wind_bearing(hass, bypass_get_data):
     weather.coordinator.data["windr"] = "VAR"
     weather.coordinator.data["windrgr"] = ""
     assert weather.get_wind_bearing("windr", "windrgr") == None
+    assert (
+        "There is light wind from variable wind directions for windr, so no value"
+        in caplog.text
+    )
 
     # Test the case that the wind direction is not variable.
     weather.coordinator.data = MOCK_JSON["liveweer"][0]
@@ -62,7 +66,7 @@ def map_condition(
     assert weather.map_condition("image") == hass_condition
 
 
-async def test_map_conditions(hass, bypass_get_data):
+async def test_map_conditions(hass, bypass_get_data, caplog):
     """Test map condition function."""
     weather = await setup_weather(hass)
     weather.coordinator.data = MOCK_JSON["liveweer"][0]
@@ -91,3 +95,7 @@ async def test_map_conditions(hass, bypass_get_data):
     map_condition(weather, None, None)
     map_condition(weather, "", None)
     map_condition(weather, "hondenweer", None)
+    assert (
+        "Weather condition hondenweer (for image) is unknown, please raise a bug"
+        in caplog.text
+    )
