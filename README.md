@@ -7,8 +7,10 @@
 [![GitHub Activity][commits-shield]][commits]
 [![Code coverage][codecov-shield]][codecov]
 
-[![hacs][hacsbadge]][hacs]
+[![hacs][hacs-shield]][hacs]
+[![hacs][hacs-installs-shield]][hacs]
 ![Project Maintenance][maintenance-shield]
+
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 KNMI custom component for Home Assistant. <br>
@@ -98,7 +100,8 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [commits-shield]: https://img.shields.io/github/commit-activity/y/golles/ha-knmi.svg?style=for-the-badge
 [commits]: https://github.com/golles/ha-knmi/commits/main
 [hacs]: https://github.com/custom-components/hacs
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[hacs-shield]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[hacs-installs-shield]: https://raw.githubusercontent.com/golles/ha-active-installation-badges/main/knmi.svg
 [license-shield]: https://img.shields.io/github/license/golles/ha-knmi.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-golles-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/golles/ha-knmi.svg?style=for-the-badge
