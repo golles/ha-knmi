@@ -1,9 +1,12 @@
 """Test for versions."""
 import json
 
+import pytest
+
 from custom_components.knmi.const import VERSION
 
 
+@pytest.mark.asyncio
 async def test_component_version():
     """Verify that the version in the manifest and const.py are equal"""
     with open(
