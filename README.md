@@ -1,8 +1,11 @@
 # KNMI
 
 [![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
+[![GitHub Repo stars][stars-shield]][stars]
 [![License][license-shield]](LICENSE)
+
+[![GitHub Activity][commits-shield]][commits]
+[![Code coverage][codecov-shield]][codecov]
 
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
@@ -90,6 +93,8 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [knmi]: https://github.com/golles/ha-knmi
 [buymecoffee]: https://www.buymeacoffee.com/golles
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
+[codecov]: https://app.codecov.io/gh/golles/ha-knmi
+[codecov-shield]: https://img.shields.io/codecov/c/github/golles/ha-knmi?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/golles/ha-knmi.svg?style=for-the-badge
 [commits]: https://github.com/golles/ha-knmi/commits/main
 [hacs]: https://github.com/custom-components/hacs
@@ -98,3 +103,5 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [maintenance-shield]: https://img.shields.io/badge/maintainer-golles-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/golles/ha-knmi.svg?style=for-the-badge
 [releases]: https://github.com/golles/ha-knmi/releases
+[stars-shield]: https://img.shields.io/github/stars/golles/ha-knmi?style=for-the-badge
+[stars]: https://github.com/golles/ha-knmi/stargazers
