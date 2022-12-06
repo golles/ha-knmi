@@ -34,7 +34,7 @@ jobs:
 
       - run: python3 -m pip install black
 
-      - run: black .
+      - run: black . --check
 
   tests:
     runs-on: "ubuntu-latest"
