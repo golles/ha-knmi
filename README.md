@@ -100,7 +100,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [commits-shield]: https://img.shields.io/github/commit-activity/y/golles/ha-knmi.svg?style=for-the-badge
 [commits]: https://github.com/golles/ha-knmi/commits/main
 [hacs]: https://github.com/custom-components/hacs
-[hacs-shield]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [hacs-installs-shield]: https://raw.githubusercontent.com/golles/ha-active-installation-badges/main/knmi.svg
 [license-shield]: https://img.shields.io/github/license/golles/ha-knmi.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-golles-blue.svg?style=for-the-badge
