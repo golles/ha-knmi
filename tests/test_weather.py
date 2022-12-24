@@ -77,8 +77,8 @@ async def test_map_conditions(hass, bypass_get_data, caplog):
     # Documented conditions.
     map_condition(weather, "zonnig", ATTR_CONDITION_SUNNY)
     map_condition(weather, "bliksem", ATTR_CONDITION_LIGHTNING)
-    map_condition(weather, "regen", ATTR_CONDITION_RAINY)
-    map_condition(weather, "buien", ATTR_CONDITION_POURING)
+    map_condition(weather, "regen", ATTR_CONDITION_POURING)
+    map_condition(weather, "buien", ATTR_CONDITION_RAINY)
     map_condition(weather, "hagel", ATTR_CONDITION_HAIL)
     map_condition(weather, "mist", ATTR_CONDITION_FOG)
     map_condition(weather, "sneeuw", ATTR_CONDITION_SNOWY)
