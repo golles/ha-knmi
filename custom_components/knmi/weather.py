@@ -45,8 +45,8 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 CONDITIONS_MAP = {
     "zonnig": ATTR_CONDITION_SUNNY,
     "bliksem": ATTR_CONDITION_LIGHTNING,
-    "regen": ATTR_CONDITION_RAINY,
-    "buien": ATTR_CONDITION_POURING,
+    "regen": ATTR_CONDITION_POURING,
+    "buien": ATTR_CONDITION_RAINY,
     "hagel": ATTR_CONDITION_HAIL,
     "mist": ATTR_CONDITION_FOG,
     "sneeuw": ATTR_CONDITION_SNOWY,
