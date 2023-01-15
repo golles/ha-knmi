@@ -13,7 +13,6 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SUNNY,
 )
 from homeassistant.const import CONF_NAME
-import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.knmi import KnmiDataUpdateCoordinator, async_setup_entry
@@ -38,7 +37,6 @@ async def setup_weather(hass) -> KnmiWeather:
     )
 
 
-@pytest.mark.asyncio
 async def test_get_wind_bearing(hass, bypass_get_data, caplog):
     """Test get wind bearing function."""
     weather = await setup_weather(hass)
@@ -68,7 +66,6 @@ def map_condition(
     assert weather.map_condition("image") == hass_condition
 
 
-@pytest.mark.asyncio
 async def test_map_conditions(hass, bypass_get_data, caplog):
     """Test map condition function."""
     weather = await setup_weather(hass)

@@ -12,7 +12,6 @@ from custom_components.knmi.const import DOMAIN
 from .const import MOCK_CONFIG, MOCK_JSON
 
 
-@pytest.mark.asyncio
 async def test_knmi_binary_sensor_is_on(hass, bypass_get_data):
     """Test is_on function on base class."""
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
@@ -33,7 +32,6 @@ async def test_knmi_binary_sensor_is_on(hass, bypass_get_data):
         binary_sensor.is_on
 
 
-@pytest.mark.asyncio
 async def test_knmi_binary_alarm_sensor_is_on(hass, bypass_get_data):
     """Test is_on function on alarm class."""
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
