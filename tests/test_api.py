@@ -8,7 +8,6 @@ from custom_components.knmi.api import KnmiApiClient, KnmiApiException
 from .const import MOCK_CONFIG, MOCK_JSON
 
 
-@pytest.mark.asyncio
 async def test_api_success(hass, aioclient_mock, caplog):
     """Test successful API call."""
 
@@ -33,7 +32,6 @@ async def test_api_success(hass, aioclient_mock, caplog):
     assert response == MOCK_JSON["liveweer"][0]
 
 
-@pytest.mark.asyncio
 async def test_api_exceptions(hass, aioclient_mock, caplog):
     """Test API call exception."""
 
