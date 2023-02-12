@@ -144,9 +144,9 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
             "Zonondergang": (
                 self.time_as_datetime(sunder).isoformat() if sup is not None else None
             ),
-            "Zonkans vandaag": (d0zon + "%" if d0zon is not None else None),
-            "Zonkans morgen": (d1zon + "%" if d1zon is not None else None),
-            "Zonkans overmorgen": (d2zon + "%" if d2zon is not None else None),
+            "Zonkans vandaag": (d0zon if d0zon is not None else None),
+            "Zonkans morgen": (d1zon if d1zon is not None else None),
+            "Zonkans overmorgen": (d2zon if d2zon is not None else None),
         }
 
     @classmethod
