@@ -40,7 +40,6 @@ async def async_setup_entry(
                 description=SensorEntityDescription(
                     key="alarm",
                     name="Waarschuwing",
-                    icon="mdi:alert",
                     device_class=BinarySensorDeviceClass.SAFETY,
                 ),
             ),
