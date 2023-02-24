@@ -4,25 +4,13 @@
     {
       "label": "Run Home Assistant on port 9123",
       "type": "shell",
-      "command": "container start",
+      "command": "scripts/develop",
       "problemMatcher": []
     },
     {
-      "label": "Run Home Assistant configuration against /config",
+      "label": "Open Home Assistant log file",
       "type": "shell",
-      "command": "container check",
-      "problemMatcher": []
-    },
-    {
-      "label": "Upgrade Home Assistant to latest dev",
-      "type": "shell",
-      "command": "container install",
-      "problemMatcher": []
-    },
-    {
-      "label": "Install a specific version of Home Assistant",
-      "type": "shell",
-      "command": "container set-version",
+      "command": "code /hass/home-assistant.log",
       "problemMatcher": []
     },
     {
@@ -34,7 +22,19 @@
     {
       "label": "Run pytest with coverage",
       "type": "shell",
-      "command": "pytest --durations=10 --cov-report xml --cov=custom_components.knmi tests",
+      "command": "pytest --durations=10 --cov-report xml --cov=custom_components.kamstrup_403 tests",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run black",
+      "type": "shell",
+      "command": "black . --check",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run isort",
+      "type": "shell",
+      "command": "isort .",
       "problemMatcher": []
     }
   ]

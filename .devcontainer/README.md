@@ -33,15 +33,6 @@ The devcontainer comes with some useful tasks to help you with development, you 
 
 When a task is currently running (like `Run Home Assistant on port 9123` for the docs), it can be restarted by opening the command palette and selecting `Tasks: Restart Running Task`, then select the task you want to restart.
 
-The available tasks are:
-
-Task | Description
--- | --
-Run Home Assistant on port 9123 | Launch Home Assistant with your custom component code and the configuration defined in `.devcontainer/configuration.yaml`.
-Run Home Assistant configuration against /config | Check the configuration.
-Upgrade Home Assistant to latest dev | Upgrade the Home Assistant core version in the container to the latest version of the `dev` branch.
-Install a specific version of Home Assistant | Install a specific version of Home Assistant core in the container.
-
 ### Step by Step debugging
 
 With the development container,
