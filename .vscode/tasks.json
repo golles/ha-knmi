@@ -22,7 +22,7 @@
     {
       "label": "Run pytest with coverage",
       "type": "shell",
-      "command": "pytest --cov=custom_components.knmi",
+      "command": "pytest --cov-report term --cov-report xml --cov=custom_components.knmi",
       "problemMatcher": []
     },
     {

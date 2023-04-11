@@ -50,6 +50,7 @@ jobs:
             --durations=10 \
             -n auto \
             --cov custom_components.knmi \
+            --cov-report=term \
             --cov-report=xml \
             -o console_output_style=count \
             -p no:sugar \
