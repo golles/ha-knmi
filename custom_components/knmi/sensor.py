@@ -14,8 +14,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from . import KnmiDataUpdateCoordinator
 from .const import DEFAULT_NAME, DOMAIN
+from .coordinator import KnmiDataUpdateCoordinator
 
 DESCRIPTIONS: list[SensorEntityDescription] = [
     SensorEntityDescription(

@@ -2,13 +2,15 @@
 
 set -e
 
-# Create a clean working directory for Home Assistant
-sudo rm -rf /hass
-sudo mkdir /hass
+# Create a working directory for Home Assistant
+mkdir -p /hass
 sudo chown vscode:vscode /hass
 
 # Copy config and custom_components
+rm /hass/configuration.yaml
 cp .devcontainer/configuration.yaml /hass
+
+rm -rf /hass/custom_components
 cp -r custom_components/ /hass
 
 # Start Home Assistant

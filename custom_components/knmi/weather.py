@@ -37,8 +37,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt
 import pytz
 
-from . import KnmiDataUpdateCoordinator
 from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
+from .coordinator import KnmiDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 # Map weather conditions from KNMI to HA.

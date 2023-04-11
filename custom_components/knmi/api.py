@@ -11,6 +11,22 @@ from .const import API_ENDPOINT, API_TIMEOUT
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
+class KnmiApiClientError(Exception):
+    """Exception to indicate a general API error."""
+
+
+class KnmiApiClientCommunicationError(KnmiApiClientError):
+    """Exception to indicate a communication error."""
+
+
+class KnmiApiClientApiKeyError(KnmiApiClientError):
+    """Exception to indicate an api key error."""
+
+
+class KnmiApiRateLimitError(KnmiApiClientError):
+    """Exception to indicate a rate limit error."""
+
+
 class KnmiApiClient:
     """KNMI API wrapper"""
 
@@ -38,43 +54,26 @@ class KnmiApiClient:
             async with async_timeout.timeout(API_TIMEOUT):
                 if method == "get":
                     response = await self._session.get(url)
-                    # The API has no proper error handling for a wrong API key.
-                    # Instead a 200 with a message is returned, try to detect that here.
-                    if "Vraag eerst een API-key op" in await response.text():
-                        raise KnmiApiException("Invalid API key")
+                    response_text = await response.text()
 
-                    if "Dagelijkse limiet" in await response.text():
-                        raise KnmiApiException("Exceeded Daily Limit")
+                    # The API has no proper error handling for a wrong API key or rate limit.
+                    # Instead a 200 with a message is returned, try to detect that here.
+                    if "Vraag eerst een API-key op" in response_text:
+                        raise KnmiApiClientApiKeyError("The given API key is invalid")
+
+                    if "Dagelijkse limiet" in response_text:
+                        raise KnmiApiRateLimitError(
+                            "API key daily limit exceeded, try again tomorrow"
+                        )
 
                     data = await response.json()
                     return data.get("liveweer")[0]
 
         except asyncio.TimeoutError as exception:
-            _LOGGER.error(
-                "Timeout error fetching information from %s - %s",
-                url,
-                exception,
-            )
-
-        except (KeyError, TypeError) as exception:
-            _LOGGER.error(
-                "Error parsing information from %s - %s",
-                url,
-                exception,
-            )
+            raise KnmiApiClientCommunicationError(
+                "Timeout error fetching information",
+            ) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
-            _LOGGER.error(
-                "Error fetching information from %s - %s",
-                url,
-                exception,
-            )
-        except KnmiApiException as exception:
-            _LOGGER.error("Error in API! - %s", exception)
-            # Raise to pass on to the user.
-            raise exception
-        except Exception as exception:  # pylint: disable=broad-except
-            _LOGGER.error("Something really wrong happened! - %s", exception)
-
-
-class KnmiApiException(Exception):
-    """KNMI API Exception class"""
+            raise KnmiApiClientCommunicationError(
+                "Error fetching information",
+            ) from exception

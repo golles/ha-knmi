@@ -14,9 +14,13 @@
 #
 # See here for more info: https://docs.pytest.org/en/latest/fixture.html (note that
 # pytest includes fixtures OOB which you can use as defined on this page)
+import json
 from unittest.mock import patch
 
 import pytest
+from pytest_homeassistant_custom_component.common import load_fixture
+
+from custom_components.knmi.api import KnmiApiClientCommunicationError
 
 pytest_plugins = "pytest_homeassistant_custom_component"
 
@@ -40,22 +44,70 @@ def skip_notifications_fixture():
         yield
 
 
-# This fixture, when used, will result in calls to async_get_data to return None. To have the call
-# return a value, we would add the `return_value=<VALUE_TO_RETURN>` parameter to the patch call.
-@pytest.fixture(name="bypass_get_data")
-def bypass_get_data_fixture():
+# This fixture, when used, will have the mocked values from response.json loaded in the integration.
+@pytest.fixture(name="mocked_data")
+def mocked_data_fixture():
     """Skip calls to get data from API."""
-    with patch("custom_components.knmi.KnmiApiClient.async_get_data"):
+    data = json.loads(load_fixture("response.json"))
+
+    with patch(
+        "custom_components.knmi.KnmiApiClient.async_get_data",
+        return_value=data,
+    ):
         yield
 
 
-# In this fixture, we are forcing calls to async_get_data to raise an Exception. This is useful
-# for exception handling.
+# This fixture, when used, will have the mocked values from response.json loaded in the integration.
+# As an addition, the alarm and alarmtxt are set.
+@pytest.fixture(name="mocked_data_alarm")
+def mocked_data_alarm_fixture():
+    """Skip calls to get data from API."""
+    data = json.loads(load_fixture("response.json"))
+
+    data["alarm"] = "1"
+    data["alarmtxt"] = "Code geel in bijna hele land vanwege gladheid"
+
+    with patch(
+        "custom_components.knmi.KnmiApiClient.async_get_data",
+        return_value=data,
+    ):
+        yield
+
+
+# This fixture, when used, will have the mocked values from response.json loaded in the integration.
+# As an addition, plaats has been removed and temp has been set to an empty value.
+@pytest.fixture(name="mocked_data_empty_values")
+def mocked_data_empty_values_fixture():
+    """Skip calls to get data from API."""
+    data = json.loads(load_fixture("response.json"))
+
+    del data["plaats"]
+    data["temp"] = ""
+
+    with patch(
+        "custom_components.knmi.KnmiApiClient.async_get_data",
+        return_value=data,
+    ):
+        yield
+
+
+# In this fixture, we raise an KnmiApiClientCommunicationError in async_get_data.
 @pytest.fixture(name="error_on_get_data")
 def error_get_data_fixture():
     """Simulate error when retrieving data from API."""
     with patch(
         "custom_components.knmi.KnmiApiClient.async_get_data",
-        side_effect=Exception,
+        side_effect=KnmiApiClientCommunicationError,
     ):
         yield
+
+
+# See https://github.com/MatthewFlamm/pytest-homeassistant-custom-component/issues/153
+@pytest.fixture(autouse=True)
+def expected_lingering_timers() -> bool:
+    """Temporary ability to bypass test failures.
+    Parametrize to True to bypass the pytest failure.
+    @pytest.mark.parametrize("expected_lingering_timers", [True])
+    This should be removed when all lingering timers have been cleaned up.
+    """
+    return True

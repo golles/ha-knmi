@@ -1,33 +1,21 @@
 {
-    "config": {
-        "step": {
-            "user": {
-                "title": "KNMI weather",
-                "description": "To get your free API key, visit: https://weerlive.nl/delen.php",
-                "data": {
-                    "api_key": "API key",
-                    "latitude": "Latitude",
-                    "longitude": "Longitude",
-                    "name": "Name"
-                }
-            }
-        },
-        "error": {
-            "api_key": "The given API key is incorrect."
-        },
-        "abort": {
-            "single_instance_allowed": "Only a single instance is allowed."
+  "config": {
+    "step": {
+      "user": {
+        "title": "KNMI weather",
+        "description": "To get your free API key, visit: https://weerlive.nl/delen.php",
+        "data": {
+          "api_key": "API key",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "name": "Name"
         }
+      }
     },
-    "options": {
-        "step": {
-            "user": {
-                "data": {
-                    "binary_sensor": "Binary sensor enabled",
-                    "sensor": "Sensor enabled",
-                    "weather": "Weather enabled"
-                }
-            }
-        }
+    "error": {
+      "api_key": "The given API key is invalid",
+      "daily_limit": "API key daily limit exceeded, try again tomorrow",
+      "general": "Unknown error fetching weather data, try again later"
     }
+  }
 }
