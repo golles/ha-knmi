@@ -71,4 +71,3 @@ async def test_failed_config_flow(hass: HomeAssistant, config_flow_exceptions):
 
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
     assert "base" in result["errors"]
-

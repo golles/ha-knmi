@@ -28,7 +28,7 @@
     {
       "label": "Run black",
       "type": "shell",
-      "command": "black . --check",
+      "command": "black .",
       "problemMatcher": []
     },
     {
