@@ -20,7 +20,11 @@ from unittest.mock import patch
 import pytest
 from pytest_homeassistant_custom_component.common import load_fixture
 
-from custom_components.knmi.api import KnmiApiClientCommunicationError
+from custom_components.knmi.api import (
+    KnmiApiClientApiKeyError,
+    KnmiApiClientCommunicationError,
+    KnmiApiRateLimitError,
+)
 
 pytest_plugins = "pytest_homeassistant_custom_component"
 
@@ -98,6 +102,24 @@ def error_get_data_fixture():
     with patch(
         "custom_components.knmi.KnmiApiClient.async_get_data",
         side_effect=KnmiApiClientCommunicationError,
+    ):
+        yield
+
+
+# In this fixture, we raise all exceptions in async_get_data.
+@pytest.fixture(
+    name="config_flow_exceptions",
+    params=[
+        KnmiApiClientCommunicationError,
+        KnmiApiClientApiKeyError,
+        KnmiApiRateLimitError,
+    ],
+)
+def config_flow_exceptions_fixture(request):
+    """Simulate error when retrieving data from API."""
+    with patch(
+        "custom_components.knmi.KnmiApiClient.async_get_data",
+        side_effect=request.param,
     ):
         yield
 

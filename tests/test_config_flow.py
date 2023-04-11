@@ -56,7 +56,7 @@ async def test_successful_config_flow(hass: HomeAssistant, mocked_data):
 # We use the `error_on_get_data` mock instead of `mocked_data`
 # (note the function parameters) to raise an Exception during
 # validation of the input config.
-async def test_failed_config_flow(hass: HomeAssistant, error_on_get_data):
+async def test_failed_config_flow(hass: HomeAssistant, config_flow_exceptions):
     """Test a failed config flow due to credential validation failure."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
@@ -70,4 +70,5 @@ async def test_failed_config_flow(hass: HomeAssistant, error_on_get_data):
     )
 
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
-    assert result["errors"] == {"base": "general"}
+    assert "base" in result["errors"]
+
