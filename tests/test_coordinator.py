@@ -1,19 +1,15 @@
 """Tests for knmi coordinator."""
 from homeassistant.core import HomeAssistant
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.knmi import async_setup_entry
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 
-from .const import MOCK_CONFIG
+from . import setup_component
 
 
 async def test_get_value(hass: HomeAssistant, mocked_data, caplog):
     """Test get_value return types."""
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
-    assert await async_setup_entry(hass, config_entry)
-    await hass.async_block_till_done()
+    config_entry = await setup_component(hass)
 
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
@@ -35,9 +31,7 @@ async def test_get_value(hass: HomeAssistant, mocked_data, caplog):
 
 async def test_get_value_empty(hass: HomeAssistant, mocked_data_empty_values, caplog):
     """Test get_value function with empty values."""
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
-    assert await async_setup_entry(hass, config_entry)
-    await hass.async_block_till_done()
+    config_entry = await setup_component(hass)
 
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 

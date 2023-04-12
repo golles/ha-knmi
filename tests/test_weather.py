@@ -11,31 +11,20 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
 )
-from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.knmi import async_setup_entry
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 from custom_components.knmi.weather import KnmiWeather
 
-from .const import MOCK_CONFIG
+from . import setup_component
 
 
 async def setup_weather(hass: HomeAssistant) -> KnmiWeather:
     """Setup weather entity."""
-
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
-    await async_setup_entry(hass, config_entry)
-
+    config_entry = await setup_component(hass)
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
-
-    return KnmiWeather(
-        MOCK_CONFIG[CONF_NAME],
-        coordinator,
-        config_entry.entry_id,
-    )
+    return KnmiWeather(config_entry, coordinator, config_entry.entry_id)
 
 
 async def test_get_wind_bearing(hass: HomeAssistant, mocked_data, caplog):

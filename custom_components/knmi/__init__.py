@@ -4,20 +4,22 @@ Custom integration to integrate knmi with Home Assistant.
 For more details about this integration, please refer to
 https://github.com/golles/ha-knmi/
 """
-import logging
-
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE
+from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.entity import DeviceInfo
 
 from .api import KnmiApiClient
-from .const import DOMAIN, NAME, PLATFORMS, VERSION
+from .const import API_CONF_URL, DOMAIN, NAME, VERSION
 from .coordinator import KnmiDataUpdateCoordinator
 
-_LOGGER: logging.Logger = logging.getLogger(__package__)
+PLATFORMS: list[Platform] = [
+    Platform.BINARY_SENSOR,
+    Platform.SENSOR,
+    Platform.WEATHER,
+]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -37,7 +39,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         manufacturer=NAME,
         name=NAME,
         model=VERSION,
-        configuration_url="http://weerlive.nl/api/toegang/account.php",
+        configuration_url=API_CONF_URL,
     )
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = KnmiDataUpdateCoordinator(
