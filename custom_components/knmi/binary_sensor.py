@@ -1,5 +1,4 @@
 """Binary sensor platform for knmi."""
-
 from collections.abc import Mapping
 import datetime
 from typing import Any
@@ -18,8 +17,8 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt
 import pytz
 
-from . import KnmiDataUpdateCoordinator
 from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
+from .coordinator import KnmiDataUpdateCoordinator
 
 
 async def async_setup_entry(
@@ -132,9 +131,9 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
         """Return entity specific state attributes."""
         sup = self.coordinator.get_value("sup")
         sunder = self.coordinator.get_value("sunder")
-        d0zon = self.coordinator.get_value("d0zon")
-        d1zon = self.coordinator.get_value("d1zon")
-        d2zon = self.coordinator.get_value("d2zon")
+        d0zon = self.coordinator.get_value("d0zon", int)
+        d1zon = self.coordinator.get_value("d1zon", int)
+        d2zon = self.coordinator.get_value("d2zon", int)
 
         return {
             "Zonsopkomst": (

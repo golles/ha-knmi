@@ -3,6 +3,7 @@ from datetime import timedelta
 from typing import Final
 
 # API
+API_CONF_URL: Final = "http://weerlive.nl/api/toegang/account.php"
 API_ENDPOINT: Final = "http://weerlive.nl/api/json-data-10min.php?key={}&locatie={},{}"
 API_TIMEOUT: Final = 10
 API_TIMEZONE: Final = "Europe/Amsterdam"
@@ -14,10 +15,4 @@ VERSION: Final = "1.3.8"
 
 # Defaults
 DEFAULT_NAME: Final = NAME
-SCAN_INTERVAL = timedelta(seconds=300)
-
-# Platforms.
-BINARY_SENSOR: Final = "binary_sensor"
-SENSOR: Final = "sensor"
-WEATHER: Final = "weather"
-PLATFORMS: Final = [BINARY_SENSOR, SENSOR, WEATHER]
+SCAN_INTERVAL: timedelta = timedelta(seconds=300)

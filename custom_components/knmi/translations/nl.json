@@ -1,33 +1,21 @@
 {
-    "config": {
-        "step": {
-            "user": {
-                "title": "KNMI weer",
-                "description": "Aanmelden voor een gratis API key: https://weerlive.nl/delen.php",
-                "data": {
-                    "api_key": "API key",
-                    "latitude": "Breedtegraad",
-                    "longitude": "Lengtegraad",
-                    "name": "Naam"
-                }
-            }
-        },
-        "error": {
-            "api_key": "De opgegeven API key is incorrect."
-        },
-        "abort": {
-            "single_instance_allowed": "Slechts een enkel exemplaar is toegestaan."
+  "config": {
+    "step": {
+      "user": {
+        "title": "KNMI weer",
+        "description": "Aanmelden voor een gratis API key: https://weerlive.nl/delen.php",
+        "data": {
+          "api_key": "API-sleutel",
+          "latitude": "Breedtegraad",
+          "longitude": "Lengtegraad",
+          "name": "Naam"
         }
+      }
     },
-    "options": {
-        "step": {
-            "user": {
-                "data": {
-                    "binary_sensor": "Binaire sensor ingeschakeld",
-                    "sensor": "Sensor ingeschakeld",
-                    "weather": "Weer ingeschakeld"
-                }
-            }
-        }
+    "error": {
+      "api_key": "De opgegeven API-sleutel is ongeldig",
+      "daily_limit": "De dagelijkse limiet van de API-sleutel is overschreden, probeer het morgen opnieuw",
+      "general": "Onbekende fout bij het ophalen van weergegevens, probeer het later opnieuw"
     }
+  }
 }

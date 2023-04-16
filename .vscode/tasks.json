@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run Home Assistant on port 9123",
+      "label": "Run Home Assistant on port 8123",
       "type": "shell",
       "command": "scripts/develop",
       "problemMatcher": []
@@ -16,19 +16,19 @@
     {
       "label": "Run pytest",
       "type": "shell",
-      "command": "pytest tests",
+      "command": "pytest",
       "problemMatcher": []
     },
     {
       "label": "Run pytest with coverage",
       "type": "shell",
-      "command": "pytest --durations=10 --cov-report xml --cov=custom_components.kamstrup_403 tests",
+      "command": "pytest --cov-report term --cov-report xml --cov=custom_components.knmi",
       "problemMatcher": []
     },
     {
       "label": "Run black",
       "type": "shell",
-      "command": "black . --check",
+      "command": "black .",
       "problemMatcher": []
     },
     {
