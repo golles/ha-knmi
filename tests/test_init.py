@@ -43,3 +43,6 @@ async def test_setup_entry_exception(hass: HomeAssistant, error_on_get_data):
     # an error.
     with pytest.raises(ConfigEntryNotReady):
         assert await async_setup_entry(hass, config_entry)
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()

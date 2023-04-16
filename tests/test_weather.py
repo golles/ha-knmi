@@ -20,16 +20,11 @@ from custom_components.knmi.weather import KnmiWeather
 from . import setup_component
 
 
-async def setup_weather(hass: HomeAssistant) -> KnmiWeather:
-    """Setup weather entity."""
-    config_entry = await setup_component(hass)
-    coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
-    return KnmiWeather(config_entry, coordinator, config_entry.entry_id)
-
-
 async def test_get_wind_bearing(hass: HomeAssistant, mocked_data, caplog):
     """Test get wind bearing function."""
-    weather = await setup_weather(hass)
+    config_entry = await setup_component(hass)
+    coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    weather =  KnmiWeather(config_entry, coordinator, config_entry.entry_id)
 
     # Test the case that the wind direction is variable.
     weather.coordinator.data["windr"] = "VAR"
@@ -45,6 +40,9 @@ async def test_get_wind_bearing(hass: HomeAssistant, mocked_data, caplog):
     weather.coordinator.data["windrgr"] = "180"
     assert weather.get_wind_bearing("windr", "windrgr") == 180
 
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
 
 def map_condition(
     weather: KnmiWeather, api_condition: str | None, hass_condition: str | None
@@ -56,7 +54,9 @@ def map_condition(
 
 async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
     """Test map condition function."""
-    weather = await setup_weather(hass)
+    config_entry = await setup_component(hass)
+    coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    weather =  KnmiWeather(config_entry, coordinator, config_entry.entry_id)
 
     # Documented conditions.
     map_condition(weather, "zonnig", ATTR_CONDITION_SUNNY)
@@ -90,3 +90,6 @@ async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
         "Weather condition hondenweer (for image) is unknown, please raise a bug"
         in caplog.text
     )
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()

@@ -28,6 +28,9 @@ async def test_get_value(hass: HomeAssistant, mocked_data, caplog):
     coordinator.get_value("plaats", float)
     assert "Value plaats can't be converted to <class 'float'>" in caplog.text
 
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
 
 async def test_get_value_empty(hass: HomeAssistant, mocked_data_empty_values, caplog):
     """Test get_value function with empty values."""
@@ -40,3 +43,6 @@ async def test_get_value_empty(hass: HomeAssistant, mocked_data_empty_values, ca
 
     coordinator.get_value("temp", int)
     assert "Value temp can't be converted to <class 'int'>" in caplog.text
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()

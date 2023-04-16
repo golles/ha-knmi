@@ -122,14 +122,3 @@ def config_flow_exceptions_fixture(request):
         side_effect=request.param,
     ):
         yield
-
-
-# See https://github.com/MatthewFlamm/pytest-homeassistant-custom-component/issues/153
-@pytest.fixture(autouse=True)
-def expected_lingering_timers() -> bool:
-    """Temporary ability to bypass test failures.
-    Parametrize to True to bypass the pytest failure.
-    @pytest.mark.parametrize("expected_lingering_timers", [True])
-    This should be removed when all lingering timers have been cleaned up.
-    """
-    return True

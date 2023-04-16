@@ -29,6 +29,9 @@ async def test_knmi_binary_sensor_is_on(hass: HomeAssistant, mocked_data):
     with pytest.raises(NotImplementedError):
         binary_sensor.is_on
 
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
 
 async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant, mocked_data):
     """Test is_on function on alarm class."""
@@ -37,6 +40,9 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant, mocked_data)
     state = hass.states.get("binary_sensor.knmi_home_waarschuwing")
     assert state.state == "off"
     assert state.attributes.get("Waarschuwing") == ""
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
 
 
 async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant, mocked_data_alarm):
@@ -49,6 +55,9 @@ async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant, mocked_data_a
         state.attributes.get("Waarschuwing")
         == "Code geel in bijna hele land vanwege gladheid"
     )
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
 
 
 @freeze_time("2023-02-05T03:30:00+00:00")
@@ -64,6 +73,9 @@ async def test_knmi_binary_sun_sensor_is_off(hass: HomeAssistant, mocked_data):
     assert state.attributes.get("Zonkans morgen") == 60
     assert state.attributes.get("Zonkans overmorgen") == 30
 
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
 
 @freeze_time("2023-02-05T15:30:00+00:00")
 async def test_knmi_binary_sun_sensor_is_on(hass: HomeAssistant, mocked_data):
@@ -72,3 +84,6 @@ async def test_knmi_binary_sun_sensor_is_on(hass: HomeAssistant, mocked_data):
 
     state = hass.states.get("binary_sensor.knmi_home_zon")
     assert state.state == "on"
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
