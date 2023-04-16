@@ -14,6 +14,6 @@ jobs:
           fetch-depth: 0
 
       - name: Update license
-        uses: FantasticFiasco/action-update-license-year@v2
+        uses: FantasticFiasco/action-update-license-year@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
