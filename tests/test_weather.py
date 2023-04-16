@@ -24,7 +24,7 @@ async def test_get_wind_bearing(hass: HomeAssistant, mocked_data, caplog):
     """Test get wind bearing function."""
     config_entry = await setup_component(hass)
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
-    weather =  KnmiWeather(config_entry, coordinator, config_entry.entry_id)
+    weather = KnmiWeather(config_entry, coordinator, config_entry.entry_id)
 
     # Test the case that the wind direction is variable.
     weather.coordinator.data["windr"] = "VAR"
@@ -56,7 +56,7 @@ async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
     """Test map condition function."""
     config_entry = await setup_component(hass)
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
-    weather =  KnmiWeather(config_entry, coordinator, config_entry.entry_id)
+    weather = KnmiWeather(config_entry, coordinator, config_entry.entry_id)
 
     # Documented conditions.
     map_condition(weather, "zonnig", ATTR_CONDITION_SUNNY)
