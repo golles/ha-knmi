@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "esbenp.prettier-vscode",
+    "GitHub.vscode-github-actions",
     "github.vscode-pull-request-github",
     "ms-python.black-formatter",
     "ms-python.python",
