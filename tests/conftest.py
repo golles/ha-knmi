@@ -28,6 +28,9 @@ from custom_components.knmi.api import (
 
 pytest_plugins = "pytest_homeassistant_custom_component"
 
+response_json = "response.json"
+async_get_data = "custom_components.knmi.KnmiApiClient.async_get_data"
+
 
 # This fixture enables loading custom integrations in all tests.
 # Remove to enable selective use of this fixture
@@ -52,10 +55,10 @@ def skip_notifications_fixture():
 @pytest.fixture(name="mocked_data")
 def mocked_data_fixture():
     """Skip calls to get data from API."""
-    data = json.loads(load_fixture("response.json"))
+    data = json.loads(load_fixture(response_json))
 
     with patch(
-        "custom_components.knmi.KnmiApiClient.async_get_data",
+        async_get_data,
         return_value=data,
     ):
         yield
@@ -66,13 +69,13 @@ def mocked_data_fixture():
 @pytest.fixture(name="mocked_data_alarm")
 def mocked_data_alarm_fixture():
     """Skip calls to get data from API."""
-    data = json.loads(load_fixture("response.json"))
+    data = json.loads(load_fixture(response_json))
 
     data["alarm"] = "1"
     data["alarmtxt"] = "Code geel in bijna hele land vanwege gladheid"
 
     with patch(
-        "custom_components.knmi.KnmiApiClient.async_get_data",
+        async_get_data,
         return_value=data,
     ):
         yield
@@ -83,13 +86,13 @@ def mocked_data_alarm_fixture():
 @pytest.fixture(name="mocked_data_empty_values")
 def mocked_data_empty_values_fixture():
     """Skip calls to get data from API."""
-    data = json.loads(load_fixture("response.json"))
+    data = json.loads(load_fixture(response_json))
 
     del data["plaats"]
     data["temp"] = ""
 
     with patch(
-        "custom_components.knmi.KnmiApiClient.async_get_data",
+        async_get_data,
         return_value=data,
     ):
         yield
@@ -100,7 +103,7 @@ def mocked_data_empty_values_fixture():
 def error_get_data_fixture():
     """Simulate error when retrieving data from API."""
     with patch(
-        "custom_components.knmi.KnmiApiClient.async_get_data",
+        async_get_data,
         side_effect=KnmiApiClientCommunicationError,
     ):
         yield
@@ -118,7 +121,7 @@ def error_get_data_fixture():
 def config_flow_exceptions_fixture(request):
     """Simulate error when retrieving data from API."""
     with patch(
-        "custom_components.knmi.KnmiApiClient.async_get_data",
+        async_get_data,
         side_effect=request.param,
     ):
         yield
