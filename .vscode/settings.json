@@ -35,5 +35,9 @@
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["hass", "homeassistant", "knmi"]
+  "cSpell.words": ["hass", "homeassistant", "knmi"],
+  "sonarlint.connectedMode.project": {
+    "connectionId": "golles",
+    "projectKey": "golles_ha-knmi"
+  }
 }

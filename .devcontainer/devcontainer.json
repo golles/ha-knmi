@@ -7,13 +7,14 @@
     "vscode": {
       "extensions": [
         "esbenp.prettier-vscode",
-        "GitHub.vscode-github-actions",
+        "gitHub.vscode-github-actions",
         "github.vscode-pull-request-github",
         "ms-python.black-formatter",
         "ms-python.python",
         "ms-python.isort",
         "ms-python.vscode-pylance",
         "ryanluker.vscode-coverage-gutters",
+        "sonarSource.sonarlint-vscode",
         "streetsidesoftware.code-spell-checker"
       ],
       "settings": {

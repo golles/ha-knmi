@@ -90,7 +90,7 @@ class KnmiBinaryAlarmSensor(KnmiBinarySensor):
     """Defines a KNMI alarm binary sensor."""
 
     @property
-    def is_on(self) -> bool:
+    def is_on(self) -> bool | None:
         """Return True if the entity is on."""
         value = self.coordinator.get_value(self.entity_description.key, int)
 
@@ -109,7 +109,7 @@ class KnmiBinarySunSensor(KnmiBinarySensor):
     """Defines a KNMI sun binary sensor."""
 
     @property
-    def is_on(self) -> bool:
+    def is_on(self) -> bool | None:
         """Return True if the entity is on."""
         sup = self.coordinator.get_value("sup")
         sunder = self.coordinator.get_value("sunder")
