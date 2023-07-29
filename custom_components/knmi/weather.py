@@ -142,6 +142,11 @@ class KnmiWeather(WeatherEntity):
         return self.coordinator.get_value("temp", float)
 
     @property
+    def native_dew_point(self) -> float | None:
+        """Return the dew point temperature in native units."""
+        return self.coordinator.get_value("dauwp", float)
+
+    @property
     def native_pressure(self) -> float | None:
         """Return the pressure in native units."""
         return self.coordinator.get_value("luchtd", float)

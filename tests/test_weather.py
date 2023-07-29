@@ -10,6 +10,13 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_RAINY,
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
+    ATTR_WEATHER_DEW_POINT,
+    ATTR_WEATHER_HUMIDITY,
+    ATTR_WEATHER_PRESSURE,
+    ATTR_WEATHER_TEMPERATURE,
+    ATTR_WEATHER_VISIBILITY,
+    ATTR_WEATHER_WIND_BEARING,
+    ATTR_WEATHER_WIND_SPEED,
 )
 from homeassistant.core import HomeAssistant
 
@@ -90,6 +97,27 @@ async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
         "Weather condition hondenweer (for image) is unknown, please raise a bug"
         in caplog.text
     )
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
+
+async def test_state(hass: HomeAssistant, mocked_data):
+    """Test state."""
+    config_entry = await setup_component(hass)
+
+    state = hass.states.get("weather.knmi_home")
+    assert state
+
+    assert state.state == "partlycloudy"
+
+    assert state.attributes.get(ATTR_WEATHER_HUMIDITY) == 86
+    assert state.attributes.get(ATTR_WEATHER_PRESSURE) == 1024.0
+    assert state.attributes.get(ATTR_WEATHER_TEMPERATURE) == 17.5
+    assert state.attributes.get(ATTR_WEATHER_VISIBILITY) == 45.0
+    assert state.attributes.get(ATTR_WEATHER_WIND_BEARING) == 44.0
+    assert state.attributes.get(ATTR_WEATHER_WIND_SPEED) == 10.8
+    assert state.attributes.get(ATTR_WEATHER_DEW_POINT) == 15
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
