@@ -17,6 +17,13 @@ from homeassistant.components.weather import (
     ATTR_WEATHER_VISIBILITY,
     ATTR_WEATHER_WIND_BEARING,
     ATTR_WEATHER_WIND_SPEED,
+    ATTR_FORECAST_TIME,
+    ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_TEMP_LOW,
+    ATTR_FORECAST_TEMP,
+    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
+    ATTR_FORECAST_WIND_BEARING,
+    ATTR_FORECAST_WIND_SPEED,
 )
 from homeassistant.core import HomeAssistant
 
@@ -121,3 +128,44 @@ async def test_state(hass: HomeAssistant, mocked_data):
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
+
+
+async def test_async_forecast_daily(hass: HomeAssistant, mocked_data):
+    """Test forecast."""
+    config_entry = await setup_component(hass)
+    coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    weather = KnmiWeather(config_entry, coordinator, config_entry.entry_id)
+
+    forecast = await weather.async_forecast_daily()
+    assert forecast
+    assert len(forecast) == 3
+
+    assert forecast[0][ATTR_FORECAST_TIME] == "2023-07-29T22:00:00+00:00"
+    assert forecast[0][ATTR_FORECAST_CONDITION] == "cloudy"
+    assert forecast[0][ATTR_FORECAST_TEMP_LOW] == 14.0
+    assert forecast[0][ATTR_FORECAST_TEMP] == 21.0
+    assert forecast[0][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0.0
+    assert forecast[0][ATTR_FORECAST_WIND_BEARING] == 135.0
+    assert forecast[0][ATTR_FORECAST_WIND_SPEED] == 11.0
+    assert forecast[0]["wind_speed_bft"] == 2.0
+    assert forecast[0]["sun_chance"] == 14.0
+
+    assert forecast[1][ATTR_FORECAST_TIME] == "2023-07-30T22:00:00+00:00"
+    assert forecast[1][ATTR_FORECAST_CONDITION] == "partlycloudy"
+    assert forecast[1][ATTR_FORECAST_TEMP_LOW] == 13.0
+    assert forecast[1][ATTR_FORECAST_TEMP] == 28.0
+    assert forecast[1][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 10.0
+    assert forecast[1][ATTR_FORECAST_WIND_BEARING] == 225.0
+    assert forecast[1][ATTR_FORECAST_WIND_SPEED] == 7.0
+    assert forecast[1]["wind_speed_bft"] == 2.0
+    assert forecast[1]["sun_chance"] == 60.0
+
+    assert forecast[2][ATTR_FORECAST_TIME] == "2023-07-31T22:00:00+00:00"
+    assert forecast[2][ATTR_FORECAST_CONDITION] == "cloudy"
+    assert forecast[2][ATTR_FORECAST_TEMP_LOW] == 18.0
+    assert forecast[2][ATTR_FORECAST_TEMP] == 24.0
+    assert forecast[2][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 20.0
+    assert forecast[2][ATTR_FORECAST_WIND_BEARING] == 315.0
+    assert forecast[2][ATTR_FORECAST_WIND_SPEED] == 11.0
+    assert forecast[2]["wind_speed_bft"] == 2.0
+    assert forecast[2]["sun_chance"] == 30.0
