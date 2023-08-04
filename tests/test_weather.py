@@ -1,4 +1,5 @@
 """Tests for knmi weather."""
+from freezegun import freeze_time
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -130,6 +131,7 @@ async def test_state(hass: HomeAssistant, mocked_data):
     await hass.async_block_till_done()
 
 
+@freeze_time("2023-07-29T22:00:00+00:00")
 async def test_async_forecast_daily(hass: HomeAssistant, mocked_data):
     """Test forecast."""
     config_entry = await setup_component(hass)
