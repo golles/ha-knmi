@@ -1,5 +1,5 @@
 {
     "name": "KNMI",
-    "homeassistant": "2023.6.0",
+    "homeassistant": "2023.8.0",
     "render_readme": true
 }
