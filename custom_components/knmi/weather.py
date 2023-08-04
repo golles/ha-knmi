@@ -142,6 +142,11 @@ class KnmiWeather(WeatherEntity):
         return self.coordinator.get_value("temp", float)
 
     @property
+    def native_dew_point(self) -> float | None:
+        """Return the dew point temperature in native units."""
+        return self.coordinator.get_value("dauwp", float)
+
+    @property
     def native_pressure(self) -> float | None:
         """Return the pressure in native units."""
         return self.coordinator.get_value("luchtd", float)
@@ -166,9 +171,8 @@ class KnmiWeather(WeatherEntity):
         """Return the visibility in native units."""
         return self.coordinator.get_value("zicht", float)
 
-    @property
-    def forecast(self) -> list[Forecast] | None:
-        """Return the forecast in native units."""
+    async def async_forecast_daily(self) -> list[Forecast] | None:
+        """Return the daily forecast in native units."""
         forecast = []
         timezone = pytz.timezone(API_TIMEZONE)
         today = dt.as_utc(
