@@ -23,6 +23,7 @@ from homeassistant.components.weather import (
     DOMAIN as SENSOR_DOMAIN,
     Forecast,
     WeatherEntity,
+    WeatherEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -88,6 +89,7 @@ class KnmiWeather(WeatherEntity):
     _attr_native_temperature_unit = TEMP_CELSIUS
     _attr_native_visibility_unit = LENGTH_KILOMETERS
     _attr_native_wind_speed_unit = SPEED_KILOMETERS_PER_HOUR
+    _attr_supported_features = WeatherEntityFeature.FORECAST_DAILY
 
     def __init__(
         self,
