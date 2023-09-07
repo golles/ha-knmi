@@ -33,7 +33,7 @@ body:
       required: true
     attributes:
       label: Integration version
-      placeholder: "1.5.0"
+      placeholder: "1.6.0"
       description: >
         Can be found in the Configuration panel -> Integrations -> KNMI
 
