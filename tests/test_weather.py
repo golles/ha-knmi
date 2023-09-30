@@ -1,4 +1,6 @@
 """Tests for knmi weather."""
+from decimal import Decimal
+
 from freezegun import freeze_time
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
@@ -120,11 +122,11 @@ async def test_state(hass: HomeAssistant, mocked_data):
     assert state.state == "partlycloudy"
 
     assert state.attributes.get(ATTR_WEATHER_HUMIDITY) == 86
-    assert state.attributes.get(ATTR_WEATHER_PRESSURE) == 1024.0
-    assert state.attributes.get(ATTR_WEATHER_TEMPERATURE) == 17.5
-    assert state.attributes.get(ATTR_WEATHER_VISIBILITY) == 45.0
-    assert state.attributes.get(ATTR_WEATHER_WIND_BEARING) == 44.0
-    assert state.attributes.get(ATTR_WEATHER_WIND_SPEED) == 10.8
+    assert Decimal(state.attributes.get(ATTR_WEATHER_PRESSURE)) == Decimal(1024.0)
+    assert Decimal(state.attributes.get(ATTR_WEATHER_TEMPERATURE)) == Decimal(17.5)
+    assert Decimal(state.attributes.get(ATTR_WEATHER_VISIBILITY)) == Decimal(45.0)
+    assert Decimal(state.attributes.get(ATTR_WEATHER_WIND_BEARING)) == Decimal(44.0)
+    assert Decimal(state.attributes.get(ATTR_WEATHER_WIND_SPEED)) == Decimal(10.8)
     assert state.attributes.get(ATTR_WEATHER_DEW_POINT) == 15
 
     assert await config_entry.async_unload(hass)
@@ -144,30 +146,34 @@ async def test_async_forecast_daily(hass: HomeAssistant, mocked_data):
 
     assert forecast[0][ATTR_FORECAST_TIME] == "2023-07-29T22:00:00+00:00"
     assert forecast[0][ATTR_FORECAST_CONDITION] == "cloudy"
-    assert forecast[0][ATTR_FORECAST_TEMP_LOW] == 14.0
-    assert forecast[0][ATTR_FORECAST_TEMP] == 21.0
-    assert forecast[0][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0.0
-    assert forecast[0][ATTR_FORECAST_WIND_BEARING] == 135.0
-    assert forecast[0][ATTR_FORECAST_WIND_SPEED] == 11.0
-    assert forecast[0]["wind_speed_bft"] == 2.0
-    assert forecast[0]["sun_chance"] == 14.0
+    assert Decimal(forecast[0][ATTR_FORECAST_TEMP_LOW]) == Decimal(14.0)
+    assert Decimal(forecast[0][ATTR_FORECAST_TEMP]) == Decimal(21.0)
+    assert Decimal(forecast[0][ATTR_FORECAST_PRECIPITATION_PROBABILITY]) == Decimal(0.0)
+    assert Decimal(forecast[0][ATTR_FORECAST_WIND_BEARING]) == Decimal(135.0)
+    assert Decimal(forecast[0][ATTR_FORECAST_WIND_SPEED]) == Decimal(11.0)
+    assert Decimal(forecast[0]["wind_speed_bft"]) == Decimal(2.0)
+    assert Decimal(forecast[0]["sun_chance"]) == Decimal(14.0)
 
     assert forecast[1][ATTR_FORECAST_TIME] == "2023-07-30T22:00:00+00:00"
     assert forecast[1][ATTR_FORECAST_CONDITION] == "partlycloudy"
-    assert forecast[1][ATTR_FORECAST_TEMP_LOW] == 13.0
-    assert forecast[1][ATTR_FORECAST_TEMP] == 28.0
-    assert forecast[1][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 10.0
-    assert forecast[1][ATTR_FORECAST_WIND_BEARING] == 225.0
-    assert forecast[1][ATTR_FORECAST_WIND_SPEED] == 7.0
-    assert forecast[1]["wind_speed_bft"] == 2.0
-    assert forecast[1]["sun_chance"] == 60.0
+    assert Decimal(forecast[1][ATTR_FORECAST_TEMP_LOW]) == Decimal(13.0)
+    assert Decimal(forecast[1][ATTR_FORECAST_TEMP]) == Decimal(28.0)
+    assert Decimal(forecast[1][ATTR_FORECAST_PRECIPITATION_PROBABILITY]) == Decimal(
+        10.0
+    )
+    assert Decimal(forecast[1][ATTR_FORECAST_WIND_BEARING]) == Decimal(225.0)
+    assert Decimal(forecast[1][ATTR_FORECAST_WIND_SPEED]) == Decimal(7.0)
+    assert Decimal(forecast[1]["wind_speed_bft"]) == Decimal(2.0)
+    assert Decimal(forecast[1]["sun_chance"]) == Decimal(60.0)
 
     assert forecast[2][ATTR_FORECAST_TIME] == "2023-07-31T22:00:00+00:00"
     assert forecast[2][ATTR_FORECAST_CONDITION] == "cloudy"
-    assert forecast[2][ATTR_FORECAST_TEMP_LOW] == 18.0
-    assert forecast[2][ATTR_FORECAST_TEMP] == 24.0
-    assert forecast[2][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 20.0
-    assert forecast[2][ATTR_FORECAST_WIND_BEARING] == 315.0
-    assert forecast[2][ATTR_FORECAST_WIND_SPEED] == 11.0
-    assert forecast[2]["wind_speed_bft"] == 2.0
-    assert forecast[2]["sun_chance"] == 30.0
+    assert Decimal(forecast[2][ATTR_FORECAST_TEMP_LOW]) == Decimal(18.0)
+    assert Decimal(forecast[2][ATTR_FORECAST_TEMP]) == Decimal(24.0)
+    assert Decimal(forecast[2][ATTR_FORECAST_PRECIPITATION_PROBABILITY]) == Decimal(
+        20.0
+    )
+    assert Decimal(forecast[2][ATTR_FORECAST_WIND_BEARING]) == Decimal(315.0)
+    assert Decimal(forecast[2][ATTR_FORECAST_WIND_SPEED]) == Decimal(11.0)
+    assert Decimal(forecast[2]["wind_speed_bft"]) == Decimal(2.0)
+    assert Decimal(forecast[2]["sun_chance"]) == Decimal(30.0)

@@ -1,4 +1,6 @@
 """Tests for knmi coordinator."""
+from decimal import Decimal
+
 from homeassistant.core import HomeAssistant
 
 from custom_components.knmi.const import DOMAIN
@@ -13,13 +15,13 @@ async def test_get_value(hass: HomeAssistant, mocked_data, caplog):
 
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    assert coordinator.get_value("temp", float) == 17.5
+    assert Decimal(coordinator.get_value("temp", float)) == Decimal(17.5)
     assert coordinator.get_value("temp", str) == "17.5"
     coordinator.get_value("temp", int)
     assert "Value temp can't be converted to <class 'int'>" in caplog.text
 
     assert coordinator.get_value("lv", int) == 86
-    assert coordinator.get_value("lv", float) == 86.0
+    assert Decimal(coordinator.get_value("lv", float)) == Decimal(86.0)
     assert coordinator.get_value("lv", str) == "86"
 
     assert coordinator.get_value("plaats", str) == "Purmerend"
