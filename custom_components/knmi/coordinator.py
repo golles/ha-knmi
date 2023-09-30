@@ -42,6 +42,10 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> float | int | str | None:
         """Get a value from the retrieved data and convert to given type"""
         if self.data and key in self.data:
+            if self.data.get(key, None) == "":
+                _LOGGER.warning("Value %s is empty in API response", key)
+                return ""  # Leave empty, eg. warning attribute can be an empty string.
+
             try:
                 return convert_to(self.data.get(key, None))
             except ValueError:
