@@ -98,6 +98,23 @@ def mocked_data_empty_values_fixture():
         yield
 
 
+# This fixture, when used, will have the mocked values from response.json loaded in the integration.
+# As an addition, d2tmin and d2tmax have a wrong type (string instead of a number).
+@pytest.fixture(name="mocked_data_wrong_values_fixture")
+def mocked_data_wrong_values_fixture():
+    """Skip calls to get data from API."""
+    data = json.loads(load_fixture(response_json))
+
+    data["d2tmin"] = "koud"
+    data["d2tmax"] = "warm"
+
+    with patch(
+        async_get_data,
+        return_value=data,
+    ):
+        yield
+
+
 # In this fixture, we raise an KnmiApiClientCommunicationError in async_get_data.
 @pytest.fixture(name="error_on_get_data")
 def error_get_data_fixture():

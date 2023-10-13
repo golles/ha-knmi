@@ -44,7 +44,25 @@ async def test_get_value_empty(hass: HomeAssistant, mocked_data_empty_values, ca
     assert "Value plaats is missing in API response" in caplog.text
 
     coordinator.get_value("temp", int)
-    assert "Value temp can't be converted to <class 'int'>" in caplog.text
+    assert "Value temp is empty in API response" in caplog.text
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
+
+async def test_get_value_wrong_type(
+    hass: HomeAssistant, mocked_data_wrong_values_fixture, caplog
+):
+    """Test get_value function with empty values."""
+    config_entry = await setup_component(hass)
+
+    coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+
+    coordinator.get_value("d2tmin", int)
+    assert "Value d2tmin can't be converted to <class 'int'>" in caplog.text
+
+    coordinator.get_value("d2tmax", int)
+    assert "Value d2tmax can't be converted to <class 'int'>" in caplog.text
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
