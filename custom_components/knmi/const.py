@@ -11,7 +11,7 @@ API_TIMEZONE: Final = "Europe/Amsterdam"
 # Base component constants.
 NAME: Final = "KNMI"
 DOMAIN: Final = "knmi"
-VERSION: Final = "1.6.0"
+VERSION: Final = "1.6.1"
 
 # Defaults
 DEFAULT_NAME: Final = NAME
