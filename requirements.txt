@@ -1,4 +1,4 @@
-pip>=21.0,<23.3
+pip>=21.0,<23.4
 isort
 colorlog
 homeassistant
