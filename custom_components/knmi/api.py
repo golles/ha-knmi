@@ -3,7 +3,6 @@ import asyncio
 import socket
 
 import aiohttp
-import async_timeout
 
 from .const import API_ENDPOINT, API_TIMEOUT
 
@@ -48,7 +47,7 @@ class KnmiApiClient:
     async def api_wrapper(self, method: str, url: str) -> dict:
         """Get information from the API."""
         try:
-            async with async_timeout.timeout(API_TIMEOUT):
+            async with asyncio.timeout(API_TIMEOUT):
                 if method == "get":
                     response = await self._session.get(url)
                     response_text = await response.text()
