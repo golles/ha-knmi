@@ -10,8 +10,9 @@
         "gitHub.vscode-github-actions",
         "github.vscode-pull-request-github",
         "ms-python.black-formatter",
-        "ms-python.python",
         "ms-python.isort",
+        "ms-python.pylint",
+        "ms-python.python",
         "ms-python.vscode-pylance",
         "ryanluker.vscode-coverage-gutters",
         "sonarSource.sonarlint-vscode",
@@ -21,9 +22,6 @@
         "files.eol": "\n",
         "editor.tabSize": 4,
         "python.analysis.autoSearchPaths": false,
-        "python.linting.pylintEnabled": true,
-        "python.linting.enabled": true,
-        "python.formatting.provider": "black",
         "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
@@ -54,6 +52,7 @@
   },
   "remoteUser": "vscode",
   "features": {
-    "rust": "latest"
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {}
   }
 }
