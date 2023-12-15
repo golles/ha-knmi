@@ -9,7 +9,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.knmi.const import DOMAIN
 
-from .const import MOCK_CONFIG
+from .const import MOCK_CONFIG, MOCK_UPDATE_CONFIG
 
 
 # This fixture bypasses the actual setup of the integration
@@ -71,3 +71,32 @@ async def test_failed_config_flow(hass: HomeAssistant, config_flow_exceptions):
 
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
     assert "base" in result["errors"]
+
+
+# Our config flow also has an options flow, so we must test it as well.
+async def test_options_flow(hass: HomeAssistant):
+    """Test an options flow."""
+    # Create a new MockConfigEntry and add to HASS (we're bypassing config
+    # flow entirely)
+    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
+    entry.add_to_hass(hass)
+
+    # Initialize an options flow
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+
+    # Verify that the first options step is a user form
+    assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
+    assert result["step_id"] == "user"
+
+    # Enter some fake data into the form
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        user_input=MOCK_UPDATE_CONFIG,
+    )
+
+    # Verify that the flow finishes
+    assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
+    assert result["title"] == MOCK_CONFIG[CONF_NAME]
+
+    # Verify that the options were updated
+    assert entry.options == MOCK_UPDATE_CONFIG

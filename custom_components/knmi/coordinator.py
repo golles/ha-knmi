@@ -1,4 +1,5 @@
 """DataUpdateCoordinator for knmi."""
+from datetime import timedelta
 import logging
 from typing import Any, Callable
 
@@ -8,7 +9,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import KnmiApiClient
-from .const import DOMAIN, SCAN_INTERVAL
+from .const import DOMAIN
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -19,14 +20,21 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     config_entry: ConfigEntry
 
     def __init__(
-        self, hass: HomeAssistant, client: KnmiApiClient, device_info: DeviceInfo
+        self,
+        hass: HomeAssistant,
+        client: KnmiApiClient,
+        device_info: DeviceInfo,
+        scan_interval: timedelta,
     ) -> None:
         """Initialize."""
         self.api = client
         self.device_info = device_info
 
         super().__init__(
-            hass=hass, logger=_LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL
+            hass=hass,
+            logger=_LOGGER,
+            name=DOMAIN,
+            update_interval=scan_interval,
         )
 
     async def _async_update_data(self) -> dict[str, Any]:

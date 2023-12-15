@@ -1,5 +1,11 @@
 """Constants for knmi tests."""
-from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME
+from homeassistant.const import (
+    CONF_API_KEY,
+    CONF_LATITUDE,
+    CONF_LONGITUDE,
+    CONF_NAME,
+    CONF_SCAN_INTERVAL,
+)
 
 # Mock config data to be used across multiple tests
 MOCK_CONFIG = {
@@ -8,3 +14,5 @@ MOCK_CONFIG = {
     CONF_LONGITUDE: 4.763,
     CONF_NAME: "Home",
 }
+
+MOCK_UPDATE_CONFIG = {CONF_SCAN_INTERVAL: 600}
