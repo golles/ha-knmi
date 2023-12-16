@@ -17,5 +17,14 @@
       "daily_limit": "API key daily limit exceeded, try again tomorrow",
       "general": "Unknown error fetching weather data, try again later"
     }
+  },
+  "options": {
+    "step": {
+      "user": {
+        "data": {
+          "scan_interval": "Scan interval (seconds)"
+        }
+      }
+    }
   }
 }

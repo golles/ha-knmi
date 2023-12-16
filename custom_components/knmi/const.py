@@ -1,5 +1,4 @@
 """Constants for knmi."""
-from datetime import timedelta
 from typing import Final
 
 # API
@@ -15,4 +14,4 @@ VERSION: Final = "1.6.1"
 
 # Defaults
 DEFAULT_NAME: Final = NAME
-SCAN_INTERVAL: timedelta = timedelta(seconds=300)
+DEFAULT_SCAN_INTERVAL: Final = 300

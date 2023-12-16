@@ -17,5 +17,14 @@
       "daily_limit": "De dagelijkse limiet van de API-sleutel is overschreden, probeer het morgen opnieuw",
       "general": "Onbekende fout bij het ophalen van weergegevens, probeer het later opnieuw"
     }
+  },
+  "options": {
+    "step": {
+      "user": {
+        "data": {
+          "scan_interval": "Scaninterval (seconden)"
+        }
+      }
+    }
   }
 }
