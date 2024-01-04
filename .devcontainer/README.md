@@ -31,7 +31,7 @@ _If you don't see this notification, open the command palette and select `Remote
 
 The devcontainer comes with some useful tasks to help you with development, you can start these tasks by opening the command palette and select `Tasks: Run Task` then select the task you want to run.
 
-When a task is currently running (like `Run Home Assistant on port 9123` for the docs), it can be restarted by opening the command palette and selecting `Tasks: Restart Running Task`, then select the task you want to restart.
+When a task is currently running (like `Run Home Assistant on port 8123` for the docs), it can be restarted by opening the command palette and selecting `Tasks: Restart Running Task`, then select the task you want to restart.
 
 ### Step by Step debugging
 
