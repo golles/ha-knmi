@@ -1,4 +1,5 @@
 """Constants for knmi tests."""
+
 from homeassistant.const import (
     CONF_API_KEY,
     CONF_LATITUDE,

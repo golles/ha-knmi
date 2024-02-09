@@ -1,4 +1,5 @@
 """KnmiApiClient"""
+
 import asyncio
 import socket
 

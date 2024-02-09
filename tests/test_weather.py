@@ -1,4 +1,5 @@
 """Tests for knmi weather."""
+
 from decimal import Decimal
 
 from freezegun import freeze_time

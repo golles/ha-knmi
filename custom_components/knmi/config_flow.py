@@ -1,4 +1,5 @@
 """Adds config flow for knmi."""
+
 import logging
 
 from homeassistant import config_entries

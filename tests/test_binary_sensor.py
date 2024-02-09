@@ -1,4 +1,5 @@
 """Tests for knmi binary_sensor."""
+
 from freezegun import freeze_time
 from homeassistant.components.sensor import SensorEntityDescription
 from homeassistant.const import CONF_NAME

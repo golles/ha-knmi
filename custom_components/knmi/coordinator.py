@@ -1,4 +1,5 @@
 """DataUpdateCoordinator for knmi."""
+
 from datetime import timedelta
 import logging
 from typing import Any, Callable
