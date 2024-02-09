@@ -1,4 +1,5 @@
 """Sensor platform for knmi."""
+
 from homeassistant.components.sensor import (
     DOMAIN as SENSOR_DOMAIN,
     SensorDeviceClass,

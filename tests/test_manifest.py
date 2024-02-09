@@ -1,4 +1,5 @@
 """Test for versions."""
+
 import json
 
 from custom_components.knmi.const import DOMAIN, NAME, VERSION

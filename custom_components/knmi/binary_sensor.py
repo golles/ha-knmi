@@ -1,4 +1,5 @@
 """Binary sensor platform for knmi."""
+
 from collections.abc import Mapping
 import datetime
 from typing import Any

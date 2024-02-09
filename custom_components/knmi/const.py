@@ -1,4 +1,5 @@
 """Constants for knmi."""
+
 from typing import Final
 
 # API

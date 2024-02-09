@@ -1,4 +1,5 @@
 """Weather platform for knmi."""
+
 from datetime import timedelta
 import logging
 

@@ -1,4 +1,5 @@
 """Tests for knmi sensor."""
+
 from decimal import Decimal
 
 from homeassistant.core import HomeAssistant

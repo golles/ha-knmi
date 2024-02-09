@@ -4,6 +4,7 @@ Custom integration to integrate knmi with Home Assistant.
 For more details about this integration, please refer to
 https://github.com/golles/ha-knmi/
 """
+
 from datetime import timedelta
 import logging
 
