@@ -22,6 +22,7 @@
         "files.eol": "\n",
         "editor.tabSize": 4,
         "python.analysis.autoSearchPaths": false,
+        "python.experiments.optOutFrom": ["pythonTestAdapter"],
         "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
