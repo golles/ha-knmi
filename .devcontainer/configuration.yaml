@@ -1,9 +1,14 @@
 default_config:
 
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - ::1
+
 logger:
   default: info
   logs:
     custom_components.knmi: debug
-
 # If you need to debug uncommment the line below (doc: https://www.home-assistant.io/integrations/debugpy/)
 # debugpy:
