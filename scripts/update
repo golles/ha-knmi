@@ -4,9 +4,6 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-python3 -m pip install --upgrade --force-reinstall --requirement requirements.txt
+sudo apt update && sudo apt -y upgrade
 
-if python -c "import pytest_homeassistant_custom_component" &> /dev/null; then
-    # User also has test requirements, update those as well.
-    python3 -m pip install --upgrade --force-reinstall --requirement requirements_test.txt
-fi
+python3 -m pip install --upgrade --force-reinstall --requirement requirements_dev.txt

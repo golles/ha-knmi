@@ -1,6 +1,6 @@
 {
   "name": "HA KNMI development",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.11-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
   "postCreateCommand": "scripts/setup",
   "forwardPorts": [8123],
   "customizations": {
@@ -22,6 +22,7 @@
         "files.eol": "\n",
         "editor.tabSize": 4,
         "python.analysis.autoSearchPaths": false,
+        "python.experiments.optOutFrom": ["pythonTestAdapter"],
         "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,

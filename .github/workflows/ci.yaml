@@ -7,7 +7,7 @@ on:
   pull_request: ~
 
 env:
-  DEFAULT_PYTHON: "3.11"
+  DEFAULT_PYTHON: "3.12"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -32,7 +32,7 @@ jobs:
       - name: Check code formatting with isort
         uses: isort/isort-action@master
         with:
-          requirementsFiles: "requirements.txt requirements_test.txt"
+          requirementsFiles: "requirements.txt requirements_dev.txt"
 
   tests:
     runs-on: ubuntu-latest
@@ -48,8 +48,7 @@ jobs:
 
       - name: Install requirements
         run: |
-          python3 -m pip install -r requirements.txt
-          python3 -m pip install -r requirements_test.txt
+          python3 -m pip install -r requirements_dev.txt
 
       - name: Run tests
         run: |
