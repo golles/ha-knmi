@@ -1,4 +1,1 @@
-pip>=21.0,<24.1
-isort
-colorlog
-homeassistant
+homeassistant>=2023.9.0
