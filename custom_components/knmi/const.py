@@ -4,14 +4,15 @@ from typing import Final
 
 # API
 API_CONF_URL: Final = "https://weerlive.nl/api/toegang/account.php"
-API_ENDPOINT: Final = "https://weerlive.nl/api/json-data-10min.php?key={}&locatie={},{}"
+API_ENDPOINT: Final = "https://weerlive.nl/api/weerlive_api_v2.php?key={}&locatie={},{}"
 API_TIMEOUT: Final = 10
 API_TIMEZONE: Final = "Europe/Amsterdam"
 
 # Base component constants.
-NAME: Final = "KNMI"
 DOMAIN: Final = "knmi"
-VERSION: Final = "1.7.1"
+NAME: Final = "KNMI"
+SUPPLIER: Final = "Weerlive"
+VERSION: Final = "2.0.0"
 
 # Defaults
 DEFAULT_NAME: Final = NAME
