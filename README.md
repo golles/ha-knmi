@@ -52,10 +52,10 @@ After completing this process, the newly enabled entities will receive values du
 
 ### Binary sensors
 
-| Name (EN) | Name (NL)    | Attributes                                                         | Notes                                                |
-| --------- | ------------ | ------------------------------------------------------------------ | ---------------------------------------------------- |
-| Sun       | Zon          | Sunrise, Sunset, Sun chance today, tomorrow and day after tomorrow | UTC, frontend will convert this into your local time |
-| Warning   | Waarschuwing | Title, Description, Code                                           | Code has its own entity, see Weather code below      |
+| Name (EN) | Name (NL)    | Attributes                                                         | Notes                                                                   |
+| --------- | ------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| Sun       | Zon          | Sunrise, Sunset, Sun chance today, tomorrow and day after tomorrow | Times of today, in UTC, frontend will convert this into your local time |
+| Warning   | Waarschuwing | Title, Description, Code                                           | Code has its own entity, see Weather code below                         |
 
 ### Sensors
 
@@ -78,7 +78,7 @@ Normal sensors:
 | Temperature              | Temperatuur                  |                                     | Unit configurable     |
 | Weather forecast         | Weersverwachting             |                                     | State is in Dutch     |
 | Wind speed               | Windsnelheid                 | Bearing, Degree, Beaufort and Knots | Unit configurable     |
-| Weather code             | Weercode                     |                                     | Raw value is in Dutch |
+| Weather code             | Weercode                     |                                     | Raw state is in Dutch |
 | Visibility               | Zicht                        |                                     | Unit configurable     |
 
 Diagnostic sensors:
@@ -91,35 +91,34 @@ Diagnostic sensors:
 
 ### Weather
 
-The weather entity holds all the necessary weather information, this can be nicely shown in the Home Assistant frontend.
-There are is a daily forecast, up to 5 days, and an hourly forecast, up to 24 hour.
+The weather entity contains all the weather information, ideal for displaying a comprehensive overview in the Home Assistant frontend. It includes both a daily forecast spanning up to 5 days and an hourly forecast covering up to 24 hours.
 
 Daily forecast attributes:
 
-| Attribute                 | Notes                                                |
-| ------------------------- | ---------------------------------------------------- |
-| datetime                  | UTC, frontend will convert this into your local time |
-| condition                 |                                                      |
-| templow                   |                                                      |
-| temperature               |                                                      |
-| precipitation_probability | in a percentage                                      |
-| wind_bearing              |                                                      |
-| wind_speed                |                                                      |
-| wind_speed_bft            | Not officially supported, but nice addition          |
-| sun_chance                | Not officially supported, but nice addition          |
+| Attribute                 | Notes                                                         |
+| ------------------------- | ------------------------------------------------------------- |
+| datetime                  | Times in UTC, frontend will convert this into your local time |
+| condition                 |                                                               |
+| templow                   |                                                               |
+| temperature               |                                                               |
+| precipitation_probability | in a percentage                                               |
+| wind_bearing              |                                                               |
+| wind_speed                |                                                               |
+| wind_speed_bft            | Not officially supported, but nice addition                   |
+| sun_chance                | Not officially supported, but nice addition                   |
 
 Hourly forecast attributes:
 
-| Attribute                 | Notes                                                |
-| ------------------------- | ---------------------------------------------------- |
-| datetime                  | UTC, frontend will convert this into your local time |
-| condition                 |                                                      |
-| temperature               |                                                      |
-| precipitation_probability | in millimeters                                       |
-| wind_bearing              |                                                      |
-| wind_speed                |                                                      |
-| wind_speed_bft            | Not officially supported, but nice addition          |
-| solar_irradiance          | Not officially supported, but nice addition          |
+| Attribute                 | Notes                                                         |
+| ------------------------- | ------------------------------------------------------------- |
+| datetime                  | Times in UTC, frontend will convert this into your local time |
+| condition                 |                                                               |
+| temperature               |                                                               |
+| precipitation_probability | in millimeters                                                |
+| wind_bearing              |                                                               |
+| wind_speed                |                                                               |
+| wind_speed_bft            | Not officially supported, but nice addition                   |
+| solar_irradiance          | Not officially supported, but nice addition                   |
 
 ## Examples
 
