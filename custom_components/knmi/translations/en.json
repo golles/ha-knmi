@@ -38,7 +38,7 @@
         "state_attributes": {
           "sunrise": { "name": "Sunrise" },
           "sunset": { "name": "Sunset" },
-          "sun_chance0": { "name": "such a chance today" },
+          "sun_chance0": { "name": "sun chance today" },
           "sun_chance1": { "name": "sun chance tomorrow" },
           "sun_chance2": { "name": "sun chance the day after tomorrow" }
         }
