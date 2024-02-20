@@ -17,7 +17,7 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import entity_registry
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.entity import DeviceInfo
@@ -100,11 +100,14 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
         # See https://developers.home-assistant.io/blog/2024/02/12/async_update_entry/
         config_entry.version = 2
 
-        registry = entity_registry.async_get(hass)
+        entity_registry = er.async_get(hass)
+        existing_entries = er.async_entries_for_config_entry(
+            entity_registry, config_entry.entry_id
+        )
 
-        for entry in list(registry.entities.values()):
-            _LOGGER.debug("Deleting old entity %s", entry.entity_id)
-            registry.async_remove(entry.entity_id)
+        for entry in list(existing_entries):
+            _LOGGER.debug("Deleting version 1 entity: %s", entry.entity_id)
+            entity_registry.async_remove(entry.entity_id)
 
     _LOGGER.debug("Migration to version %s successful", config_entry.version)
 
