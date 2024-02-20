@@ -54,12 +54,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
 
     device_info = DeviceInfo(
+        configuration_url=API_CONF_URL,
         entry_type=DeviceEntryType.SERVICE,
         identifiers={(DOMAIN, entry.entry_id)},
+        model=NAME,
         manufacturer=SUPPLIER,
         name=NAME,
         sw_version=VERSION,
-        configuration_url=API_CONF_URL,
     )
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = KnmiDataUpdateCoordinator(
