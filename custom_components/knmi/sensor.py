@@ -51,7 +51,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="gr",
-        icon="mdi:solar-power",
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         device_class=SensorDeviceClass.IRRADIANCE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -70,7 +69,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="luchtd",
-        icon="mdi:water-percent",
         native_unit_of_measurement=UnitOfPressure.HPA,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -80,7 +78,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="lv",
-        icon="mdi:water-percent",
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
@@ -126,7 +123,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="neersl_perc_dag_today",
-        icon="mdi:weather-rainy",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="neersl_perc_dag_today",
@@ -137,7 +133,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="neersl_perc_dag_tomorrow",
-        icon="mdi:weather-rainy",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="neersl_perc_dag_tomorrow",
@@ -148,7 +143,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="plaats",
-        icon="mdi:map-marker",
         entity_category=EntityCategory.DIAGNOSTIC,
         translation_key="plaats",
         value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "plaats"]),
@@ -156,7 +150,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="rest_verz",
-        icon="mdi:api",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         translation_key="rest_verz",
@@ -165,7 +158,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="samenv",
-        icon="mdi:text",
         translation_key="samenv",
         value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "samenv"]),
         entity_registry_enabled_default=False,
@@ -191,13 +183,11 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="verw",
-        icon="mdi:text",
         translation_key="verw",
         value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "verw"]),
     ),
     KnmiSensorDescription(
         key="windkmh",
-        icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.KILOMETERS_PER_HOUR,
         device_class=SensorDeviceClass.SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -213,7 +203,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="wrschklr",
-        icon="mdi:information",
         translation_key="wrschklr",
         value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "wrschklr"]),
         entity_registry_enabled_default=False,

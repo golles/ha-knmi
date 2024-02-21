@@ -34,7 +34,6 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     ),
     KnmiSensorDescription(
         key="sun",
-        icon="mdi:white-balance-sunny",
         translation_key="sun",
         value_fn=lambda coordinator: coordinator.get_value_datetime(
             ["liveweer", 0, "sup"]
