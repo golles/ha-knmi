@@ -37,6 +37,7 @@ async_get_data = "custom_components.knmi.KnmiApiClient.async_get_data"
 # Remove to enable selective use of this fixture
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations):
+    """Enable custom integrations"""
     yield
 
 
@@ -76,7 +77,7 @@ def mocked_data_fixture():
 
 
 # This fixture, when used, will have the mocked values from response.json loaded in the integration.
-# As an addition, the alarm and alarmtxt are set.
+# As an addition, the alarm and related values are set.
 @pytest.fixture(name="mocked_data_alarm")
 def mocked_data_alarm_fixture():
     """Skip calls to get data from API."""
@@ -86,23 +87,6 @@ def mocked_data_alarm_fixture():
     data["liveweer"][0]["lkop"] = "Gladheid"
     data["liveweer"][0]["ltekst"] = "Code geel in bijna hele land vanwege gladheid"
     data["liveweer"][0]["wrschklr"] = "geel"
-
-    with patch(
-        async_get_data,
-        return_value=data,
-    ):
-        yield
-
-
-# This fixture, when used, will have the mocked values from response.json loaded in the integration.
-# As an addition, d2tmin and d2tmax have a wrong type (string instead of a number).
-@pytest.fixture(name="mocked_data_wrong_values_fixture")
-def mocked_data_wrong_values_fixture():
-    """Skip calls to get data from API."""
-    data = json.loads(load_fixture(response_json))
-
-    data["wk_verw"][2]["min_temp"] = "koud"
-    data["wk_verw"][2]["max_temp"] = "warm"
 
     with patch(
         async_get_data,
