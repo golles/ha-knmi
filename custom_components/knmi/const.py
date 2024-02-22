@@ -12,7 +12,7 @@ API_TIMEZONE: Final = "Europe/Amsterdam"
 DOMAIN: Final = "knmi"
 NAME: Final = "KNMI"
 SUPPLIER: Final = "Weerlive"
-VERSION: Final = "2.0.0"
+VERSION: Final = "2.0.0-b1"
 
 # Defaults
 DEFAULT_NAME: Final = NAME
