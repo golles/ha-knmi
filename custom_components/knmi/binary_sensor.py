@@ -30,6 +30,8 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
             "title": coordinator.get_value(["liveweer", 0, "lkop"]),
             "description": coordinator.get_value(["liveweer", 0, "ltekst"]),
             "code": coordinator.get_value(["liveweer", 0, "wrschklr"]),
+            "next_code": coordinator.get_value(["liveweer", 0, "wrsch_gc"]),
+            "timestamp": coordinator.get_value_datetime(["liveweer", 0, "wrsch_gts"]),
         },
     ),
     KnmiSensorDescription(

@@ -84,9 +84,6 @@ def mocked_data_alarm_fixture():
     data = json.loads(load_fixture(response_json))
 
     data["liveweer"][0]["alarm"] = 1
-    data["liveweer"][0]["lkop"] = "Gladheid"
-    data["liveweer"][0]["ltekst"] = "Code geel in bijna hele land vanwege gladheid"
-    data["liveweer"][0]["wrschklr"] = "geel"
 
     with patch(
         async_get_data,

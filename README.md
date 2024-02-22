@@ -55,7 +55,7 @@ After completing this process, the newly enabled entities will receive values du
 | Name (EN) | Name (NL)    | Attributes                                                         | Notes                                                                   |
 | --------- | ------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
 | Sun       | Zon          | Sunrise, Sunset, Sun chance today, tomorrow and day after tomorrow | Times of today, in UTC, frontend will convert this into your local time |
-| Warning   | Waarschuwing | Title, Description, Code                                           | Code has its own entity, see Weather code below                         |
+| Warning   | Waarschuwing | Title, Description, Code, Next code, Next warning                  | Code has its own entity, see Weather code below                         |
 
 ### Sensors
 

@@ -24,9 +24,12 @@
       "sunder": "17:51",
       "image": "wolkennacht",
       "alarm": 0,
-      "lkop": "Er zijn geen waarschuwingen",
-      "ltekst": "Er zijn momenteel geen waarschuwingen van kracht.",
-      "wrschklr": "groen"
+      "lkop": "Vanavond (zeer) zware windstoten",
+      "ltekst": "De eerstkomende uren zijn er geen waarschuwingen van kracht. Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden.",
+      "wrschklr": "groen",
+      "wrsch_g": "22-02-2024 18:00",
+      "wrsch_gts": 1708621200,
+      "wrsch_gc": "geel"
     }
   ],
   "wk_verw": [

@@ -12,12 +12,14 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant, mocked_data)
 
     state = hass.states.get("binary_sensor.knmi_warning")
     assert state.state == "off"
-    assert state.attributes.get("title") == "Er zijn geen waarschuwingen"
+    assert state.attributes.get("title") == "Vanavond (zeer) zware windstoten"
     assert (
         state.attributes.get("description")
-        == "Er zijn momenteel geen waarschuwingen van kracht."
+        == "De eerstkomende uren zijn er geen waarschuwingen van kracht. Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden."
     )
     assert state.attributes.get("code") == "groen"
+    assert state.attributes.get("next_code") == "geel"
+    assert str(state.attributes.get("timestamp")) == "2024-02-22 18:00:00+01:00"
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
@@ -29,12 +31,14 @@ async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant, mocked_data_a
 
     state = hass.states.get("binary_sensor.knmi_warning")
     assert state.state == "on"
-    assert state.attributes.get("title") == "Gladheid"
+    assert state.attributes.get("title") == "Vanavond (zeer) zware windstoten"
     assert (
         state.attributes.get("description")
-        == "Code geel in bijna hele land vanwege gladheid"
+        == "De eerstkomende uren zijn er geen waarschuwingen van kracht. Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden."
     )
-    assert state.attributes.get("code") == "geel"
+    assert state.attributes.get("code") == "groen"
+    assert state.attributes.get("next_code") == "geel"
+    assert str(state.attributes.get("timestamp")) == "2024-02-22 18:00:00+01:00"
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()

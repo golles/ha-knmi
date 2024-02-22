@@ -48,7 +48,25 @@
         "state_attributes": {
           "title": { "name": "Titel" },
           "description": { "name": "Beschrijving" },
-          "code": { "name": "Code" }
+          "code": {
+            "name": "Code",
+            "state": {
+              "groen": "Groen",
+              "geel": "Geel",
+              "oranje": "Oranje",
+              "rood": "Rood"
+            }
+          },
+          "next_code": {
+            "name": "Volgende code",
+            "state": {
+              "groen": "Groen",
+              "geel": "Geel",
+              "oranje": "Oranje",
+              "rood": "Rood"
+            }
+          },
+          "timestamp": { "name": "Volgende waarschuwing" }
         }
       }
     },
