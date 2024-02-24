@@ -73,7 +73,9 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
             _LOGGER.warning("Can't find a value for %s in the API response", path)
             return default
 
-    def get_value_datetime(self, path: list[int | str], default=None) -> datetime:
+    def get_value_datetime(
+        self, path: list[int | str], default=None
+    ) -> datetime | None:
         """
         Get a datetime value from the data by a given path.
         When the value is absent, the default (None) will be returned and an error will be logged.
@@ -83,8 +85,11 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
 
         # Timestamp.
         if isinstance(value, int):
-            _LOGGER.debug("convert %s to datetime (from timestamp)", value)
-            return datetime.fromtimestamp(value, tz=timezone)
+            if value > 0:
+                _LOGGER.debug("convert %s to datetime (from timestamp)", value)
+                return datetime.fromtimestamp(value, tz=timezone)
+
+            return default
 
         # Time.
         if re.match(r"^\d{2}:\d{2}$", value):

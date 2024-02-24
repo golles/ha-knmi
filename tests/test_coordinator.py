@@ -74,7 +74,7 @@ async def test_get_value_datetime(hass: HomeAssistant, mocked_data, caplog):
 
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    # Timestamp
+    # Timestamp.
     assert (
         str(coordinator.get_value_datetime(["liveweer", 0, "timestamp"]))
         == "2024-02-14 22:08:03+01:00"
@@ -83,6 +83,10 @@ async def test_get_value_datetime(hass: HomeAssistant, mocked_data, caplog):
         str(coordinator.get_value_datetime(["uur_verw", 0, "timestamp"]))
         == "2024-02-14 23:00:00+01:00"
     )
+
+    # Timestamp, 0 or lower value.
+    coordinator.data["liveweer"][0]["wrsch_gts"] = 0
+    assert coordinator.get_value_datetime(["liveweer", 0, "wrsch_gts"]) is None
 
     # Time.
     assert (
