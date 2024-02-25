@@ -122,20 +122,20 @@ Hourly forecast attributes:
 
 ## Examples
 
-Integration with all entities: <br>
-<img width="662" alt="Integration" src="https://user-images.githubusercontent.com/2211503/179353840-009a710e-94b9-41a7-9efd-b9dd98ae5b66.png">
+Integration with entities, notice the hidden ones: <br>
+<img width="674" alt="Integration" src="https://github.com/golles/ha-knmi/assets/2211503/2924375b-5a07-43e4-96c5-fa0caa476053">
 
-Weather card: <br>
-<img width="472" alt="Weather card" src="https://user-images.githubusercontent.com/2211503/179353837-a535059b-b5b6-462a-8519-3bb15dd3fdab.png">
+Weather cards (hourly and daily forecast): <br>
+<img width="500" alt="Weather cards" src="https://github.com/golles/ha-knmi/assets/2211503/23417918-8b08-4005-9c36-5da9ff3e9122">
 
-Weather entity: <br>
-<img width="396" alt="Weather entity" src="https://user-images.githubusercontent.com/2211503/179353844-32d9c826-5701-4264-91e4-894c797b4e0d.png">
+Weather entity (with daily and hourly forecast tabs): <br>
+<img width="543" alt="Weather entity" src="https://github.com/golles/ha-knmi/assets/2211503/8d2b2ad5-c0f8-4890-b1d2-034fd1e7a1e9">
 
 Sun entity: <br>
-<img width="392" alt="Sun entity" src="https://user-images.githubusercontent.com/2211503/179353841-8376e62f-1bd8-4ee2-ae16-14e1dde41c9f.png">
+<img width="551" alt="Sun entity" src="https://github.com/golles/ha-knmi/assets/2211503/a7eb3045-dfb5-42e3-a1b6-ce2b396119a4">
 
 Warning entity: <br>
-<img width="370" alt="Warning entity" src="https://user-images.githubusercontent.com/2211503/179353843-fee87e24-eabd-4d44-a58c-b933cfe4625c.png">
+<img width="552" alt="Warning entity" src="https://github.com/golles/ha-knmi/assets/2211503/66aecc7a-2e84-453e-8669-59db34cf6cb1">
 
 ## Collect logs
 
