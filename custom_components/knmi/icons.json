@@ -1,0 +1,22 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "sun": {
+        "default": "mdi:white-balance-sunny",
+        "state": {
+          "off": "mdi:weather-night"
+        }
+      }
+    },
+    "sensor": {
+      "neersl_perc_dag_today": { "default": "mdi:weather-rainy" },
+      "neersl_perc_dag_tomorrow": { "default": "mdi:weather-rainy" },
+      "plaats": { "default": "mdi:map-marker" },
+      "rest_verz": { "default": "mdi:api" },
+      "samenv": { "default": "mdi:text" },
+      "verw": { "default": "mdi:text" },
+      "windkmh": { "default": "mdi:weather-windy" },
+      "wrschklr": { "default": "mdi:information" }
+    }
+  }
+}

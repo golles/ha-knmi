@@ -26,5 +26,87 @@
         }
       }
     }
+  },
+  "entity": {
+    "binary_sensor": {
+      "sun": {
+        "name": "Sun",
+        "state": {
+          "on": "Above horizon",
+          "off": "Below horizon"
+        },
+        "state_attributes": {
+          "sunrise": { "name": "Sunrise" },
+          "sunset": { "name": "Sunset" },
+          "sun_chance0": { "name": "sun chance today" },
+          "sun_chance1": { "name": "sun chance tomorrow" },
+          "sun_chance2": { "name": "sun chance the day after tomorrow" }
+        }
+      },
+      "alarm": {
+        "name": "Warning",
+        "state_attributes": {
+          "title": { "name": "Title" },
+          "description": { "name": "Description" },
+          "code": {
+            "name": "Code",
+            "state": {
+              "groen": "Green",
+              "geel": "Yellow",
+              "oranje": "Orange",
+              "rood": "Red"
+            }
+          },
+          "next_code": {
+            "name": "Next code",
+            "state": {
+              "groen": "Green",
+              "geel": "Yellow",
+              "oranje": "Orange",
+              "rood": "Red"
+            }
+          },
+          "timestamp": { "name": "Next warning" }
+        }
+      }
+    },
+    "sensor": {
+      "dauwp": { "name": "Dew point" },
+      "gr": { "name": "Solar irradiance" },
+      "gtemp": { "name": "Wind chill" },
+      "luchtd": { "name": "Air pressure" },
+      "lv": { "name": "Humidity" },
+      "max_temp_today": { "name": "Max temperature today" },
+      "max_temp_tomorrow": { "name": "Max temperature tomorrow" },
+      "min_temp_today": { "name": "Min temperature today" },
+      "min_temp_tomorrow": { "name": "Min temperature tomorrow" },
+      "neersl_perc_dag_today": { "name": "Precipitation today" },
+      "neersl_perc_dag_tomorrow": { "name": "Precipitation tomorrow" },
+      "plaats": { "name": "Location" },
+      "rest_verz": { "name": "Remaining API requests" },
+      "samenv": { "name": "Description" },
+      "temp": { "name": "Temperature" },
+      "timestamp": { "name": "Latest update" },
+      "verw": { "name": "Weather forecast" },
+      "windkmh": {
+        "name": "Wind speed",
+        "state_attributes": {
+          "bearing": { "name": "Bearing" },
+          "degree": { "name": "Degree" },
+          "beaufort": { "name": "Beaufort" },
+          "knots": { "name": "Knopen" }
+        }
+      },
+      "wrschklr": {
+        "name": "Weather code",
+        "state": {
+          "groen": "Green",
+          "geel": "Yellow",
+          "oranje": "Orange",
+          "rood": "Red"
+        }
+      },
+      "zicht": { "name": "Visibility" }
+    }
   }
 }

@@ -1,6 +1,5 @@
 """Weather platform for knmi."""
 
-from datetime import timedelta
 import logging
 
 from homeassistant.components.weather import (
@@ -36,13 +35,12 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.util import dt
-import pytz
 
-from .const import API_TIMEZONE, DEFAULT_NAME, DOMAIN
+from .const import DEFAULT_NAME, DOMAIN
 from .coordinator import KnmiDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
+
 # Map weather conditions from KNMI to HA.
 CONDITIONS_MAP = {
     "zonnig": ATTR_CONDITION_SUNNY,
@@ -76,7 +74,6 @@ async def async_setup_entry(
             KnmiWeather(
                 conf_name=entry.data.get(CONF_NAME, hass.config.location_name),
                 coordinator=hass.data[DOMAIN][entry.entry_id],
-                entry_id=entry.entry_id,
             )
         ]
     )
@@ -85,135 +82,148 @@ async def async_setup_entry(
 class KnmiWeather(WeatherEntity):
     """Defines a KNMI weather entity."""
 
-    _attr_attribution = "KNMI Weergegevens via https://weerlive.nl"
+    _attr_has_entity_name = True
     _attr_native_pressure_unit = UnitOfPressure.HPA
     _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
-    _attr_native_visibility_unit = UnitOfLength.KILOMETERS
+    _attr_native_visibility_unit = UnitOfLength.METERS
     _attr_native_wind_speed_unit = UnitOfSpeed.KILOMETERS_PER_HOUR
-    _attr_supported_features = WeatherEntityFeature.FORECAST_DAILY
+    _attr_supported_features = (
+        WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY
+    )
 
     def __init__(
         self,
         conf_name: str,
         coordinator: KnmiDataUpdateCoordinator,
-        entry_id: str,
     ):
         self.coordinator = coordinator
 
+        self._attr_name = conf_name
+        self._attr_attribution = self.coordinator.get_value(["api", 0, "bron"])
+        self._attr_unique_id = f"{DEFAULT_NAME}_{conf_name}".lower()
+        self._attr_device_info = self.coordinator.device_info
         self.entity_id = f"{SENSOR_DOMAIN}.{DEFAULT_NAME}_{conf_name}".lower()
-        self._attr_unique_id = f"{entry_id}-{DEFAULT_NAME} {conf_name}"
-        self._attr_device_info = coordinator.device_info
 
-    def map_condition(self, key: str | None) -> str | None:
+    def map_condition(self, value: str | None) -> str | None:
         """Map weather conditions from KNMI to HA."""
-        value = self.coordinator.get_value(key)
-        if "".__eq__(value):
-            return None
 
         try:
             return CONDITIONS_MAP[value]
         except KeyError:
             _LOGGER.error(
-                "Weather condition %s (for %s) is unknown, please raise a bug",
-                value,
-                key,
+                'Weather condition "%s" can\'t be mapped, please raise a bug', value
             )
         return None
-
-    def get_wind_bearing(
-        self, wind_dir_key: str, wind_dir_degree_key: str
-    ) -> float | None:
-        """Get the wind bearing, handle variable (VAR) direction as None."""
-        wind_dir = self.coordinator.get_value(wind_dir_key)
-        if wind_dir == "VAR":
-            _LOGGER.debug(
-                "There is light wind from variable wind directions for %s, so no value",
-                wind_dir_key,
-            )
-            return None
-
-        return self.coordinator.get_value(wind_dir_degree_key, float)
 
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        return self.map_condition("image")
+        return self.map_condition(self.coordinator.get_value(["liveweer", 0, "image"]))
 
     @property
     def native_temperature(self) -> float | None:
         """Return the temperature in native units."""
-        return self.coordinator.get_value("temp", float)
+        return self.coordinator.get_value(["liveweer", 0, "temp"])
 
     @property
     def native_dew_point(self) -> float | None:
         """Return the dew point temperature in native units."""
-        return self.coordinator.get_value("dauwp", float)
+        return self.coordinator.get_value(["liveweer", 0, "dauwp"])
 
     @property
     def native_pressure(self) -> float | None:
         """Return the pressure in native units."""
-        return self.coordinator.get_value("luchtd", float)
+        return self.coordinator.get_value(["liveweer", 0, "luchtd"])
 
     @property
     def humidity(self) -> float | None:
         """Return the humidity in native units."""
-        return self.coordinator.get_value("lv", float)
+        return self.coordinator.get_value(["liveweer", 0, "lv"])
 
     @property
     def native_wind_speed(self) -> float | None:
         """Return the wind speed in native units."""
-        return self.coordinator.get_value("windkmh", float)
+        return self.coordinator.get_value(["liveweer", 0, "windkmh"])
 
     @property
-    def wind_bearing(self) -> float | str | None:
+    def wind_bearing(self) -> float | None:
         """Return the wind bearing."""
-        return self.get_wind_bearing("windr", "windrgr")
+        return self.coordinator.get_value(["liveweer", 0, "windrgr"])
 
     @property
     def native_visibility(self) -> float | None:
         """Return the visibility in native units."""
-        return self.coordinator.get_value("zicht", float)
-
-    def _forecast(self) -> list[Forecast] | None:
-        forecast = []
-        timezone = pytz.timezone(API_TIMEZONE)
-        today = dt.as_utc(
-            dt.now(timezone).replace(hour=0, minute=0, second=0, microsecond=0)
-        )
-
-        for i in range(0, 3):
-            date = today + timedelta(days=i)
-            condition = self.map_condition(f"d{i}weer")
-            wind_bearing = self.get_wind_bearing(f"d{i}windr", f"d{i}windrgr")
-            temp_low = self.coordinator.get_value(f"d{i}tmin", float)
-            temp = self.coordinator.get_value(f"d{i}tmax", float)
-            precipitation_probability = self.coordinator.get_value(
-                f"d{i}neerslag", float
-            )
-            wind_speed = self.coordinator.get_value(f"d{i}windkmh", float)
-            sun_chance = self.coordinator.get_value(f"d{i}zon", float)
-            wind_speed_bft = self.coordinator.get_value(f"d{i}windk", float)
-            next_day = {
-                ATTR_FORECAST_TIME: date.isoformat(),
-                ATTR_FORECAST_CONDITION: condition,
-                ATTR_FORECAST_TEMP_LOW: temp_low,
-                ATTR_FORECAST_TEMP: temp,
-                ATTR_FORECAST_PRECIPITATION_PROBABILITY: precipitation_probability,
-                ATTR_FORECAST_WIND_BEARING: wind_bearing,
-                ATTR_FORECAST_WIND_SPEED: wind_speed,
-                # Not officially supported, but nice additions.
-                "wind_speed_bft": wind_speed_bft,
-                "sun_chance": sun_chance,
-            }
-            forecast.append(next_day)
-
-        return forecast
-
-    @property
-    def forecast(self) -> list[Forecast] | None:
-        """Return the forecast array."""
-        return self._forecast()
+        return self.coordinator.get_value(["liveweer", 0, "zicht"])
 
     async def async_forecast_daily(self) -> list[Forecast] | None:
         """Return the daily forecast in native units."""
-        return self._forecast()
+        forecasts = []
+
+        for i in range(len(self.coordinator.get_value(["wk_verw"]))):
+            forecast = {
+                ATTR_FORECAST_TIME: self.coordinator.get_value_datetime(
+                    ["wk_verw", i, "dag"]
+                ),
+                ATTR_FORECAST_CONDITION: self.map_condition(
+                    self.coordinator.get_value(["wk_verw", i, "image"])
+                ),
+                ATTR_FORECAST_TEMP_LOW: self.coordinator.get_value(
+                    ["wk_verw", i, "min_temp"]
+                ),
+                ATTR_FORECAST_TEMP: self.coordinator.get_value(
+                    ["wk_verw", i, "max_temp"]
+                ),
+                ATTR_FORECAST_PRECIPITATION_PROBABILITY: self.coordinator.get_value(
+                    ["wk_verw", i, "neersl_perc_dag"]  # Percentage.
+                ),
+                ATTR_FORECAST_WIND_BEARING: self.coordinator.get_value(
+                    ["wk_verw", i, "windrgr"]
+                ),
+                ATTR_FORECAST_WIND_SPEED: self.coordinator.get_value(
+                    ["wk_verw", i, "windkmh"]
+                ),
+                # Not officially supported, but nice additions.
+                "wind_speed_bft": self.coordinator.get_value(["wk_verw", i, "windbft"]),
+                "sun_chance": self.coordinator.get_value(
+                    ["wk_verw", i, "zond_perc_dag"]
+                ),
+            }
+            forecasts.append(forecast)
+
+        return forecasts
+
+    async def async_forecast_hourly(self) -> list[Forecast] | None:
+        """Return the hourly forecast in native units."""
+        forecasts = []
+
+        for i in range(len(self.coordinator.get_value(["uur_verw"]))):
+            forecast = {
+                ATTR_FORECAST_TIME: self.coordinator.get_value_datetime(
+                    ["uur_verw", i, "uur"]
+                ),
+                ATTR_FORECAST_CONDITION: self.map_condition(
+                    self.coordinator.get_value(["uur_verw", i, "image"])
+                ),
+                ATTR_FORECAST_TEMP: self.coordinator.get_value(["uur_verw", i, "temp"]),
+                ATTR_FORECAST_PRECIPITATION_PROBABILITY: self.coordinator.get_value(
+                    ["uur_verw", i, "neersl"]  # Millimeter.
+                ),
+                ATTR_FORECAST_WIND_BEARING: self.coordinator.get_value(
+                    ["uur_verw", i, "windrgr"]
+                ),
+                ATTR_FORECAST_WIND_SPEED: self.coordinator.get_value(
+                    ["uur_verw", i, "windkmh"]
+                ),
+                # Not officially supported, but nice additions.
+                "wind_speed_bft": self.coordinator.get_value(
+                    ["uur_verw", i, "windbft"]
+                ),
+                "solar_irradiance": self.coordinator.get_value(["uur_verw", i, "gr"]),
+            }
+            forecasts.append(forecast)
+
+        return forecasts
+
+    async def async_forecast_twice_daily(self) -> list[Forecast] | None:
+        """Return the daily forecast in native units."""
+        raise NotImplementedError

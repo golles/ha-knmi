@@ -1,16 +1,18 @@
 """DataUpdateCoordinator for knmi."""
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 import logging
-from typing import Any, Callable
+import re
+from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+import pytz
 
 from .api import KnmiApiClient
-from .const import DOMAIN
+from .const import API_TIMEZONE, DOMAIN
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -46,20 +48,78 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
             _LOGGER.error("Update failed! - %s", exception)
             raise UpdateFailed() from exception
 
-    def get_value(
-        self, key: str, convert_to: Callable = str
-    ) -> float | int | str | None:
-        """Get a value from the retrieved data and convert to given type"""
-        if self.data and key in self.data:
-            if self.data.get(key, None) == "" and key != "alarmtxt":
-                _LOGGER.warning("Value %s is empty in API response", key)
-                return ""  # Leave empty, eg. warning attribute can be an empty string.
+    def get_value(self, path: list[int | str], default=None) -> Any:
+        """
+        Get a value from the data by a given path.
+        When the value is absent, the default (None) will be returned and an error will be logged.
+        """
+        value = self.data
 
-            try:
-                return convert_to(self.data.get(key, None))
-            except ValueError:
-                _LOGGER.warning("Value %s can't be converted to %s", key, convert_to)
-                return None
+        try:
+            for key in path:
+                value = value[key]
 
-        _LOGGER.warning("Value %s is missing in API response", key)
-        return None
+            value_type = type(value).__name__
+
+            if value_type in ["int", "float", "str"]:
+                _LOGGER.debug(
+                    "Path %s returns a %s (value = %s)", path, value_type, value
+                )
+            else:
+                _LOGGER.debug("Path %s returns a %s", path, value_type)
+
+            return value
+        except (IndexError, KeyError):
+            _LOGGER.warning("Can't find a value for %s in the API response", path)
+            return default
+
+    def get_value_datetime(
+        self, path: list[int | str], default=None
+    ) -> datetime | None:
+        """
+        Get a datetime value from the data by a given path.
+        When the value is absent, the default (None) will be returned and an error will be logged.
+        """
+        timezone = pytz.timezone(API_TIMEZONE)
+        value = self.get_value(path, default)
+
+        # Timestamp.
+        if isinstance(value, int):
+            if value > 0:
+                _LOGGER.debug("convert %s to datetime (from timestamp)", value)
+                return datetime.fromtimestamp(value, tz=timezone)
+
+            return default
+
+        # Time.
+        if re.match(r"^\d{2}:\d{2}$", value):
+            _LOGGER.debug("convert %s to datetime (from time HH:MM)", value)
+            time_array = value.split(":")
+            today = datetime.now(timezone)
+            return today.replace(
+                hour=int(time_array[0]),
+                minute=int(time_array[1]),
+                second=0,
+                microsecond=0,
+            )
+
+        # Date.
+        if re.match(r"^\d{2}-\d{2}-\d{4}$", value):
+            _LOGGER.debug("convert %s to datetime (from date DD-MM-YYYY)", value)
+            return timezone.localize(datetime.strptime(value, "%d-%m-%Y"))
+
+        # Date and time.
+        if re.match(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$", value):
+            _LOGGER.debug(
+                "convert %s to datetime (from date and time DD-MM-YYYY HH:MM:SS)", value
+            )
+            return timezone.localize(datetime.strptime(value, "%d-%m-%Y %H:%M:%S"))
+
+        # Date and time without seconds.
+        if re.match(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$", value):
+            _LOGGER.debug(
+                "convert %s to datetime (from date and time DD-MM-YYYY HH:MM)", value
+            )
+            return timezone.localize(datetime.strptime(value, "%d-%m-%Y %H:%M"))
+
+        return default

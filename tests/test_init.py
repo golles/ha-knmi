@@ -2,9 +2,11 @@
 
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers import entity_registry as er
 import pytest
 
 from custom_components.knmi import (
+    async_migrate_entry,
     async_reload_entry,
     async_setup_entry,
     async_unload_entry,
@@ -47,3 +49,28 @@ async def test_setup_entry_exception(hass: HomeAssistant, error_on_get_data):
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
+
+
+async def test_async_migrate_entry_v1_to_v2(
+    hass: HomeAssistant, entity_registry: er.EntityRegistry, caplog
+):
+    """Test entry migration, v1 to v2."""
+    config_entry = await setup_component(hass)
+
+    config_entry.version = 1
+    assert config_entry.version == 1
+
+    mock_entity_id = "weather.knmi_home"
+    entity_registry.async_get_or_create(
+        domain="weather",
+        platform="knmi",
+        unique_id="home",
+        config_entry=config_entry,
+    )
+    assert len(entity_registry.entities) == 1
+
+    assert await async_migrate_entry(hass, config_entry)
+    assert len(entity_registry.entities) == 0
+    assert f"Deleting version 1 entity: {mock_entity_id}" in caplog.text
+
+    assert config_entry.version == 2

@@ -16,7 +16,7 @@
 # See here for more info: https://docs.pytest.org/en/latest/fixture.html (note that
 # pytest includes fixtures OOB which you can use as defined on this page)
 import json
-from unittest.mock import patch
+from unittest.mock import PropertyMock, patch
 
 import pytest
 from pytest_homeassistant_custom_component.common import load_fixture
@@ -37,6 +37,7 @@ async_get_data = "custom_components.knmi.KnmiApiClient.async_get_data"
 # Remove to enable selective use of this fixture
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations):
+    """Enable custom integrations"""
     yield
 
 
@@ -48,6 +49,16 @@ def skip_notifications_fixture():
     """Skip notification calls."""
     with patch("homeassistant.components.persistent_notification.async_create"), patch(
         "homeassistant.components.persistent_notification.async_dismiss"
+    ):
+        yield
+
+
+@pytest.fixture(autouse=True)
+def enable_all_entities():
+    """Make sure all entities are enabled."""
+    with patch(
+        "homeassistant.helpers.entity.Entity.entity_registry_enabled_default",
+        PropertyMock(return_value=True),
     ):
         yield
 
@@ -66,48 +77,13 @@ def mocked_data_fixture():
 
 
 # This fixture, when used, will have the mocked values from response.json loaded in the integration.
-# As an addition, the alarm and alarmtxt are set.
+# As an addition, the alarm and related values are set.
 @pytest.fixture(name="mocked_data_alarm")
 def mocked_data_alarm_fixture():
     """Skip calls to get data from API."""
     data = json.loads(load_fixture(response_json))
 
-    data["alarm"] = "1"
-    data["alarmtxt"] = "Code geel in bijna hele land vanwege gladheid"
-
-    with patch(
-        async_get_data,
-        return_value=data,
-    ):
-        yield
-
-
-# This fixture, when used, will have the mocked values from response.json loaded in the integration.
-# As an addition, plaats has been removed and temp has been set to an empty value.
-@pytest.fixture(name="mocked_data_empty_values")
-def mocked_data_empty_values_fixture():
-    """Skip calls to get data from API."""
-    data = json.loads(load_fixture(response_json))
-
-    del data["plaats"]
-    data["temp"] = ""
-
-    with patch(
-        async_get_data,
-        return_value=data,
-    ):
-        yield
-
-
-# This fixture, when used, will have the mocked values from response.json loaded in the integration.
-# As an addition, d2tmin and d2tmax have a wrong type (string instead of a number).
-@pytest.fixture(name="mocked_data_wrong_values_fixture")
-def mocked_data_wrong_values_fixture():
-    """Skip calls to get data from API."""
-    data = json.loads(load_fixture(response_json))
-
-    data["d2tmin"] = "koud"
-    data["d2tmax"] = "warm"
+    data["liveweer"][0]["alarm"] = 1
 
     with patch(
         async_get_data,
