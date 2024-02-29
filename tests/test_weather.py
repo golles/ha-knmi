@@ -14,12 +14,14 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
     ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_PRECIPITATION,
     ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_TEMP,
     ATTR_FORECAST_TEMP_LOW,
     ATTR_FORECAST_TIME,
     ATTR_FORECAST_WIND_BEARING,
     ATTR_FORECAST_WIND_SPEED,
+    ATTR_WEATHER_APPARENT_TEMPERATURE,
     ATTR_WEATHER_DEW_POINT,
     ATTR_WEATHER_HUMIDITY,
     ATTR_WEATHER_PRESSURE,
@@ -97,6 +99,9 @@ async def test_state(hass: HomeAssistant, mocked_data):
     assert Decimal(state.attributes.get(ATTR_WEATHER_WIND_BEARING)) == 226
     assert Decimal(state.attributes.get(ATTR_WEATHER_WIND_SPEED)) == Decimal(29.1)
     assert Decimal(state.attributes.get(ATTR_WEATHER_DEW_POINT)) == Decimal(10.1)
+    assert Decimal(state.attributes.get(ATTR_WEATHER_APPARENT_TEMPERATURE)) == Decimal(
+        6.8
+    )
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
@@ -179,7 +184,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[0][ATTR_FORECAST_TIME]) == "2024-02-14 23:00:00+01:00"
     assert forecast[0][ATTR_FORECAST_CONDITION] == "cloudy"
     assert forecast[0][ATTR_FORECAST_TEMP] == 10
-    assert forecast[0][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0
+    assert forecast[0][ATTR_FORECAST_PRECIPITATION] == 0
     assert forecast[0][ATTR_FORECAST_WIND_BEARING] == 231
     assert forecast[0][ATTR_FORECAST_WIND_SPEED] == 21
     assert forecast[0]["wind_speed_bft"] == 4
@@ -188,7 +193,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[3][ATTR_FORECAST_TIME]) == "2024-02-15 02:00:00+01:00"
     assert forecast[3][ATTR_FORECAST_CONDITION] == "cloudy"
     assert forecast[3][ATTR_FORECAST_TEMP] == 10
-    assert forecast[3][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0
+    assert forecast[3][ATTR_FORECAST_PRECIPITATION] == 0
     assert forecast[3][ATTR_FORECAST_WIND_BEARING] == 226
     assert forecast[3][ATTR_FORECAST_WIND_SPEED] == 18
     assert forecast[3]["wind_speed_bft"] == 3
@@ -197,7 +202,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[5][ATTR_FORECAST_TIME]) == "2024-02-15 04:00:00+01:00"
     assert forecast[5][ATTR_FORECAST_CONDITION] == "cloudy"
     assert forecast[5][ATTR_FORECAST_TEMP] == 10
-    assert forecast[5][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0
+    assert forecast[5][ATTR_FORECAST_PRECIPITATION] == 0
     assert forecast[5][ATTR_FORECAST_WIND_BEARING] == 219
     assert forecast[5][ATTR_FORECAST_WIND_SPEED] == 18
     assert forecast[5]["wind_speed_bft"] == 3
@@ -206,7 +211,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[8][ATTR_FORECAST_TIME]) == "2024-02-15 07:00:00+01:00"
     assert forecast[8][ATTR_FORECAST_CONDITION] == "pouring"
     assert forecast[8][ATTR_FORECAST_TEMP] == 10
-    assert Decimal(forecast[8][ATTR_FORECAST_PRECIPITATION_PROBABILITY]) == Decimal(0.9)
+    assert Decimal(forecast[8][ATTR_FORECAST_PRECIPITATION]) == Decimal(0.9)
     assert forecast[8][ATTR_FORECAST_WIND_BEARING] == 196
     assert forecast[8][ATTR_FORECAST_WIND_SPEED] == 14
     assert forecast[8]["wind_speed_bft"] == 3
@@ -215,7 +220,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[13][ATTR_FORECAST_TIME]) == "2024-02-15 12:00:00+01:00"
     assert forecast[13][ATTR_FORECAST_CONDITION] == "cloudy"
     assert forecast[13][ATTR_FORECAST_TEMP] == 12
-    assert forecast[13][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0
+    assert forecast[13][ATTR_FORECAST_PRECIPITATION] == 0
     assert forecast[13][ATTR_FORECAST_WIND_BEARING] == 206
     assert forecast[13][ATTR_FORECAST_WIND_SPEED] == 14
     assert forecast[13]["wind_speed_bft"] == 3
@@ -224,7 +229,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[18][ATTR_FORECAST_TIME]) == "2024-02-15 17:00:00+01:00"
     assert forecast[18][ATTR_FORECAST_CONDITION] == "cloudy"
     assert forecast[18][ATTR_FORECAST_TEMP] == 14
-    assert forecast[18][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0
+    assert forecast[18][ATTR_FORECAST_PRECIPITATION] == 0
     assert forecast[18][ATTR_FORECAST_WIND_BEARING] == 168
     assert forecast[18][ATTR_FORECAST_WIND_SPEED] == 14
     assert forecast[18]["wind_speed_bft"] == 3
@@ -233,7 +238,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert str(forecast[23][ATTR_FORECAST_TIME]) == "2024-02-15 22:00:00+01:00"
     assert forecast[23][ATTR_FORECAST_CONDITION] == "cloudy"
     assert forecast[23][ATTR_FORECAST_TEMP] == 12
-    assert forecast[23][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 0
+    assert forecast[23][ATTR_FORECAST_PRECIPITATION] == 0
     assert forecast[23][ATTR_FORECAST_WIND_BEARING] == 162
     assert forecast[23][ATTR_FORECAST_WIND_SPEED] == 18
     assert forecast[23]["wind_speed_bft"] == 3
