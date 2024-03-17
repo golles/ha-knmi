@@ -96,10 +96,7 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
     _LOGGER.debug("Migrating from version %s", config_entry.version)
 
     if config_entry.version == 1:
-        # Replace with the following line after 2024.3.
-        # hass.config_entries.async_update_entry(config_entry, version=2)
-        # See https://developers.home-assistant.io/blog/2024/02/12/async_update_entry/
-        config_entry.version = 2
+        hass.config_entries.async_update_entry(config_entry, version=2)
 
         entity_registry = er.async_get(hass)
         existing_entries = er.async_entries_for_config_entry(

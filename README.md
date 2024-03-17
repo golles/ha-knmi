@@ -109,16 +109,16 @@ Daily forecast attributes:
 
 Hourly forecast attributes:
 
-| Attribute                 | Notes                                                         |
-| ------------------------- | ------------------------------------------------------------- |
-| datetime                  | Times in UTC, frontend will convert this into your local time |
-| condition                 |                                                               |
-| temperature               |                                                               |
-| precipitation_probability | in millimeters                                                |
-| wind_bearing              |                                                               |
-| wind_speed                |                                                               |
-| wind_speed_bft            | Not officially supported, but nice addition                   |
-| solar_irradiance          | Not officially supported, but nice addition                   |
+| Attribute        | Notes                                                         |
+| ---------------- | ------------------------------------------------------------- |
+| datetime         | Times in UTC, frontend will convert this into your local time |
+| condition        |                                                               |
+| temperature      |                                                               |
+| precipitation    | in millimeters                                                |
+| wind_bearing     |                                                               |
+| wind_speed       |                                                               |
+| wind_speed_bft   | Not officially supported, but nice addition                   |
+| solar_irradiance | Not officially supported, but nice addition                   |
 
 ## Examples
 

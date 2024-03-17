@@ -14,6 +14,7 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
     ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_PRECIPITATION,
     ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_TEMP,
     ATTR_FORECAST_TEMP_LOW,
@@ -126,6 +127,11 @@ class KnmiWeather(WeatherEntity):
         return self.coordinator.get_value(["liveweer", 0, "temp"])
 
     @property
+    def native_apparent_temperature(self) -> float | None:
+        """Return the apparent temperature in native units."""
+        return self.coordinator.get_value(["liveweer", 0, "gtemp"])
+
+    @property
     def native_dew_point(self) -> float | None:
         """Return the dew point temperature in native units."""
         return self.coordinator.get_value(["liveweer", 0, "dauwp"])
@@ -205,7 +211,7 @@ class KnmiWeather(WeatherEntity):
                     self.coordinator.get_value(["uur_verw", i, "image"])
                 ),
                 ATTR_FORECAST_TEMP: self.coordinator.get_value(["uur_verw", i, "temp"]),
-                ATTR_FORECAST_PRECIPITATION_PROBABILITY: self.coordinator.get_value(
+                ATTR_FORECAST_PRECIPITATION: self.coordinator.get_value(
                     ["uur_verw", i, "neersl"]  # Millimeter.
                 ),
                 ATTR_FORECAST_WIND_BEARING: self.coordinator.get_value(
