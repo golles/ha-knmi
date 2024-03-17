@@ -166,10 +166,10 @@ class KnmiWeather(WeatherEntity):
         forecasts = []
 
         for i in range(len(self.coordinator.get_value(["wk_verw"]))):
+            time = self.coordinator.get_value_datetime(["wk_verw", i, "dag"])
+
             forecast = {
-                ATTR_FORECAST_TIME: self.coordinator.get_value_datetime(
-                    ["wk_verw", i, "dag"]
-                ),
+                ATTR_FORECAST_TIME: time.isoformat() if time else None,
                 ATTR_FORECAST_CONDITION: self.map_condition(
                     self.coordinator.get_value(["wk_verw", i, "image"])
                 ),
@@ -203,10 +203,10 @@ class KnmiWeather(WeatherEntity):
         forecasts = []
 
         for i in range(len(self.coordinator.get_value(["uur_verw"]))):
+            time = self.coordinator.get_value_datetime(["uur_verw", i, "uur"])
+
             forecast = {
-                ATTR_FORECAST_TIME: self.coordinator.get_value_datetime(
-                    ["uur_verw", i, "uur"]
-                ),
+                ATTR_FORECAST_TIME: time.isoformat() if time else None,
                 ATTR_FORECAST_CONDITION: self.map_condition(
                     self.coordinator.get_value(["uur_verw", i, "image"])
                 ),
