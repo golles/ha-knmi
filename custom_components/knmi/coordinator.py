@@ -55,14 +55,19 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
             )
             # Do not throw an exception unless it's failed a few times to avoid excessive "unavailable" data
             # in HASS
-            if self.failed_update_count > FAILED_UPDATES_ALLOWANCE:
-                _LOGGER.error(
-                    "Update failed %s times, above limit of %s! - %s",
-                    self.failed_update_count,
-                    FAILED_UPDATES_ALLOWANCE,
-                    exception,
-                )
-                raise UpdateFailed() from exception
+            if self.failed_update_count <= FAILED_UPDATES_ALLOWANCE:
+                # return the 'old' data on a failed update
+                _LOGGER.debug("Update failed, returning existing data")
+                return self.data
+
+            # Data update failed too many times, raise an error
+            _LOGGER.error(
+                "Update failed %s times, above limit of %s! - %s",
+                self.failed_update_count,
+                FAILED_UPDATES_ALLOWANCE,
+                exception,
+            )
+            raise UpdateFailed() from exception
 
     def get_value(self, path: list[int | str], default=None) -> Any:
         """
