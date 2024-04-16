@@ -17,3 +17,5 @@ VERSION: Final = "2.0.1"
 # Defaults
 DEFAULT_NAME: Final = NAME
 DEFAULT_SCAN_INTERVAL: Final = 300
+# TODO by someone that understands HASS plugins better: make this user configurable, preferably in seconds rather than 'times'
+FAILED_UPDATES_ALLOWANCE: Final = 6

@@ -12,7 +12,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 import pytz
 
 from .api import KnmiApiClient
-from .const import API_TIMEZONE, DOMAIN
+from .const import API_TIMEZONE, DOMAIN, FAILED_UPDATES_ALLOWANCE
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -21,6 +21,7 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
     config_entry: ConfigEntry
+    failed_update_count = 0
 
     def __init__(
         self,
@@ -43,10 +44,25 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict[str, Any]:
         """Update data via library."""
         try:
-            return await self.api.async_get_data()
+            data = await self.api.async_get_data()
+            # No exception from api.async_get_data() -> reset the failed update counter
+            self.failed_update_count = 0
+            return data
         except Exception as exception:
-            _LOGGER.error("Update failed! - %s", exception)
-            raise UpdateFailed() from exception
+            self.failed_update_count += 1
+            _LOGGER.warning(
+                "Update failed %s times! - %s", self.failed_update_count, exception
+            )
+            # Do not throw an exception unless it's failed a few times to avoid excessive "unavailable" data
+            # in HASS
+            if self.failed_update_count > FAILED_UPDATES_ALLOWANCE:
+                _LOGGER.error(
+                    "Update failed %s times, above limit of %s! - %s",
+                    self.failed_update_count,
+                    FAILED_UPDATES_ALLOWANCE,
+                    exception,
+                )
+                raise UpdateFailed() from exception
 
     def get_value(self, path: list[int | str], default=None) -> Any:
         """
