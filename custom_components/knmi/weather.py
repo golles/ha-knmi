@@ -119,7 +119,14 @@ class KnmiWeather(WeatherEntity):
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        return self.map_condition(self.coordinator.get_value(["liveweer", 0, "image"]))
+        condition = self.map_condition(
+            self.coordinator.get_value(["liveweer", 0, "image"])
+        )
+
+        if condition == ATTR_CONDITION_SNOWY and self.native_temperature > 6:
+            condition = ATTR_CONDITION_RAINY
+
+        return condition
 
     @property
     def native_temperature(self) -> float | None:
