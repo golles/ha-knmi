@@ -20,4 +20,5 @@ async def async_get_config_entry_diagnostics(
     return {
         "config_entry": async_redact_data(config_entry.as_dict(), TO_REDACT),
         "data": coordinator.data,
+        "response_text": coordinator.api.response_text,
     }

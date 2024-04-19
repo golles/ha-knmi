@@ -15,7 +15,7 @@
 #
 # See here for more info: https://docs.pytest.org/en/latest/fixture.html (note that
 # pytest includes fixtures OOB which you can use as defined on this page)
-import json
+
 from unittest.mock import PropertyMock, patch
 
 import pytest
@@ -63,31 +63,19 @@ def enable_all_entities():
         yield
 
 
-# This fixture, when used, will have the mocked values from response.json loaded in the integration.
+# This fixture, when used, will have the mocked data from a given json file.
 @pytest.fixture(name="mocked_data")
-def mocked_data_fixture():
-    """Skip calls to get data from API."""
-    data = json.loads(load_fixture(response_json))
+def mocked_data_fixture(request):
+    """Use mocked data in the integration"""
+    json_file = request.node.get_closest_marker("fixture")
+    if json_file is None:
+        json_file = "response.json"
+    else:
+        json_file = json_file.args[0]
 
     with patch(
-        async_get_data,
-        return_value=data,
-    ):
-        yield
-
-
-# This fixture, when used, will have the mocked values from response.json loaded in the integration.
-# As an addition, the alarm and related values are set.
-@pytest.fixture(name="mocked_data_alarm")
-def mocked_data_alarm_fixture():
-    """Skip calls to get data from API."""
-    data = json.loads(load_fixture(response_json))
-
-    data["liveweer"][0]["alarm"] = 1
-
-    with patch(
-        async_get_data,
-        return_value=data,
+        "custom_components.knmi.KnmiApiClient.get_response_text",
+        return_value=load_fixture(json_file),
     ):
         yield
 
