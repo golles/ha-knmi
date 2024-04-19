@@ -67,11 +67,11 @@ def enable_all_entities():
 @pytest.fixture(name="mocked_data")
 def mocked_data_fixture(request):
     """Use mocked data in the integration"""
-    json_file = request.node.get_closest_marker("fixture")
-    if json_file is None:
-        json_file = "response.json"
-    else:
-        json_file = json_file.args[0]
+    json_file = "response.json"
+    fixture = request.node.get_closest_marker("fixture")
+
+    if fixture is not None:
+        json_file = fixture.args[0]
 
     with patch(
         "custom_components.knmi.KnmiApiClient.get_response_text",
