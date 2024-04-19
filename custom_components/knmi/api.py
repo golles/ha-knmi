@@ -70,9 +70,9 @@ class KnmiApiClient:
                     "API key daily limit exceeded, try again tomorrow"
                 )
 
-            # The API has an ongoing issue due ot invalid JSON repsponse.
+            # The API has an ongoing issue due to invalid JSON response.
             # Where a null value of a number field is set to _ (without quotes).
-            # Here we fix tje JSON by setting the value to null.
+            # Here we fix the JSON by setting the value to null.
             # More info: https://github.com/golles/ha-knmi/issues/130
             if '": _,' in self.response_text:
                 _LOGGER.debug("Detected invalid JSON, attempting to fix that...")
