@@ -13,7 +13,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.util import dt
 
 from .const import DEFAULT_NAME, DOMAIN
 from .coordinator import KnmiDataUpdateCoordinator
@@ -39,11 +38,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
     KnmiSensorDescription(
         key="sun",
         translation_key="sun",
-        value_fn=lambda coordinator: coordinator.get_value_datetime(
-            ["liveweer", 0, "sup"]
-        )
-        < dt.now()
-        < coordinator.get_value_datetime(["liveweer", 0, "sunder"]),
+        value_fn=lambda coordinator: coordinator.get_is_sun_up(),
         attr_fn=lambda coordinator: {
             "sunrise": coordinator.get_value_datetime(["liveweer", 0, "sup"]),
             "sunset": coordinator.get_value_datetime(["liveweer", 0, "sunder"]),

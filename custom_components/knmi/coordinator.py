@@ -9,6 +9,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import dt
 import pytz
 
 from .api import KnmiApiClient
@@ -47,6 +48,12 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         except Exception as exception:
             _LOGGER.error("Update failed! - %s", exception)
             raise UpdateFailed() from exception
+
+    def get_is_sun_up(self) -> bool:
+        """Helper to get if the sun is currently up"""
+        sun_up = self.get_value_datetime(["liveweer", 0, "sup"])
+        sun_under = self.get_value_datetime(["liveweer", 0, "sunder"])
+        return sun_up < dt.now() < sun_under
 
     def get_value(self, path: list[int | str], default=None) -> Any:
         """
