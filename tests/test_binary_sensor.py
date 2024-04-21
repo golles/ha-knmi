@@ -2,6 +2,7 @@
 
 from freezegun import freeze_time
 from homeassistant.core import HomeAssistant
+import pytest
 
 from . import setup_component
 
@@ -25,7 +26,8 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant, mocked_data)
     await hass.async_block_till_done()
 
 
-async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant, mocked_data_alarm):
+@pytest.mark.fixture("response_alarm.json")
+async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant, mocked_data):
     """Test is_on function on alarm sensor."""
     config_entry = await setup_component(hass)
 

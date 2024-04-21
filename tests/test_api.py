@@ -14,6 +14,7 @@ from custom_components.knmi.api import (
 )
 from custom_components.knmi.const import API_ENDPOINT
 
+from . import setup_component
 from .const import MOCK_CONFIG
 
 
@@ -50,3 +51,15 @@ async def test_api_error(
 
     with pytest.raises(exception):
         await api.async_get_data()
+
+
+@pytest.mark.fixture("_.json")
+async def test_invalid_json_fix(hass: HomeAssistant, mocked_data):
+    """Test for fix https://github.com/golles/ha-knmi/issues/130."""
+    config_entry = await setup_component(hass)
+
+    state = hass.states.get("sensor.knmi_air_pressure")
+    assert state.state == "unknown"
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
