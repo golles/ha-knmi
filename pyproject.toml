@@ -24,5 +24,6 @@ disable = [
     "too-few-public-methods",
     "too-many-instance-attributes",
     "too-many-locals",
+    "too-many-return-statements",
     "unexpected-keyword-arg",
 ]
