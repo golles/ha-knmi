@@ -259,3 +259,27 @@ async def test_async_forecast_twice_daily(hass: HomeAssistant, mocked_data):
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()
+
+
+@pytest.mark.fixture("warm_snow.json")
+async def test_warm_snow_fix(hass: HomeAssistant, mocked_data):
+    """Test if we return rainy if the API returns snowy and a temp higher than 6."""
+    config_entry = await setup_component(hass)
+
+    state = hass.states.get("weather.knmi_home")
+    assert state.state == ATTR_CONDITION_RAINY
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
+
+@pytest.mark.fixture("cold_snow.json")
+async def test_real_snow(hass: HomeAssistant, mocked_data):
+    """Test if we return snowy if the API returns snowy and a temp lower than 6."""
+    config_entry = await setup_component(hass)
+
+    state = hass.states.get("weather.knmi_home")
+    assert state.state == ATTR_CONDITION_SNOWY
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
