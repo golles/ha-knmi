@@ -2,6 +2,7 @@
 
 from decimal import Decimal
 
+from freezegun import freeze_time
 from homeassistant.components.weather import (
     ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
@@ -280,6 +281,32 @@ async def test_real_snow(hass: HomeAssistant, mocked_data):
 
     state = hass.states.get("weather.knmi_home")
     assert state.state == ATTR_CONDITION_SNOWY
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
+
+@freeze_time("2023-02-05T15:30:00+00:00")
+@pytest.mark.fixture("clear_night_fix.json")
+async def test_sunny_during_day(hass: HomeAssistant, mocked_data):
+    """When the API returns sunny when the sun isn't set, the weather state should be sunny"""
+    config_entry = await setup_component(hass)
+
+    state = hass.states.get("weather.knmi_home")
+    assert state.state == ATTR_CONDITION_SUNNY
+
+    assert await config_entry.async_unload(hass)
+    await hass.async_block_till_done()
+
+
+@freeze_time("2023-02-05T03:30:00+01:00")
+@pytest.mark.fixture("clear_night_fix.json")
+async def test_clear_night_during_night(hass: HomeAssistant, mocked_data):
+    """When the API returns sunny when the sun is set, the weather state should be clear night"""
+    config_entry = await setup_component(hass)
+
+    state = hass.states.get("weather.knmi_home")
+    assert state.state == ATTR_CONDITION_CLEAR_NIGHT
 
     assert await config_entry.async_unload(hass)
     await hass.async_block_till_done()

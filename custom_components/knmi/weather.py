@@ -123,6 +123,9 @@ class KnmiWeather(WeatherEntity):
             self.coordinator.get_value(["liveweer", 0, "image"])
         )
 
+        if condition == ATTR_CONDITION_SUNNY and not self.coordinator.get_is_sun_up():
+            condition = ATTR_CONDITION_CLEAR_NIGHT
+
         if condition == ATTR_CONDITION_SNOWY and self.native_temperature > 6:
             condition = ATTR_CONDITION_RAINY
 
