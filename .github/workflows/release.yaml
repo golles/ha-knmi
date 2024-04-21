@@ -11,11 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           body: |
-            If you like this integration, please star this repo to show your appreciation - it makes me very happy!
+            Enjoying this integration? Show your support by starring the repository! ⭐️
 
             **Changes:**
             - Change 1
