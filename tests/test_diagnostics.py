@@ -9,9 +9,9 @@ from homeassistant.setup import async_setup_component
 from homeassistant.util.json import JsonObjectType
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
-from syrupy import SnapshotAssertion
 
 from custom_components.knmi.const import DOMAIN
+from custom_components.knmi.diagnostics import TO_REDACT
 
 from .const import MOCK_CONFIG
 
@@ -19,7 +19,6 @@ from .const import MOCK_CONFIG
 async def test_config_entry_diagnostics(
     hass: HomeAssistant,
     hass_client: ClientSessionGenerator,
-    snapshot: SnapshotAssertion,
     mocked_data,
 ) -> None:
     """Test config entry diagnostics."""
@@ -31,7 +30,13 @@ async def test_config_entry_diagnostics(
 
     result = await get_diagnostics_for_config_entry(hass, hass_client, entry)
 
-    assert result == snapshot
+    assert result["config_entry"]["entry_id"] == "test"
+    assert result["config_entry"]["domain"] == DOMAIN
+
+    for key in TO_REDACT:
+        assert result["config_entry"]["data"][key] == "**REDACTED**"
+
+    assert result["data"]["liveweer"][0]["plaats"] == "Purmerend"
 
 
 # The following 2 functions are copied from https://github.com/home-assistant/core/blob/dev/tests/components/diagnostics/__init__.py
