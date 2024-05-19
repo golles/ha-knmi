@@ -1,5 +1,9 @@
 """Tests for knmi api."""
 
+import asyncio
+import socket
+
+import aiohttp
 from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -9,6 +13,7 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClien
 from custom_components.knmi.api import (
     KnmiApiClient,
     KnmiApiClientApiKeyError,
+    KnmiApiClientCommunicationError,
     KnmiApiClientError,
     KnmiApiRateLimitError,
 )
@@ -50,6 +55,41 @@ async def test_api_error(
     )
 
     with pytest.raises(exception):
+        await api.async_get_data()
+
+
+@pytest.mark.parametrize(
+    "http_exception",
+    [
+        aiohttp.ClientError,
+        socket.gaierror,
+        asyncio.TimeoutError,
+    ],
+)
+async def test_connection_error(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    http_exception: Exception,
+):
+    """Test http exception."""
+
+    api = KnmiApiClient(
+        MOCK_CONFIG[CONF_API_KEY],
+        MOCK_CONFIG[CONF_LATITUDE],
+        MOCK_CONFIG[CONF_LONGITUDE],
+        async_get_clientsession(hass),
+    )
+
+    aioclient_mock.get(
+        API_ENDPOINT.format(
+            MOCK_CONFIG[CONF_API_KEY],
+            MOCK_CONFIG[CONF_LATITUDE],
+            MOCK_CONFIG[CONF_LONGITUDE],
+        ),
+        exc=http_exception,
+    )
+
+    with pytest.raises(KnmiApiClientCommunicationError):
         await api.async_get_data()
 
 
