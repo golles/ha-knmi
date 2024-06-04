@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from homeassistant.core import HomeAssistant
 
-from . import setup_component
+from . import setup_component, unload_component
 
 
 async def test_states(hass: HomeAssistant, mocked_data):
@@ -78,5 +78,4 @@ async def test_states(hass: HomeAssistant, mocked_data):
     state = hass.states.get("sensor.knmi_visibility")
     assert state.state == "6990"
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)

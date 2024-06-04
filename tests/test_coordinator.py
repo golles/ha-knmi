@@ -8,7 +8,7 @@ from homeassistant.core import HomeAssistant
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 
-from . import setup_component
+from . import setup_component, unload_component
 
 
 async def test_get_value(hass: HomeAssistant, mocked_data, caplog):
@@ -29,8 +29,7 @@ async def test_get_value(hass: HomeAssistant, mocked_data, caplog):
         in caplog.text
     )
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 async def test_get_value_missing_values(hass: HomeAssistant, mocked_data, caplog):
@@ -63,8 +62,7 @@ async def test_get_value_missing_values(hass: HomeAssistant, mocked_data, caplog
         in caplog.text
     )
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @freeze_time("2024-02-14T12:00:00+00:00")
@@ -133,5 +131,4 @@ async def test_get_value_datetime(hass: HomeAssistant, mocked_data, caplog):
         coordinator.get_value_datetime(["uur_verw", 99, "uur"], "missing") == "missing"
     )
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)

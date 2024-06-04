@@ -4,7 +4,7 @@ from freezegun import freeze_time
 from homeassistant.core import HomeAssistant
 import pytest
 
-from . import setup_component
+from . import setup_component, unload_component
 
 
 async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant, mocked_data):
@@ -22,8 +22,7 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant, mocked_data)
     assert state.attributes.get("next_code") == "geel"
     assert str(state.attributes.get("timestamp")) == "2024-02-22 18:00:00+01:00"
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @pytest.mark.fixture("response_alarm.json")
@@ -42,8 +41,7 @@ async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant, mocked_data):
     assert state.attributes.get("next_code") == "geel"
     assert str(state.attributes.get("timestamp")) == "2024-02-22 18:00:00+01:00"
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @freeze_time("2023-02-05T03:30:00+01:00")
@@ -59,8 +57,7 @@ async def test_knmi_binary_sun_sensor_is_off(hass: HomeAssistant, mocked_data):
     assert state.attributes.get("sun_chance1") == 8
     assert state.attributes.get("sun_chance2") == 14
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @freeze_time("2023-02-05T15:30:00+00:00")
@@ -71,5 +68,4 @@ async def test_knmi_binary_sun_sensor_is_on(hass: HomeAssistant, mocked_data):
     state = hass.states.get("binary_sensor.knmi_sun")
     assert state.state == "on"
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)

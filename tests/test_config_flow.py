@@ -10,6 +10,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.knmi.const import DOMAIN
 
+from . import setup_component, unload_component
 from .const import MOCK_CONFIG, MOCK_UPDATE_CONFIG
 
 
@@ -79,11 +80,10 @@ async def test_options_flow(hass: HomeAssistant):
     """Test an options flow."""
     # Create a new MockConfigEntry and add to HASS (we're bypassing config
     # flow entirely)
-    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
-    entry.add_to_hass(hass)
+    config_entry = await setup_component(hass)
 
     # Initialize an options flow
-    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
     # Verify that the first options step is a user form
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
@@ -100,4 +100,6 @@ async def test_options_flow(hass: HomeAssistant):
     assert result["title"] == MOCK_CONFIG[CONF_NAME]
 
     # Verify that the options were updated
-    assert entry.options == MOCK_UPDATE_CONFIG
+    assert config_entry.options == MOCK_UPDATE_CONFIG
+
+    await unload_component(hass, config_entry)
