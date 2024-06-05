@@ -61,6 +61,9 @@ CONDITIONS_MAP = {
     "nachtbewolkt": ATTR_CONDITION_CLOUDY,
     # TODO: Check with the supplier why this is still in the response while not in the docs.
     "wolkennacht": ATTR_CONDITION_CLOUDY,
+    # Possible unavailable conditions.
+    "-": None,
+    "_": None,
 }
 
 

@@ -63,9 +63,14 @@ async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
     assert weather.map_condition("nachtmist") == ATTR_CONDITION_FOG
     assert weather.map_condition("helderenacht") == ATTR_CONDITION_CLEAR_NIGHT
     assert weather.map_condition("nachtbewolkt") == ATTR_CONDITION_CLOUDY
+    assert weather.map_condition("nachtbewolkt") == ATTR_CONDITION_CLOUDY
 
-    # # Undocumented conditions.
+    # Undocumented conditions.
     assert weather.map_condition("wolkennacht") == ATTR_CONDITION_CLOUDY
+
+    # Possible unavailable conditions.
+    assert weather.map_condition("-") == None
+    assert weather.map_condition("_") == None
 
     # Error cases.
     assert weather.map_condition(None) is None
