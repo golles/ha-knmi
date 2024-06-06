@@ -19,7 +19,7 @@ from custom_components.knmi.api import (
 )
 from custom_components.knmi.const import API_ENDPOINT
 
-from . import setup_component
+from . import setup_component, unload_component
 from .const import MOCK_CONFIG
 
 
@@ -101,5 +101,4 @@ async def test_invalid_json_fix(hass: HomeAssistant, mocked_data):
     state = hass.states.get("sensor.knmi_air_pressure")
     assert state.state == "unknown"
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)

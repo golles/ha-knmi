@@ -14,7 +14,7 @@ from custom_components.knmi import (
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 
-from . import setup_component
+from . import setup_component, unload_component
 
 
 async def test_setup_unload_and_reload_entry(hass: HomeAssistant, mocked_data):
@@ -47,8 +47,7 @@ async def test_setup_entry_exception(hass: HomeAssistant, error_on_get_data):
     with pytest.raises(ConfigEntryNotReady):
         assert await async_setup_entry(hass, config_entry)
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 async def test_async_migrate_entry_v1_to_v2(

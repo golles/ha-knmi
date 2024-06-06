@@ -10,7 +10,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt
-import pytz
 
 from .api import KnmiApiClient
 from .const import API_TIMEZONE, DOMAIN
@@ -87,7 +86,7 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         Get a datetime value from the data by a given path.
         When the value is absent, the default (None) will be returned and an error will be logged.
         """
-        timezone = pytz.timezone(API_TIMEZONE)
+        timezone = dt.get_time_zone(API_TIMEZONE)
         value = self.get_value(path, default)
 
         # Timestamp.
@@ -102,7 +101,7 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         if re.match(r"^\d{2}:\d{2}$", value):
             _LOGGER.debug("convert %s to datetime (from time HH:MM)", value)
             time_array = value.split(":")
-            today = datetime.now(timezone)
+            today = datetime.now(tz=timezone)
             return today.replace(
                 hour=int(time_array[0]),
                 minute=int(time_array[1]),
@@ -113,20 +112,22 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         # Date.
         if re.match(r"^\d{2}-\d{2}-\d{4}$", value):
             _LOGGER.debug("convert %s to datetime (from date DD-MM-YYYY)", value)
-            return timezone.localize(datetime.strptime(value, "%d-%m-%Y"))
+            return datetime.strptime(value, "%d-%m-%Y").replace(tzinfo=timezone)
 
         # Date and time.
         if re.match(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$", value):
             _LOGGER.debug(
                 "convert %s to datetime (from date and time DD-MM-YYYY HH:MM:SS)", value
             )
-            return timezone.localize(datetime.strptime(value, "%d-%m-%Y %H:%M:%S"))
+            return datetime.strptime(value, "%d-%m-%Y %H:%M:%S").replace(
+                tzinfo=timezone
+            )
 
         # Date and time without seconds.
         if re.match(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$", value):
             _LOGGER.debug(
                 "convert %s to datetime (from date and time DD-MM-YYYY HH:MM)", value
             )
-            return timezone.localize(datetime.strptime(value, "%d-%m-%Y %H:%M"))
+            return datetime.strptime(value, "%d-%m-%Y %H:%M").replace(tzinfo=timezone)
 
         return default

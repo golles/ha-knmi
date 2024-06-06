@@ -7,13 +7,13 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.setup import async_setup_component
 from homeassistant.util.json import JsonObjectType
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
 
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.diagnostics import TO_REDACT
 
-from .const import MOCK_CONFIG
+from . import setup_component, unload_component
+from .const import MOCK_ENTRY_ID
 
 
 async def test_config_entry_diagnostics(
@@ -22,21 +22,19 @@ async def test_config_entry_diagnostics(
     mocked_data,
 ) -> None:
     """Test config entry diagnostics."""
+    config_entry = await setup_component(hass)
 
-    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
-    entry.add_to_hass(hass)
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
+    result = await get_diagnostics_for_config_entry(hass, hass_client, config_entry)
 
-    result = await get_diagnostics_for_config_entry(hass, hass_client, entry)
-
-    assert result["config_entry"]["entry_id"] == "test"
+    assert result["config_entry"]["entry_id"] == MOCK_ENTRY_ID
     assert result["config_entry"]["domain"] == DOMAIN
 
     for key in TO_REDACT:
         assert result["config_entry"]["data"][key] == "**REDACTED**"
 
     assert result["data"]["liveweer"][0]["plaats"] == "Purmerend"
+
+    await unload_component(hass, config_entry)
 
 
 # The following 2 functions are copied from https://github.com/home-assistant/core/blob/dev/tests/components/diagnostics/__init__.py

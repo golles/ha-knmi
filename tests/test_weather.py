@@ -38,7 +38,7 @@ from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 from custom_components.knmi.weather import KnmiWeather
 
-from . import setup_component
+from . import setup_component, unload_component
 
 
 async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
@@ -85,8 +85,7 @@ async def test_map_conditions(hass: HomeAssistant, mocked_data, caplog):
         in caplog.text
     )
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 async def test_state(hass: HomeAssistant, mocked_data):
@@ -109,8 +108,7 @@ async def test_state(hass: HomeAssistant, mocked_data):
         6.8
     )
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 async def test_async_forecast_daily(hass: HomeAssistant, mocked_data):
@@ -173,8 +171,7 @@ async def test_async_forecast_daily(hass: HomeAssistant, mocked_data):
     assert forecast[4]["wind_speed_bft"] == 3
     assert forecast[4]["sun_chance"] == 0
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
@@ -250,8 +247,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant, mocked_data):
     assert forecast[23]["wind_speed_bft"] == 3
     assert forecast[23]["solar_irradiance"] == 0
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 async def test_async_forecast_twice_daily(hass: HomeAssistant, mocked_data):
@@ -263,8 +259,7 @@ async def test_async_forecast_twice_daily(hass: HomeAssistant, mocked_data):
     with pytest.raises(NotImplementedError):
         await weather.async_forecast_twice_daily()
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @pytest.mark.fixture("warm_snow.json")
@@ -275,8 +270,7 @@ async def test_warm_snow_fix(hass: HomeAssistant, mocked_data):
     state = hass.states.get("weather.knmi_home")
     assert state.state == ATTR_CONDITION_RAINY
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @pytest.mark.fixture("cold_snow.json")
@@ -287,8 +281,7 @@ async def test_real_snow(hass: HomeAssistant, mocked_data):
     state = hass.states.get("weather.knmi_home")
     assert state.state == ATTR_CONDITION_SNOWY
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @freeze_time("2023-02-05T15:30:00+00:00")
@@ -300,8 +293,7 @@ async def test_sunny_during_day(hass: HomeAssistant, mocked_data):
     state = hass.states.get("weather.knmi_home")
     assert state.state == ATTR_CONDITION_SUNNY
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
 
 
 @freeze_time("2023-02-05T03:30:00+01:00")
@@ -313,5 +305,4 @@ async def test_clear_night_during_night(hass: HomeAssistant, mocked_data):
     state = hass.states.get("weather.knmi_home")
     assert state.state == ATTR_CONDITION_CLEAR_NIGHT
 
-    assert await config_entry.async_unload(hass)
-    await hass.async_block_till_done()
+    await unload_component(hass, config_entry)
