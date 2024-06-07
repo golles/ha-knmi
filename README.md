@@ -6,7 +6,7 @@
 [![GitHub Activity][commits-shield]][commits]
 [![Code coverage][codecov-shield]][codecov]
 [![hacs][hacs-shield]][hacs]
-[![hacs][hacs-installs-shield]][hacs]
+[![installs][hacs-installs-shield]][ha-active-installation-badges]
 [![Project Maintenance][maintenance-shield]][maintainer]
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
@@ -169,7 +169,8 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [commits]: https://github.com/golles/ha-knmi/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
-[hacs-installs-shield]: https://raw.githubusercontent.com/golles/ha-active-installation-badges/main/knmi.svg
+[ha-active-installation-badges]: https://github.com/golles/ha-active-installation-badges
+[hacs-installs-shield]: https://raw.githubusercontent.com/golles/ha-active-installation-badges/main/badges/knmi.svg
 [license-shield]: https://img.shields.io/github/license/golles/ha-knmi.svg?style=for-the-badge
 [maintainer]: https://github.com/golles
 [maintenance-shield]: https://img.shields.io/badge/maintainer-golles-blue.svg?style=for-the-badge
