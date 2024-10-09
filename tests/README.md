@@ -5,7 +5,7 @@ While tests aren't required to publish a custom component for Home Assistant, th
 # Getting Started
 
 You can then install the dependencies that will allow you to run tests:
-`python3 -m pip install --requirement requirements_test.txt`.
+`python3 -m pip install --requirement requirements_dev.txt`.
 
 This will install `homeassistant`, `pytest`, and `pytest-homeassistant-custom-component`, a plugin which allows you to leverage helpers that are available in Home Assistant for core integration tests.
 
