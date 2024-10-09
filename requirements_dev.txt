@@ -1,5 +1,5 @@
 -r requirements.txt
-pip>=21.0,<24.2
+pip>=24.0
 isort
 colorlog
 pytest-homeassistant-custom-component

@@ -56,7 +56,7 @@ async def test_async_migrate_entry_v1_to_v2(
     """Test entry migration, v1 to v2."""
     config_entry = await setup_component(hass)
 
-    config_entry.version = 1
+    hass.config_entries.async_update_entry(config_entry, version=1)
     assert config_entry.version == 1
 
     mock_entity_id = "weather.knmi_home"
