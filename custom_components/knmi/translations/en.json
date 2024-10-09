@@ -13,7 +13,7 @@
       }
     },
     "error": {
-      "api_key": "The given API key is invalid",
+      "api_key": "The given API key is invalid. Note that it can take up to 5 minutes for new API keys to become active.",
       "daily_limit": "API key daily limit exceeded, try again tomorrow",
       "general": "Unknown error fetching weather data, try again later"
     }
