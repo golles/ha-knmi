@@ -13,7 +13,7 @@
       }
     },
     "error": {
-      "api_key": "De opgegeven API-sleutel is ongeldig",
+      "api_key": "De opgegeven API-sleutel is ongeldig. Let op dat het 5 minuten kan duren voordat een nieuwe API key geldig is.",
       "daily_limit": "De dagelijkse limiet van de API-sleutel is overschreden, probeer het morgen opnieuw",
       "general": "Onbekende fout bij het ophalen van weergegevens, probeer het later opnieuw"
     }
