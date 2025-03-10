@@ -20,7 +20,7 @@
   },
   "options": {
     "step": {
-      "user": {
+      "init": {
         "data": {
           "scan_interval": "Scaninterval (seconden)"
         }
