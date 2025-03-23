@@ -87,7 +87,7 @@ async def test_options_flow(hass: HomeAssistant):
 
     # Verify that the first options step is a user form
     assert result["type"] == FlowResultType.FORM
-    assert result["step_id"] == "user"
+    assert result["step_id"] == "init"
 
     # Enter some fake data into the form
     result = await hass.config_entries.options.async_configure(

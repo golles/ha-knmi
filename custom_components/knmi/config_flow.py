@@ -1,9 +1,14 @@
 """Adds config flow for knmi."""
 
 import logging
+from typing import Any
 
-from homeassistant import config_entries
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    FlowResult,
+    OptionsFlow,
+)
 from homeassistant.const import (
     CONF_API_KEY,
     CONF_LATITUDE,
@@ -27,15 +32,14 @@ from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+class KnmiFlowHandler(ConfigFlow, domain=DOMAIN):
     """Config flow for knmi."""
 
     VERSION = 2
 
     async def async_step_user(
-        self,
-        user_input: dict | None = None,
-    ) -> config_entries.FlowResult:
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Handle a flow initialized by the user."""
         _errors = {}
         if user_input is not None:
@@ -86,30 +90,24 @@ class KnmiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
-        return KnmiOptionsFlowHandler(config_entry)
+    def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
+        return KnmiOptionsFlowHandler()
 
 
-class KnmiOptionsFlowHandler(config_entries.OptionsFlow):
+class KnmiOptionsFlowHandler(OptionsFlow):
     """Knmi config flow options handler."""
 
-    def __init__(self, config_entry: ConfigEntry):
-        """Initialize options flow."""
-        self.config_entry = config_entry
-        self.options = dict(config_entry.options)
-
-    async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Manage the options."""
-        return await self.async_step_user()
-
-    async def async_step_user(self, user_input=None):
-        """Handle a flow initialized by the user."""
         if user_input is not None:
-            self.options.update(user_input)
-            return await self._update_options()
+            return self.async_create_entry(
+                title=self.config_entry.data.get(CONF_NAME), data=user_input
+            )
 
         return self.async_show_form(
-            step_id="user",
+            step_id="init",
             data_schema=vol.Schema(
                 {
                     vol.Required(
@@ -120,10 +118,4 @@ class KnmiOptionsFlowHandler(config_entries.OptionsFlow):
                     ): vol.All(vol.Coerce(int), vol.Range(min=300, max=86400))
                 }
             ),
-        )
-
-    async def _update_options(self):
-        """Update config entry options."""
-        return self.async_create_entry(
-            title=self.config_entry.data.get(CONF_NAME), data=self.options
         )
