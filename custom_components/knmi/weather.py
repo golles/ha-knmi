@@ -163,27 +163,24 @@ class KnmiWeather(WeatherEntity):
         for i in range(len(self.coordinator.get_value(["wk_verw"]))):
             time = self.coordinator.get_value_datetime(["wk_verw", i, "dag"])
 
-            if not time:
-                # If the time is not available, skip this forecast.
-                continue
+            if time:
+                forecast = Forecast(
+                    condition=self.map_condition(self.coordinator.get_value(["wk_verw", i, "image"])),
+                    datetime=time.isoformat(),
+                    precipitation_probability=self.coordinator.get_value(
+                        ["wk_verw", i, "neersl_perc_dag"]  # Note: Percentage.
+                    ),
+                    temperature=self.coordinator.get_value(["wk_verw", i, "max_temp"]),
+                    templow=self.coordinator.get_value(["wk_verw", i, "min_temp"]),
+                    wind_bearing=self.coordinator.get_value(["wk_verw", i, "windrgr"]),
+                    wind_speed=self.coordinator.get_value(["wk_verw", i, "windkmh"]),
+                )
 
-            forecast = Forecast(
-                condition=self.map_condition(self.coordinator.get_value(["wk_verw", i, "image"])),
-                datetime=time.isoformat(),
-                precipitation_probability=self.coordinator.get_value(
-                    ["wk_verw", i, "neersl_perc_dag"]  # Note: Percentage.
-                ),
-                temperature=self.coordinator.get_value(["wk_verw", i, "max_temp"]),
-                templow=self.coordinator.get_value(["wk_verw", i, "min_temp"]),
-                wind_bearing=self.coordinator.get_value(["wk_verw", i, "windrgr"]),
-                wind_speed=self.coordinator.get_value(["wk_verw", i, "windkmh"]),
-            )
+                # Not officially supported, but nice additions.
+                forecast["wind_speed_bft"] = self.coordinator.get_value(["wk_verw", i, "windbft"])  # type: ignore  # noqa: PGH003
+                forecast["sun_chance"] = self.coordinator.get_value(["wk_verw", i, "zond_perc_dag"])  # type: ignore  # noqa: PGH003
 
-            # Not officially supported, but nice additions.
-            forecast["wind_speed_bft"] = self.coordinator.get_value(["wk_verw", i, "windbft"])  # type: ignore  # noqa: PGH003
-            forecast["sun_chance"] = self.coordinator.get_value(["wk_verw", i, "zond_perc_dag"])  # type: ignore  # noqa: PGH003
-
-            forecasts.append(forecast)
+                forecasts.append(forecast)
 
         return forecasts
 
@@ -194,27 +191,24 @@ class KnmiWeather(WeatherEntity):
         for i in range(len(self.coordinator.get_value(["uur_verw"]))):
             time = self.coordinator.get_value_datetime(["uur_verw", i, "uur"])
 
-            if not time:
-                # If the time is not available, skip this forecast.
-                continue
+            if time:
+                forecast = Forecast(
+                    condition=self.map_condition(self.coordinator.get_value(["uur_verw", i, "image"])),
+                    datetime=time.isoformat(),
+                    precipitation=self.coordinator.get_value(
+                        ["uur_verw", i, "neersl"]  # Millimeter.
+                    ),
+                    temperature=self.coordinator.get_value(["uur_verw", i, "temp"]),
+                    templow=self.coordinator.get_value(["wk_verw", i, "min_temp"]),
+                    wind_bearing=self.coordinator.get_value(["uur_verw", i, "windrgr"]),
+                    wind_speed=self.coordinator.get_value(["uur_verw", i, "windkmh"]),
+                )
 
-            forecast = Forecast(
-                condition=self.map_condition(self.coordinator.get_value(["uur_verw", i, "image"])),
-                datetime=time.isoformat(),
-                precipitation=self.coordinator.get_value(
-                    ["uur_verw", i, "neersl"]  # Millimeter.
-                ),
-                temperature=self.coordinator.get_value(["uur_verw", i, "temp"]),
-                templow=self.coordinator.get_value(["wk_verw", i, "min_temp"]),
-                wind_bearing=self.coordinator.get_value(["uur_verw", i, "windrgr"]),
-                wind_speed=self.coordinator.get_value(["uur_verw", i, "windkmh"]),
-            )
+                # Not officially supported, but nice additions.
+                forecast["wind_speed_bft"] = self.coordinator.get_value(["uur_verw", i, "windbft"])  # type: ignore  # noqa: PGH003
+                forecast["solar_irradiance"] = self.coordinator.get_value(["uur_verw", i, "gr"])  # type: ignore  # noqa: PGH003
 
-            # Not officially supported, but nice additions.
-            forecast["wind_speed_bft"] = self.coordinator.get_value(["uur_verw", i, "windbft"])  # type: ignore  # noqa: PGH003
-            forecast["solar_irradiance"] = self.coordinator.get_value(["uur_verw", i, "gr"])  # type: ignore  # noqa: PGH003
-
-            forecasts.append(forecast)
+                forecasts.append(forecast)
 
         return forecasts
 
