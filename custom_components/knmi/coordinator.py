@@ -25,6 +25,7 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
     def __init__(
         self,
         hass: HomeAssistant,
+        config_entry: ConfigEntry,
         client: KnmiApiClient,
         device_info: DeviceInfo,
         scan_interval: timedelta,
@@ -36,6 +37,7 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         super().__init__(
             hass=hass,
             logger=_LOGGER,
+            config_entry=config_entry,
             name=DOMAIN,
             update_interval=scan_interval,
         )
