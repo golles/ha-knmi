@@ -91,7 +91,7 @@ async def test_connection_error(
         await api.async_get_data()
 
 
-@pytest.mark.fixture("_.json")
+@pytest.mark.response_json_file("_.json")
 @pytest.mark.usefixtures("mocked_data")
 async def test_invalid_json_fix(hass: HomeAssistant) -> None:
     """Test for fix https://github.com/golles/ha-knmi/issues/130."""

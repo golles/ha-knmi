@@ -39,7 +39,7 @@ def fixture_enable_all_entities() -> Generator[None]:
 def mocked_data_fixture(request: pytest.FixtureRequest) -> Generator[None]:
     """Use mocked data in the integration."""
     json_file = "response.json"
-    fixture = request.node.get_closest_marker("fixture")
+    fixture = request.node.get_closest_marker("response_json_file")
 
     if fixture is not None:
         json_file = fixture.args[0]

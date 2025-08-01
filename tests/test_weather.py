@@ -261,7 +261,7 @@ async def test_async_forecast_twice_daily(hass: HomeAssistant) -> None:
     await unload_component(hass, config_entry)
 
 
-@pytest.mark.fixture("warm_snow.json")
+@pytest.mark.response_json_file("warm_snow.json")
 @pytest.mark.usefixtures("mocked_data")
 async def test_warm_snow_fix(hass: HomeAssistant) -> None:
     """Test if we return rainy if the API returns snowy and a temp higher than 6."""
@@ -274,7 +274,7 @@ async def test_warm_snow_fix(hass: HomeAssistant) -> None:
     await unload_component(hass, config_entry)
 
 
-@pytest.mark.fixture("cold_snow.json")
+@pytest.mark.response_json_file("cold_snow.json")
 @pytest.mark.usefixtures("mocked_data")
 async def test_real_snow(hass: HomeAssistant) -> None:
     """Test if we return snowy if the API returns snowy and a temp lower than 6."""
@@ -288,7 +288,7 @@ async def test_real_snow(hass: HomeAssistant) -> None:
 
 
 @freeze_time("2023-02-05T15:30:00+00:00")
-@pytest.mark.fixture("clear_night_fix.json")
+@pytest.mark.response_json_file("clear_night_fix.json")
 @pytest.mark.usefixtures("mocked_data")
 async def test_sunny_during_day(hass: HomeAssistant) -> None:
     """When the API returns sunny when the sun isn't set, the weather state should be sunny."""
@@ -302,7 +302,7 @@ async def test_sunny_during_day(hass: HomeAssistant) -> None:
 
 
 @freeze_time("2023-02-05T03:30:00+01:00")
-@pytest.mark.fixture("clear_night_fix.json")
+@pytest.mark.response_json_file("clear_night_fix.json")
 @pytest.mark.usefixtures("mocked_data")
 async def test_clear_night_during_night(hass: HomeAssistant) -> None:
     """When the API returns sunny when the sun is set, the weather state should be clear night."""

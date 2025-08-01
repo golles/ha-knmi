@@ -29,7 +29,7 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant) -> None:
     await unload_component(hass, config_entry)
 
 
-@pytest.mark.fixture("response_alarm.json")
+@pytest.mark.response_json_file("response_alarm.json")
 @pytest.mark.usefixtures("mocked_data")
 async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant) -> None:
     """Test is_on function on alarm sensor."""
