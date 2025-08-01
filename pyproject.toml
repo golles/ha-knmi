@@ -1,29 +1,93 @@
-[tool.pytest.ini_options]
-minversion = "6.0"
-testpaths = ["tests"]
-norecursedirs = ".git"
-addopts = "--timeout=9 --durations=10"
-asyncio_mode = "auto"
+[project]
+name = "ha-knmi"
+version = "0.0.1"
+description = "Custom component that integrates KNMI weather service (via Weerlive.nl) in to Home Assistant"
+authors = [{ name = "Sander Gols", email = "developer@golles.nl" }]
+requires-python = ">=3.13.2,<3.14"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3",
+]
+dependencies = ["homeassistant>=2025.7.0"]
 
-[tool.isort]
-# https://github.com/PyCQA/isort/wiki/isort-Settings
-profile = "black"
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 88
-# will group `import x` and `from x import` of the same module.
-force_sort_within_sections = true
-known_first_party = ["custom_components.knmi", "tests"]
-forced_separate = ["tests"]
-combine_as_imports = true
+Documentation = "https://github.com/golles/ha-knmi"
+Homepage = "https://github.com/golles/ha-knmi"
+Repository = "https://github.com/golles/ha-knmi"
+Issues = "https://github.com/golles/ha-knmi/issues"
+
+[dependency-groups]
+dev = [
+  "mypy==1.17.1",
+  "pre-commit==4.2.0",
+  "pylint==3.3.7",
+  "pytest",
+  "pytest-asyncio",
+  "pytest-cov",
+  "pytest-homeassistant-custom-component==0.13.260",
+  "ruff==0.12.7",
+  "shellcheck-py==0.10.0.1",
+  "yamllint==1.37.1",
+]
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.coverage.run]
+source = ["custom_components/knmi"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["custom_components/knmi"]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "aresponses.*"
+ignore_missing_imports = true
+
+[tool.pylint]
+max-line-length = 150
 
 [tool.pylint."MESSAGES CONTROL"]
-disable = [
-    "too-few-public-methods",
-    "too-many-instance-attributes",
-    "too-many-locals",
-    "too-many-return-statements",
-    "unexpected-keyword-arg",
+disable = ["abstract-method", "duplicate-code", "unexpected-keyword-arg"]
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report=term --cov-report=xml"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+log_cli = true
+log_cli_level = "DEBUG"
+
+[tool.ruff]
+line-length = 150
+target-version = "py313"
+src = ["custom_components/knmi"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "A005",
+  "COM812", # Cause conflicts when used with the formatter.
+  "TC",     # Ignore type-checking blocks.
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "S101",    # Allow assertions in tests.
+  "PLR2004", # Allow magic numbers in tests.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["custom_components.knmi"]

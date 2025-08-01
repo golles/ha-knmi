@@ -1,0 +1,67 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["before 9am"],
+  "labels": ["dependencies"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+  "pre-commit": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Devcontainer updates",
+      "matchManagers": ["devcontainer"],
+      "addLabels": ["devcontainer"]
+    },
+    {
+      "description": "Github actions",
+      "matchManagers": ["github-actions"],
+      "addLabels": ["github-actions"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "description": "Javascript dependencies ignore node engine",
+      "matchManagers": ["npm"],
+      "matchDepNames": ["node"],
+      "enabled": false
+    },
+    {
+      "description": "Javascript dependencies",
+      "matchManagers": ["npm"],
+      "addLabels": ["javascript"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "description": "Let pytest-homeassistant-custom-component control pytest deps",
+      "matchManagers": ["pep621"],
+      "matchPackageNames": ["pytest", "pytest-asyncio", "pytest-cov"],
+      "enabled": false
+    },
+    {
+      "description": "Python dependencies",
+      "matchManagers": ["pep621"],
+      "addLabels": ["python"]
+    },
+    {
+      "description": "Pre-commit hooks",
+      "matchManagers": ["pre-commit"],
+      "addLabels": ["pre-commit"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "description": "Automerge and pin dev dependencies",
+      "matchDepTypes": ["devDependencies", "dev-dependencies", "dev"],
+      "automerge": true,
+      "rangeStrategy": "pin"
+    }
+  ]
+}

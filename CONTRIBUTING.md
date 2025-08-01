@@ -1,61 +1,49 @@
-# Contribution guidelines
+# How to Contribute
 
-Contributing to this project should be as easy and transparent as possible, whether it's:
+Thank you for taking the time and effort to read this guide! Your contributions are valuable, and we appreciate your interest in improving our project.
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
+## Getting Started
 
-## Github is used for everything
+Before you start contributing, it's essential to familiarize yourself with the codebase. Spend some time reading the existing code to understand the current style and structure. This will help you align your contributions with the project's conventions and optimize for readability.
 
-Github is used to host code, to track issues and feature requests, as well as accept pull requests.
+## Development Environment
 
-Pull requests are the best way to propose changes to the codebase.
+To ensure a consistent development environment, we recommend using the [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) or a [GitHub Codespace](https://github.com/codespaces). These tools will provide you with a standardized setup that matches the project's requirements.
 
-1. Fork the repo and create your branch from `main`.
-2. If you've changed something, update the documentation.
-3. Make sure your code lints (using black).
-4. Test you contribution.
-5. Issue that pull request!
+If you prefer using a local development environment, you can create a Python virtual environment using the `scripts/setup_env.sh` script. This script uses [uv](https://docs.astral.sh/uv) to manage dependencies and environment settings. It will also install required `npm` tools.
 
-## Any contributions you make will be under the MIT Software License
+```sh
+./scripts/setup_env.sh
+```
 
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](https://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
+### Pre-Commit Hook
 
-## Report bugs using Github's [issues](../../issues)
+We use a [pre-commit](https://pre-commit.com) hook to help identify simple issues before submitting your code for review. This ensures that your code meets the project's quality standards and reduces the chances of encountering avoidable errors during the review process.
 
-GitHub issues are used to track public bugs.
-Report a bug by [opening a new issue](../../issues/new/choose); it's that easy!
+## Submitting Changes
 
-## Write bug reports with detail, background, and sample code
+Changes should be proposed through a pull request (PR). When creating a PR, please include the following:
 
-**Great Bug Reports** tend to have:
+- A summary of the changes you are proposing.
+- Links to any related issues.
+- Relevant motivation and context for the changes.
 
-- A quick summary and/or background
-- Steps to reproduce
-  - Be specific!
-  - Give sample code if you can.
-- What you expected would happen
-- What actually happens
-- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
+This information helps reviewers understand the purpose of your changes and facilitates a smoother review process.
 
-People *love* thorough bug reports. I'm not even kidding.
+### Adding Tests
 
-## Use a Consistent Coding Style
+To ensure the stability and reliability of the codebase, please include tests with your pull request. We use [pytest](https://pytest.org/) for testing. To run the test suite, simply execute:
 
-Use [black](https://github.com/ambv/black) to make sure the code follows the style.
+```sh
+pytest tests
+```
 
-## Test your code modification
+Adding tests helps verify that your changes work as intended and do not introduce new issues.
 
-This custom component is based on [integration_blueprint template](https://github.com/custom-components/integration_blueprint).
+## Reporting Issues
 
-It comes with development environment in a container, easy to launch
-if you use Visual Studio Code. With this container you will have a stand alone
-Home Assistant instance running and already configured with the included
-[`.devcontainer/configuration.yaml`](./.devcontainer/configuration.yaml)
-file.
+If you encounter a bug, have a feature request, or a general question, please use the appropriate issue template provided in the repository. When submitting an issue, it is important to fill out all fields in the template. This ensures we have all the necessary information to reproduce bugs, assess feature requests, or answer questions effectively. Incomplete issues may take longer to address due to insufficient information.
 
-## License
+Thank you for contributing! Your efforts help us maintain a high-quality codebase and make the project better for everyone.
 
-By contributing, you agree that your contributions will be licensed under its MIT License.
+Happy coding!

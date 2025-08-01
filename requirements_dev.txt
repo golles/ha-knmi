@@ -1,5 +1,0 @@
--r requirements.txt
-pip>=24.0
-isort
-colorlog
-pytest-homeassistant-custom-component

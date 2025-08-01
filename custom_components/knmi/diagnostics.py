@@ -11,9 +11,7 @@ from .coordinator import KnmiDataUpdateCoordinator
 TO_REDACT = {CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE}
 
 
-async def async_get_config_entry_diagnostics(
-    hass: HomeAssistant, config_entry: ConfigEntry
-) -> dict:
+async def async_get_config_entry_diagnostics(hass: HomeAssistant, config_entry: ConfigEntry) -> dict:
     """Return diagnostics for a config entry."""
     coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 

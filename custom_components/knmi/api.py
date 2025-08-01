@@ -1,4 +1,4 @@
-"""KnmiApiClient"""
+"""KnmiApiClient."""
 
 import asyncio
 import json
@@ -29,7 +29,7 @@ class KnmiApiRateLimitError(KnmiApiClientError):
 
 
 class KnmiApiClient:
-    """KNMI API wrapper"""
+    """KNMI API wrapper."""
 
     response_text = None
 
@@ -47,11 +47,9 @@ class KnmiApiClient:
         self._session = session
 
     async def get_response_text(self) -> str:
-        """Get API response text"""
+        """Get API response text."""
         async with asyncio.timeout(API_TIMEOUT):
-            response = await self._session.get(
-                API_ENDPOINT.format(self.api_key, self.latitude, self.longitude)
-            )
+            response = await self._session.get(API_ENDPOINT.format(self.api_key, self.latitude, self.longitude))
 
             return await response.text()
 
@@ -63,12 +61,12 @@ class KnmiApiClient:
             # The API has no proper error handling for a wrong API key or rate limit.
             # Instead a 200 with a message is returned, try to detect that here.
             if "Vraag eerst een API-key op" in self.response_text:
-                raise KnmiApiClientApiKeyError("The given API key is invalid")
+                msg = "The given API key is invalid"
+                raise KnmiApiClientApiKeyError(msg)
 
             if "Dagelijkse limiet" in self.response_text:
-                raise KnmiApiRateLimitError(
-                    "API key daily limit exceeded, try again tomorrow"
-                )
+                msg = "API key daily limit exceeded, try again tomorrow"
+                raise KnmiApiRateLimitError(msg)
 
             # The API has an ongoing issue due to invalid JSON response.
             # Where a null value of a number field is set to _ (without quotes).
@@ -80,11 +78,9 @@ class KnmiApiClient:
 
             return json.loads(self.response_text)
 
-        except asyncio.TimeoutError as exception:
-            raise KnmiApiClientCommunicationError(
-                "Timeout error fetching information",
-            ) from exception
+        except TimeoutError as exception:
+            msg = "Timeout error fetching information"
+            raise KnmiApiClientCommunicationError(msg) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
-            raise KnmiApiClientCommunicationError(
-                "Error fetching information",
-            ) from exception
+            msg = "Error fetching information"
+            raise KnmiApiClientCommunicationError(msg) from exception

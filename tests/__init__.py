@@ -10,10 +10,8 @@ from .const import MOCK_CONFIG, MOCK_ENTRY_ID
 
 
 async def setup_component(hass: HomeAssistant) -> MockConfigEntry:
-    """Setup the custom component for tests"""
-    config_entry = MockConfigEntry(
-        domain=DOMAIN, data=MOCK_CONFIG, entry_id=MOCK_ENTRY_ID
-    )
+    """Setup the custom component for tests."""
+    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id=MOCK_ENTRY_ID)
     config_entry.add_to_hass(hass)
 
     assert await async_setup_component(hass=hass, domain=DOMAIN, config=MOCK_CONFIG)
@@ -22,9 +20,7 @@ async def setup_component(hass: HomeAssistant) -> MockConfigEntry:
     return config_entry
 
 
-async def unload_component(
-    hass: HomeAssistant, config_entry: MockConfigEntry
-) -> MockConfigEntry:
-    """Unload the custom component for tests"""
+async def unload_component(hass: HomeAssistant, config_entry: MockConfigEntry) -> MockConfigEntry:
+    """Unload the custom component for tests."""
     await hass.config_entries.async_unload(config_entry.entry_id)
     await hass.async_block_till_done()

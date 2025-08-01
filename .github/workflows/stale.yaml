@@ -1,6 +1,6 @@
 name: Mark stale issues and pull requests
 
-on:
+on: # yamllint disable-line rule:truthy
   schedule:
     - cron: "30 1 * * *"
 

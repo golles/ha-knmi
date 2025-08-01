@@ -5,22 +5,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorEntityDescription,
-    SensorStateClass,
-)
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorEntityDescription, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_NAME,
-    PERCENTAGE,
-    UnitOfIrradiance,
-    UnitOfLength,
-    UnitOfPressure,
-    UnitOfSpeed,
-    UnitOfTemperature,
-)
+from homeassistant.const import CONF_NAME, PERCENTAGE, UnitOfIrradiance, UnitOfLength, UnitOfPressure, UnitOfSpeed, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -35,8 +22,8 @@ from .coordinator import KnmiDataUpdateCoordinator
 class KnmiSensorDescription(SensorEntityDescription):
     """Class describing KNMI sensor entities."""
 
-    value_fn: Callable[[dict[str, Any]], StateType | datetime | None]
-    attr_fn: Callable[[dict[str, Any]], dict[str, Any]] = lambda _: {}
+    value_fn: Callable[[KnmiDataUpdateCoordinator], StateType | datetime | None]
+    attr_fn: Callable[[KnmiDataUpdateCoordinator], dict[str, Any]] = lambda _: {}
 
 
 DESCRIPTIONS: list[KnmiSensorDescription] = [
@@ -126,9 +113,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="neersl_perc_dag_today",
-        value_fn=lambda coordinator: coordinator.get_value(
-            ["wk_verw", 0, "neersl_perc_dag"]
-        ),
+        value_fn=lambda coordinator: coordinator.get_value(["wk_verw", 0, "neersl_perc_dag"]),
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -136,9 +121,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="neersl_perc_dag_tomorrow",
-        value_fn=lambda coordinator: coordinator.get_value(
-            ["wk_verw", 1, "neersl_perc_dag"]
-        ),
+        value_fn=lambda coordinator: coordinator.get_value(["wk_verw", 1, "neersl_perc_dag"]),
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -176,9 +159,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
         translation_key="timestamp",
-        value_fn=lambda coordinator: coordinator.get_value_datetime(
-            ["liveweer", 0, "timestamp"]
-        ),
+        value_fn=lambda coordinator: coordinator.get_value_datetime(["liveweer", 0, "timestamp"]),
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -228,17 +209,15 @@ async def async_setup_entry(
     conf_name = entry.data.get(CONF_NAME, hass.config.location_name)
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
-    entities: list[KnmiSensor] = []
-
     # Add all sensors described above.
-    for description in DESCRIPTIONS:
-        entities.append(
-            KnmiSensor(
-                conf_name=conf_name,
-                coordinator=coordinator,
-                description=description,
-            )
+    entities: list[KnmiSensor] = [
+        KnmiSensor(
+            conf_name=conf_name,
+            coordinator=coordinator,
+            description=description,
         )
+        for description in DESCRIPTIONS
+    ]
 
     async_add_entities(entities)
 
@@ -253,7 +232,7 @@ class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
         self,
         conf_name: str,
         coordinator: KnmiDataUpdateCoordinator,
-        description: SensorEntityDescription,
+        description: KnmiSensorDescription,
     ) -> None:
         """Initialize KNMI sensor."""
         super().__init__(coordinator=coordinator)
@@ -265,7 +244,7 @@ class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
         self.entity_description = description
 
     @property
-    def native_value(self) -> StateType:
+    def native_value(self) -> StateType | datetime | None:
         """Return the state."""
         return self.entity_description.value_fn(self.coordinator)
 

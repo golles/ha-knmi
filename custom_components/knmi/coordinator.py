@@ -1,8 +1,8 @@
 """DataUpdateCoordinator for knmi."""
 
-from datetime import datetime, timedelta
 import logging
 import re
+from datetime import datetime, timedelta
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -45,45 +45,46 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             return await self.api.async_get_data()
         except Exception as exception:
-            _LOGGER.error("Update failed! - %s", exception)
-            raise UpdateFailed() from exception
+            raise UpdateFailed from exception
 
     def get_is_sun_up(self) -> bool:
-        """Helper to get if the sun is currently up"""
+        """Helper to get if the sun is currently up."""
         sun_up = self.get_value_datetime(["liveweer", 0, "sup"])
         sun_under = self.get_value_datetime(["liveweer", 0, "sunder"])
+        if sun_up is None or sun_under is None:
+            return False
         return sun_up < dt.now() < sun_under
 
-    def get_value(self, path: list[int | str], default=None) -> Any:
-        """
-        Get a value from the data by a given path.
+    def get_value(self, path: list[int | str], default=None) -> Any:  # noqa: ANN001, ANN401
+        """Get a value from the data by a given path.
+
         When the value is absent, the default (None) will be returned and an error will be logged.
         """
         value = self.data
 
         try:
             for key in path:
-                value = value[key]
+                value = value[key]  # type: ignore  # noqa: PGH003
 
             value_type = type(value).__name__
 
             if value_type in ["int", "float", "str"]:
-                _LOGGER.debug(
-                    "Path %s returns a %s (value = %s)", path, value_type, value
-                )
+                _LOGGER.debug("Path %s returns a %s (value = %s)", path, value_type, value)
             else:
                 _LOGGER.debug("Path %s returns a %s", path, value_type)
 
-            return value
+            return value  # noqa: TRY300
         except (IndexError, KeyError):
             _LOGGER.warning("Can't find a value for %s in the API response", path)
             return default
 
-    def get_value_datetime(
-        self, path: list[int | str], default=None
+    def get_value_datetime(  # pylint: disable=too-many-return-statements  # noqa: PLR0911
+        self,
+        path: list[int | str],
+        default=None,  # noqa: ANN001
     ) -> datetime | None:
-        """
-        Get a datetime value from the data by a given path.
+        """Get a datetime value from the data by a given path.
+
         When the value is absent, the default (None) will be returned and an error will be logged.
         """
         timezone = dt.get_time_zone(API_TIMEZONE)
@@ -116,18 +117,12 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator):
 
         # Date and time.
         if re.match(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$", value):
-            _LOGGER.debug(
-                "convert %s to datetime (from date and time DD-MM-YYYY HH:MM:SS)", value
-            )
-            return datetime.strptime(value, "%d-%m-%Y %H:%M:%S").replace(
-                tzinfo=timezone
-            )
+            _LOGGER.debug("convert %s to datetime (from date and time DD-MM-YYYY HH:MM:SS)", value)
+            return datetime.strptime(value, "%d-%m-%Y %H:%M:%S").replace(tzinfo=timezone)
 
         # Date and time without seconds.
         if re.match(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$", value):
-            _LOGGER.debug(
-                "convert %s to datetime (from date and time DD-MM-YYYY HH:MM)", value
-            )
+            _LOGGER.debug("convert %s to datetime (from date and time DD-MM-YYYY HH:MM)", value)
             return datetime.strptime(value, "%d-%m-%Y %H:%M").replace(tzinfo=timezone)
 
         return default

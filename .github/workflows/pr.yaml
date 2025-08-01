@@ -1,0 +1,63 @@
+name: PR
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+    branches:
+      - main
+    types:
+      - edited
+      - opened
+      - labeled
+      - reopened
+      - synchronize
+      - unlabeled
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v4
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
+        with:
+          comment-summary-in-pr: always
+          fail-on-severity: high
+
+  labels:
+    name: Check labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR has a required label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const requiredLabels = [
+              'bugfix',
+              'ci',
+              'dependencies',
+              'dev-environment',
+              'documentation',
+              'enhancement',
+              'new-feature'
+            ];
+
+            const prNumber = context.payload.pull_request.number;
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const hasValidLabel = labels.some(label => requiredLabels.includes(label.name));
+
+            if (!hasValidLabel) {
+              core.setFailed(`PR must have at least one of the following labels: ${requiredLabels.join(', ')}`);
+            }

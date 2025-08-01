@@ -13,27 +13,13 @@ from homeassistant.components.weather import (
     ATTR_CONDITION_RAINY,
     ATTR_CONDITION_SNOWY,
     ATTR_CONDITION_SUNNY,
-    ATTR_FORECAST_CONDITION,
-    ATTR_FORECAST_PRECIPITATION,
-    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
-    ATTR_FORECAST_TEMP,
-    ATTR_FORECAST_TEMP_LOW,
-    ATTR_FORECAST_TIME,
-    ATTR_FORECAST_WIND_BEARING,
-    ATTR_FORECAST_WIND_SPEED,
-    DOMAIN as SENSOR_DOMAIN,
     Forecast,
     WeatherEntity,
     WeatherEntityFeature,
 )
+from homeassistant.components.weather import DOMAIN as SENSOR_DOMAIN
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_NAME,
-    UnitOfLength,
-    UnitOfPressure,
-    UnitOfSpeed,
-    UnitOfTemperature,
-)
+from homeassistant.const import CONF_NAME, UnitOfLength, UnitOfPressure, UnitOfSpeed, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -41,6 +27,8 @@ from .const import DEFAULT_NAME, DOMAIN
 from .coordinator import KnmiDataUpdateCoordinator
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
+
+SNOW_TO_RAIN_TEMP_CELSIUS = 6
 
 # Map weather conditions from KNMI to HA.
 CONDITIONS_MAP = {
@@ -59,7 +47,7 @@ CONDITIONS_MAP = {
     "nachtmist": ATTR_CONDITION_FOG,
     "helderenacht": ATTR_CONDITION_CLEAR_NIGHT,
     "nachtbewolkt": ATTR_CONDITION_CLOUDY,
-    # TODO: Check with the supplier why this is still in the response while not in the docs.
+    # Check with the supplier why this is still in the response while not in the docs.
     "wolkennacht": ATTR_CONDITION_CLOUDY,
     # Possible unavailable conditions.
     "-": None,
@@ -91,15 +79,14 @@ class KnmiWeather(WeatherEntity):
     _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_native_visibility_unit = UnitOfLength.METERS
     _attr_native_wind_speed_unit = UnitOfSpeed.KILOMETERS_PER_HOUR
-    _attr_supported_features = (
-        WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY
-    )
+    _attr_supported_features = WeatherEntityFeature.FORECAST_DAILY | WeatherEntityFeature.FORECAST_HOURLY
 
     def __init__(
         self,
         conf_name: str,
         coordinator: KnmiDataUpdateCoordinator,
-    ):
+    ) -> None:
+        """Initialize KNMI weather entity."""
         self.coordinator = coordinator
 
         self._attr_name = conf_name
@@ -110,26 +97,21 @@ class KnmiWeather(WeatherEntity):
 
     def map_condition(self, value: str | None) -> str | None:
         """Map weather conditions from KNMI to HA."""
-
         try:
-            return CONDITIONS_MAP[value]
+            return CONDITIONS_MAP[value]  # type: ignore  # noqa: PGH003
         except KeyError:
-            _LOGGER.error(
-                'Weather condition "%s" can\'t be mapped, please raise a bug', value
-            )
+            _LOGGER.exception('Weather condition "%s" can\'t be mapped, please raise a bug', value)
         return None
 
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
-        condition = self.map_condition(
-            self.coordinator.get_value(["liveweer", 0, "image"])
-        )
+        condition = self.map_condition(self.coordinator.get_value(["liveweer", 0, "image"]))
 
         if condition == ATTR_CONDITION_SUNNY and not self.coordinator.get_is_sun_up():
             condition = ATTR_CONDITION_CLEAR_NIGHT
 
-        if condition == ATTR_CONDITION_SNOWY and self.native_temperature > 6:
+        if condition == ATTR_CONDITION_SNOWY and self.native_temperature and self.native_temperature > SNOW_TO_RAIN_TEMP_CELSIUS:
             condition = ATTR_CONDITION_RAINY
 
         return condition
@@ -176,37 +158,31 @@ class KnmiWeather(WeatherEntity):
 
     async def async_forecast_daily(self) -> list[Forecast] | None:
         """Return the daily forecast in native units."""
-        forecasts = []
+        forecasts: list[Forecast] = []
 
         for i in range(len(self.coordinator.get_value(["wk_verw"]))):
             time = self.coordinator.get_value_datetime(["wk_verw", i, "dag"])
 
-            forecast = {
-                ATTR_FORECAST_TIME: time.isoformat() if time else None,
-                ATTR_FORECAST_CONDITION: self.map_condition(
-                    self.coordinator.get_value(["wk_verw", i, "image"])
+            if not time:
+                # If the time is not available, skip this forecast.
+                continue
+
+            forecast = Forecast(
+                condition=self.map_condition(self.coordinator.get_value(["wk_verw", i, "image"])),
+                datetime=time.isoformat(),
+                precipitation_probability=self.coordinator.get_value(
+                    ["wk_verw", i, "neersl_perc_dag"]  # Note: Percentage.
                 ),
-                ATTR_FORECAST_TEMP_LOW: self.coordinator.get_value(
-                    ["wk_verw", i, "min_temp"]
-                ),
-                ATTR_FORECAST_TEMP: self.coordinator.get_value(
-                    ["wk_verw", i, "max_temp"]
-                ),
-                ATTR_FORECAST_PRECIPITATION_PROBABILITY: self.coordinator.get_value(
-                    ["wk_verw", i, "neersl_perc_dag"]  # Percentage.
-                ),
-                ATTR_FORECAST_WIND_BEARING: self.coordinator.get_value(
-                    ["wk_verw", i, "windrgr"]
-                ),
-                ATTR_FORECAST_WIND_SPEED: self.coordinator.get_value(
-                    ["wk_verw", i, "windkmh"]
-                ),
-                # Not officially supported, but nice additions.
-                "wind_speed_bft": self.coordinator.get_value(["wk_verw", i, "windbft"]),
-                "sun_chance": self.coordinator.get_value(
-                    ["wk_verw", i, "zond_perc_dag"]
-                ),
-            }
+                temperature=self.coordinator.get_value(["wk_verw", i, "max_temp"]),
+                templow=self.coordinator.get_value(["wk_verw", i, "min_temp"]),
+                wind_bearing=self.coordinator.get_value(["wk_verw", i, "windrgr"]),
+                wind_speed=self.coordinator.get_value(["wk_verw", i, "windkmh"]),
+            )
+
+            # Not officially supported, but nice additions.
+            forecast["wind_speed_bft"] = self.coordinator.get_value(["wk_verw", i, "windbft"])  # type: ignore  # noqa: PGH003
+            forecast["sun_chance"] = self.coordinator.get_value(["wk_verw", i, "zond_perc_dag"])  # type: ignore  # noqa: PGH003
+
             forecasts.append(forecast)
 
         return forecasts
@@ -218,27 +194,26 @@ class KnmiWeather(WeatherEntity):
         for i in range(len(self.coordinator.get_value(["uur_verw"]))):
             time = self.coordinator.get_value_datetime(["uur_verw", i, "uur"])
 
-            forecast = {
-                ATTR_FORECAST_TIME: time.isoformat() if time else None,
-                ATTR_FORECAST_CONDITION: self.map_condition(
-                    self.coordinator.get_value(["uur_verw", i, "image"])
-                ),
-                ATTR_FORECAST_TEMP: self.coordinator.get_value(["uur_verw", i, "temp"]),
-                ATTR_FORECAST_PRECIPITATION: self.coordinator.get_value(
+            if not time:
+                # If the time is not available, skip this forecast.
+                continue
+
+            forecast = Forecast(
+                condition=self.map_condition(self.coordinator.get_value(["uur_verw", i, "image"])),
+                datetime=time.isoformat(),
+                precipitation=self.coordinator.get_value(
                     ["uur_verw", i, "neersl"]  # Millimeter.
                 ),
-                ATTR_FORECAST_WIND_BEARING: self.coordinator.get_value(
-                    ["uur_verw", i, "windrgr"]
-                ),
-                ATTR_FORECAST_WIND_SPEED: self.coordinator.get_value(
-                    ["uur_verw", i, "windkmh"]
-                ),
-                # Not officially supported, but nice additions.
-                "wind_speed_bft": self.coordinator.get_value(
-                    ["uur_verw", i, "windbft"]
-                ),
-                "solar_irradiance": self.coordinator.get_value(["uur_verw", i, "gr"]),
-            }
+                temperature=self.coordinator.get_value(["uur_verw", i, "temp"]),
+                templow=self.coordinator.get_value(["wk_verw", i, "min_temp"]),
+                wind_bearing=self.coordinator.get_value(["uur_verw", i, "windrgr"]),
+                wind_speed=self.coordinator.get_value(["uur_verw", i, "windkmh"]),
+            )
+
+            # Not officially supported, but nice additions.
+            forecast["wind_speed_bft"] = self.coordinator.get_value(["uur_verw", i, "windbft"])  # type: ignore  # noqa: PGH003
+            forecast["solar_irradiance"] = self.coordinator.get_value(["uur_verw", i, "gr"])  # type: ignore  # noqa: PGH003
+
             forecasts.append(forecast)
 
         return forecasts

@@ -2,39 +2,27 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run Home Assistant on port 8123",
+      "label": "pre-commit:all-files",
       "type": "shell",
-      "command": "scripts/develop",
+      "command": "uv run pre-commit run --all-files",
       "problemMatcher": []
     },
     {
-      "label": "Open Home Assistant log file",
+      "label": "pre-commit:staged",
       "type": "shell",
-      "command": "code /hass/home-assistant.log",
+      "command": "uv run pre-commit run",
       "problemMatcher": []
     },
     {
-      "label": "Run pytest",
+      "label": "Run Home Assistant",
       "type": "shell",
-      "command": "pytest",
+      "command": "scripts/develop.sh",
       "problemMatcher": []
     },
     {
-      "label": "Run pytest with coverage",
+      "label": "Run tests",
       "type": "shell",
-      "command": "pytest --cov-report term --cov-report xml --cov=custom_components.knmi",
-      "problemMatcher": []
-    },
-    {
-      "label": "Run black",
-      "type": "shell",
-      "command": "black .",
-      "problemMatcher": []
-    },
-    {
-      "label": "Run isort",
-      "type": "shell",
-      "command": "isort .",
+      "command": "uv run pytest",
       "problemMatcher": []
     }
   ]

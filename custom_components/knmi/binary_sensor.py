@@ -1,41 +1,43 @@
 """Binary sensor platform for knmi."""
 
+from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
-from homeassistant.components.binary_sensor import (
-    BinarySensorDeviceClass,
-    BinarySensorEntity,
-)
-from homeassistant.components.sensor import SensorEntityDescription
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass, BinarySensorEntity, BinarySensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DEFAULT_NAME, DOMAIN
 from .coordinator import KnmiDataUpdateCoordinator
-from .sensor import KnmiSensorDescription
 
-DESCRIPTIONS: list[KnmiSensorDescription] = [
-    KnmiSensorDescription(
+
+@dataclass(kw_only=True, frozen=True)
+class KnmiBinarySensorDescription(BinarySensorEntityDescription):
+    """Class describing KNMI binary sensor entities."""
+
+    value_fn: Callable[[KnmiDataUpdateCoordinator], bool]
+    attr_fn: Callable[[KnmiDataUpdateCoordinator], dict[str, Any]] = lambda _: {}
+
+
+DESCRIPTIONS: list[KnmiBinarySensorDescription] = [
+    KnmiBinarySensorDescription(
         key="alarm",
         device_class=BinarySensorDeviceClass.SAFETY,
         translation_key="alarm",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "alarm"])
-        == 1,
+        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "alarm"]) == 1,
         attr_fn=lambda coordinator: {
             "title": coordinator.get_value(["liveweer", 0, "lkop"]),
             "description": coordinator.get_value(["liveweer", 0, "ltekst"]),
             "code": coordinator.get_value(["liveweer", 0, "wrschklr"]),
             "next_code": coordinator.get_value(["liveweer", 0, "wrsch_gc"]),
-            "timestamp": coordinator.get_value_datetime(
-                ["liveweer", 0, "wrsch_gts"], "-"
-            ),
+            "timestamp": coordinator.get_value_datetime(["liveweer", 0, "wrsch_gts"], "-"),
         },
     ),
-    KnmiSensorDescription(
+    KnmiBinarySensorDescription(
         key="sun",
         translation_key="sun",
         value_fn=lambda coordinator: coordinator.get_is_sun_up(),
@@ -59,34 +61,30 @@ async def async_setup_entry(
     conf_name = entry.data.get(CONF_NAME, hass.config.location_name)
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
-    entities: list[KnmiBinarySensor] = []
-
     # Add all sensors described above.
-    for description in DESCRIPTIONS:
-        entities.append(
-            KnmiBinarySensor(
-                conf_name=conf_name,
-                coordinator=coordinator,
-                description=description,
-            )
+    entities: list[KnmiBinarySensor] = [
+        KnmiBinarySensor(
+            conf_name=conf_name,
+            coordinator=coordinator,
+            description=description,
         )
+        for description in DESCRIPTIONS
+    ]
 
     async_add_entities(entities)
 
 
-class KnmiBinarySensor(
-    CoordinatorEntity[KnmiDataUpdateCoordinator], BinarySensorEntity
-):
+class KnmiBinarySensor(CoordinatorEntity[KnmiDataUpdateCoordinator], BinarySensorEntity):
     """Defines a KNMI binary sensor."""
 
     _attr_has_entity_name = True
-    entity_description: KnmiSensorDescription
+    entity_description: KnmiBinarySensorDescription
 
     def __init__(
         self,
         conf_name: str,
         coordinator: KnmiDataUpdateCoordinator,
-        description: SensorEntityDescription,
+        description: KnmiBinarySensorDescription,
     ) -> None:
         """Initialize KNMI binary sensor."""
         super().__init__(coordinator=coordinator)
@@ -98,7 +96,7 @@ class KnmiBinarySensor(
         self.entity_description = description
 
     @property
-    def is_on(self) -> StateType:
+    def is_on(self) -> bool:
         """Return true if the binary sensor is on."""
         return self.entity_description.value_fn(self.coordinator)
 
