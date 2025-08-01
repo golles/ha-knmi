@@ -65,6 +65,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data[DOMAIN][entry.entry_id] = coordinator = KnmiDataUpdateCoordinator(
         hass=hass,
+        config_entry=entry,
         client=client,
         device_info=device_info,
         scan_interval=scan_interval,
