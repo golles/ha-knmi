@@ -5,20 +5,16 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN
 from .coordinator import KnmiDataUpdateCoordinator
 
 TO_REDACT = {CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE}
 
 
-async def async_get_config_entry_diagnostics(
-    hass: HomeAssistant, config_entry: ConfigEntry
-) -> dict:
+async def async_get_config_entry_diagnostics(_hass: HomeAssistant, config_entry: ConfigEntry[KnmiDataUpdateCoordinator]) -> dict:
     """Return diagnostics for a config entry."""
-    coordinator: KnmiDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinator: KnmiDataUpdateCoordinator = config_entry.runtime_data
 
     return {
         "config_entry": async_redact_data(config_entry.as_dict(), TO_REDACT),
-        "data": coordinator.data,
-        "response_text": coordinator.api.response_text,
+        "data": coordinator.data.to_dict() if coordinator.data else {},
     }

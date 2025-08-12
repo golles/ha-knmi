@@ -1,68 +1,89 @@
 name: CI
 
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - main
   pull_request: ~
 
-env:
-  DEFAULT_PYTHON: "3.12"
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
 
 jobs:
-  style:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: mypy
+            command: uv run mypy .
+          - name: Prettier
+            command: npm run prettier -- --check .
+          - name: Pylint
+            command: uv run pylint custom_components/knmi tests
+          - name: Ruff linter
+            command: uv run ruff check --output-format=github .
+          - name: Ruff formatter
+            command: uv run ruff format --check .
+          - name: ShellCheck
+            command: uv run shellcheck scripts/*.sh
+          - name: uv lock
+            command: uv lock --check
+          - name: YamlLint
+            command: uv run yamllint --format github .
     runs-on: ubuntu-latest
-    name: Check style formatting
+    name: ${{ matrix.name }}
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Setup python
-        uses: actions/setup-python@v5
+      - name: Setup Python and uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ env.DEFAULT_PYTHON }}
+          enable-cache: true
 
-      - name: Check code formatting with black
-        uses: psf/black@stable
-
-      - name: Check code formatting with isort
-        uses: isort/isort-action@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          requirementsFiles: "requirements.txt requirements_dev.txt"
+          cache: npm
+
+      - name: Run setup_env script
+        run: ./scripts/setup_env.sh
+
+      - name: Run ${{ matrix.name }}
+        run: ${{ matrix.command }}
 
   tests:
     runs-on: ubuntu-latest
-    name: Run tests
+    needs:
+      - checks
+    name: CI - Tests
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup Python and uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ env.DEFAULT_PYTHON }}
+          enable-cache: true
 
-      - name: Install requirements
-        run: |
-          python3 -m pip install -r requirements_dev.txt
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+
+      - name: Run setup_env script
+        run: ./scripts/setup_env.sh
 
       - name: Run tests
-        run: |
-          pytest \
-            -qq \
-            --timeout=9 \
-            --durations=10 \
-            -n auto \
-            --cov custom_components.knmi \
-            --cov-report=term \
-            --cov-report=xml \
-            -o console_output_style=count \
-            -p no:sugar \
-            tests
+        run: uv run pytest
+
+      - name: Make coverage XML report
+        run: uv run coverage xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
@@ -71,8 +92,8 @@ jobs:
           fail_ci_if_error: true
 
       - name: SonarCloud Scan
-        if: github.event.pull_request.head.repo.fork == false
-        uses: sonarsource/sonarcloud-github-action@master
+        if: github.event.repository.private == false && github.event.pull_request.head.repo.fork == false
+        uses: sonarsource/sonarqube-scan-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-
-cd "$(dirname "$0")/.."
-
-sudo apt update && sudo apt -y upgrade
-
-python3 -m pip install --upgrade --force-reinstall --requirement requirements_dev.txt

@@ -3,40 +3,27 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
 
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorEntityDescription,
-    SensorStateClass,
-)
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorEntityDescription, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_NAME,
-    PERCENTAGE,
-    UnitOfIrradiance,
-    UnitOfLength,
-    UnitOfPressure,
-    UnitOfSpeed,
-    UnitOfTemperature,
-)
+from homeassistant.const import CONF_NAME, PERCENTAGE, UnitOfIrradiance, UnitOfLength, UnitOfPressure, UnitOfSpeed, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DEFAULT_NAME, DOMAIN
+from weerlive import Response
+
+from .const import DEFAULT_NAME
 from .coordinator import KnmiDataUpdateCoordinator
+from .entity import KnmiEntity, KnmiEntityDescription
 
 
 @dataclass(kw_only=True, frozen=True)
-class KnmiSensorDescription(SensorEntityDescription):
+class KnmiSensorDescription(KnmiEntityDescription, SensorEntityDescription):
     """Class describing KNMI sensor entities."""
 
-    value_fn: Callable[[dict[str, Any]], StateType | datetime | None]
-    attr_fn: Callable[[dict[str, Any]], dict[str, Any]] = lambda _: {}
+    value_fn: Callable[[Response], StateType | datetime | None]
 
 
 DESCRIPTIONS: list[KnmiSensorDescription] = [
@@ -46,7 +33,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="dauwp",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "dauwp"]),
+        value_fn=lambda data: data.live.dew_point,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -55,7 +42,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.IRRADIANCE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="gr",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "gr"]),
+        value_fn=lambda data: data.live.solar_irradiance,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -64,7 +51,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="gtemp",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "gtemp"]),
+        value_fn=lambda data: data.live.feels_like_temperature,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -73,7 +60,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="luchtd",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "luchtd"]),
+        value_fn=lambda data: data.live.air_pressure,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -82,7 +69,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="lv",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "lv"]),
+        value_fn=lambda data: data.live.humidity,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -91,7 +78,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="max_temp_today",
-        value_fn=lambda coordinator: coordinator.get_value(["wk_verw", 0, "max_temp"]),
+        value_fn=lambda data: data.daily_forecast[0].max_temperature,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -100,7 +87,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="max_temp_tomorrow",
-        value_fn=lambda coordinator: coordinator.get_value(["wk_verw", 1, "max_temp"]),
+        value_fn=lambda data: data.daily_forecast[1].max_temperature,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -109,7 +96,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="min_temp_today",
-        value_fn=lambda coordinator: coordinator.get_value(["wk_verw", 0, "min_temp"]),
+        value_fn=lambda data: data.daily_forecast[0].min_temperature,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -118,7 +105,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="min_temp_tomorrow",
-        value_fn=lambda coordinator: coordinator.get_value(["wk_verw", 1, "min_temp"]),
+        value_fn=lambda data: data.daily_forecast[1].min_temperature,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -126,9 +113,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="neersl_perc_dag_today",
-        value_fn=lambda coordinator: coordinator.get_value(
-            ["wk_verw", 0, "neersl_perc_dag"]
-        ),
+        value_fn=lambda data: data.daily_forecast[0].precipitation_probability,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -136,16 +121,14 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="neersl_perc_dag_tomorrow",
-        value_fn=lambda coordinator: coordinator.get_value(
-            ["wk_verw", 1, "neersl_perc_dag"]
-        ),
+        value_fn=lambda data: data.daily_forecast[1].precipitation_probability,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
         key="plaats",
         entity_category=EntityCategory.DIAGNOSTIC,
         translation_key="plaats",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "plaats"]),
+        value_fn=lambda data: data.live.city,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -153,13 +136,13 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         translation_key="rest_verz",
-        value_fn=lambda coordinator: coordinator.get_value(["api", 0, "rest_verz"]),
+        value_fn=lambda data: data.api.remaining_requests,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
         key="samenv",
         translation_key="samenv",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "samenv"]),
+        value_fn=lambda data: data.live.summary,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -168,7 +151,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="temp",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "temp"]),
+        value_fn=lambda data: data.live.temperature,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -176,15 +159,13 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
         translation_key="timestamp",
-        value_fn=lambda coordinator: coordinator.get_value_datetime(
-            ["liveweer", 0, "timestamp"]
-        ),
+        value_fn=lambda data: data.live.time,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
         key="verw",
         translation_key="verw",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "verw"]),
+        value_fn=lambda data: data.live.forecast,
     ),
     KnmiSensorDescription(
         key="windkmh",
@@ -192,19 +173,19 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.SPEED,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="windkmh",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "windkmh"]),
-        attr_fn=lambda coordinator: {
-            "bearing": coordinator.get_value(["liveweer", 0, "windr"]),
-            "degree": coordinator.get_value(["liveweer", 0, "windrgr"]),
-            "beaufort": coordinator.get_value(["liveweer", 0, "windbft"]),
-            "knots": coordinator.get_value(["liveweer", 0, "windknp"]),
+        value_fn=lambda data: data.live.wind_speed_kmh,
+        state_attributes_fn=lambda data: {
+            "bearing": data.live.wind_direction,
+            "degree": data.live.wind_direction_degree,
+            "beaufort": data.live.wind_speed_bft,
+            "knots": data.live.wind_speed_knots,
         },
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
         key="wrschklr",
         translation_key="wrschklr",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "wrschklr"]),
+        value_fn=lambda data: data.live.weather_code,
         entity_registry_enabled_default=False,
     ),
     KnmiSensorDescription(
@@ -213,7 +194,7 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
         device_class=SensorDeviceClass.DISTANCE,
         state_class=SensorStateClass.MEASUREMENT,
         translation_key="zicht",
-        value_fn=lambda coordinator: coordinator.get_value(["liveweer", 0, "zicht"]),
+        value_fn=lambda data: data.live.visibility,
         entity_registry_enabled_default=False,
     ),
 ]
@@ -221,55 +202,46 @@ DESCRIPTIONS: list[KnmiSensorDescription] = [
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    config_entry: ConfigEntry[KnmiDataUpdateCoordinator],
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up KNMI sensors based on a config entry."""
-    conf_name = entry.data.get(CONF_NAME, hass.config.location_name)
-    coordinator = hass.data[DOMAIN][entry.entry_id]
-
-    entities: list[KnmiSensor] = []
+    conf_name = config_entry.data.get(CONF_NAME, hass.config.location_name)
+    coordinator = config_entry.runtime_data
 
     # Add all sensors described above.
-    for description in DESCRIPTIONS:
-        entities.append(
-            KnmiSensor(
-                conf_name=conf_name,
-                coordinator=coordinator,
-                description=description,
-            )
+    entities: list[KnmiSensor] = [
+        KnmiSensor(
+            conf_name=conf_name,
+            coordinator=coordinator,
+            description=description,
         )
+        for description in DESCRIPTIONS
+    ]
 
     async_add_entities(entities)
 
 
-class KnmiSensor(CoordinatorEntity[KnmiDataUpdateCoordinator], SensorEntity):
+class KnmiSensor(KnmiEntity, SensorEntity):
     """Defines a KNMI sensor."""
 
-    _attr_has_entity_name = True
     entity_description: KnmiSensorDescription
 
     def __init__(
         self,
         conf_name: str,
         coordinator: KnmiDataUpdateCoordinator,
-        description: SensorEntityDescription,
+        description: KnmiSensorDescription,
     ) -> None:
         """Initialize KNMI sensor."""
         super().__init__(coordinator=coordinator)
 
-        self._attr_attribution = self.coordinator.get_value(["api", 0, "bron"])
-        self._attr_device_info = coordinator.device_info
+        self._attr_attribution = self.coordinator.data.api.source
         self._attr_unique_id = f"{DEFAULT_NAME}_{conf_name}_{description.key}".lower()
 
         self.entity_description = description
 
     @property
-    def native_value(self) -> StateType:
+    def native_value(self) -> StateType | datetime | None:
         """Return the state."""
-        return self.entity_description.value_fn(self.coordinator)
-
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
-        """Return the state attributes."""
-        return self.entity_description.attr_fn(self.coordinator)
+        return self.entity_description.value_fn(self.coordinator.data)

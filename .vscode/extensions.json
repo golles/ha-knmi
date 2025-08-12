@@ -1,15 +1,13 @@
 {
   "recommendations": [
+    "charliermarsh.ruff",
     "esbenp.prettier-vscode",
-    "gitHub.vscode-github-actions",
-    "github.vscode-pull-request-github",
-    "ms-python.black-formatter",
-    "ms-python.isort",
+    "github.vscode-github-actions",
+    "ms-python.mypy-type-checker",
     "ms-python.pylint",
     "ms-python.python",
     "ms-python.vscode-pylance",
     "ryanluker.vscode-coverage-gutters",
-    "sonarSource.sonarlint-vscode",
-    "streetsidesoftware.code-spell-checker"
+    "timonwong.shellcheck"
   ]
 }

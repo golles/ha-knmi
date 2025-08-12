@@ -1,6 +1,6 @@
 name: Validate
 
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - main
@@ -8,18 +8,25 @@ on:
   schedule:
     - cron: "0 0 * * 6"
 
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    name: Validate
-    steps:
-      - name: Check out code from GitHub
-        uses: actions/checkout@v4
+permissions:
+  contents: read
 
-      - name: HACS validation
+jobs:
+  hacs:
+    name: HACS validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run HACS validation
         uses: hacs/action@main
         with:
           category: integration
 
-      - name: Hassfest validation
+  hassfest:
+    name: Hassfest validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v5
+
+      - name: Run hassfest validation
         uses: home-assistant/actions/hassfest@master

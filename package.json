@@ -1,0 +1,16 @@
+{
+  "name": "ha-knmi",
+  "version": "0.0.1",
+  "description": "Custom component that integrates KNMI weather service (via Weerlive.nl) in to Home Assistant",
+  "author": "Sander Gols <developer@golles.nl>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  },
+  "scripts": {
+    "prettier": "prettier"
+  }
+}

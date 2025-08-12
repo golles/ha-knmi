@@ -1,0 +1,82 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      # - id: check-executables-have-shebangs # Doesn't work in devcontainer on Mac
+      # - id: check-json # There is invalid json in the fixtures folder on purpose
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: name-tests-test
+        args: [--pytest-test-first]
+        exclude: const.py
+      - id: trailing-whitespace
+
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 41.43.0
+    hooks:
+      - id: renovate-config-validator
+
+  # CI checks
+  # The following tools are all installed locally, so there is no need to use remote repos.
+  # The main reason is to not have to worry about version mismatch between the project and pre-commit.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: uv run mypy custom_components/knmi
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: prettier
+        name: prettier
+        entry: npm run prettier -- --write .
+        language: system
+        pass_filenames: false
+
+      - id: pylint
+        name: pylint
+        entry: uv run pylint
+        language: system
+        types: [python]
+        require_serial: true
+
+      - id: ruff-check
+        name: ruff linter
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+
+      - id: ruff-lint
+        name: ruff formatter
+        entry: uv run ruff format --check .
+        language: system
+        types: [python]
+
+      - id: shellcheck
+        name: shellcheck
+        entry: uv run shellcheck
+        language: system
+        types: [shell]
+
+      - id: uv-lock
+        name: uv lock
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+
+      - id: yamllint
+        name: yamllint
+        entry: uv run yamllint
+        language: system
+        types: [yaml]

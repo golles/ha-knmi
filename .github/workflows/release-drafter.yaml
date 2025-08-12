@@ -1,0 +1,33 @@
+name: Release Drafter
+
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  update_release_draft:
+    name: Update release draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v5
+
+      - name: Setup app
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.PR2D2_APP_ID }}
+          private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
+
+      - name: Run release drafter
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+        with:
+          config-name: release-drafter.yaml

@@ -1,15 +1,22 @@
 name: Update copyright year(s) in license file
 
-on:
+on: # yamllint disable-line rule:truthy
   schedule:
     - cron: "0 1 1 1 *"
 
+permissions:
+  contents: read
+
 jobs:
   update-license-year:
+    name: Update license year
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 

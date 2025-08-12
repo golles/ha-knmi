@@ -1,28 +1,46 @@
 name: Release
 
-on:
-  push:
-    tags:
-      - "*.*.*"
+on: # yamllint disable-line rule:truthy
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  release:
+    name: Build and publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Check out code from GitHub
+        uses: actions/checkout@v5
 
-      - name: Release
+      - name: Setup Python and uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+
+      - name: Set integration version
+        run: |
+          version="${{ github.event.release.tag_name }}"
+          version=${version#v}
+          sed -i -E 's/"version": *"[^"]+"/"version": "'"$version"'"/' custom_components/knmi/manifest.json
+
+      - name: Create archive
+        shell: bash
+        run: |
+          cd "${{ github.workspace }}/custom_components/knmi"
+          zip -r "${{ github.workspace }}/knmi.zip" ./*
+
+      - name: Upload release artifacts
         uses: softprops/action-gh-release@v2
         with:
-          body: |
-            Enjoying this integration? Show your support by starring the repository! ⭐️
-
-            **Changes:**
-            - Change 1
-            - Change 2
-
-            **Important notes:**
-            Why is this important
-          draft: true
-          generate_release_notes: true
+          files: knmi.zip

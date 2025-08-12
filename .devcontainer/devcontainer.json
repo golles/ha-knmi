@@ -1,62 +1,91 @@
 {
-  "name": "HA KNMI development",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
-  "postCreateCommand": "scripts/setup",
+  "name": "HA KNMI",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13",
+  "postCreateCommand": "./scripts/setup_env.sh",
   "forwardPorts": [8123],
+  "portsAttributes": {
+    "8123": {
+      "label": "Home Assistant",
+      "onAutoForward": "openBrowserOnce"
+    }
+  },
+  "containerEnv": {
+    "DEVCONTAINER": "true"
+  },
   "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md", "CONTRIBUTING.md"]
+    },
     "vscode": {
       "extensions": [
+        "charliermarsh.ruff",
         "esbenp.prettier-vscode",
-        "gitHub.vscode-github-actions",
-        "github.vscode-pull-request-github",
-        "ms-python.black-formatter",
-        "ms-python.isort",
+        "github.vscode-github-actions",
+        "ms-python.mypy-type-checker",
         "ms-python.pylint",
         "ms-python.python",
         "ms-python.vscode-pylance",
+        "redhat.vscode-yaml",
         "ryanluker.vscode-coverage-gutters",
-        "sonarSource.sonarlint-vscode",
-        "streetsidesoftware.code-spell-checker"
+        "timonwong.shellcheck"
       ],
       "settings": {
-        "files.eol": "\n",
-        "editor.tabSize": 4,
-        "python.analysis.autoSearchPaths": false,
-        "python.experiments.optOutFrom": ["pythonTestAdapter"],
-        "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+        "editor.defaultFormatter": null,
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
         "editor.formatOnType": true,
+        "editor.rulers": [150],
+        "editor.tabSize": 4,
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 150,
+        "files.eol": "\n",
         "files.trimTrailingWhitespace": true,
-        "files.associations": {
-          ".devcontainer/*.yaml": "home-assistant"
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "pylint.importStrategy": "fromEnvironment",
+        "python.analysis.diagnosticSeverityOverrides": {
+          "reportShadowedImports": "none"
         },
-        "editor.defaultFormatter": null,
-        "[javascript]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
+        "python.analysis.extraPaths": ["${workspaceFolder}/custom_components/knmi"],
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+        "python.testing.cwd": "${workspaceFolder}",
+        "python.testing.pytestArgs": ["--cov-report=xml"],
+        "python.testing.pytestEnabled": true,
+        "ruff.importStrategy": "fromEnvironment",
+        "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"],
+        "terminal.integrated.defaultProfile.linux": "zsh",
         "[json]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[jsonc]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
+        "[markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
         "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
-          "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-          }
+          "editor.defaultFormatter": "charliermarsh.ruff"
         },
         "[yaml]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
-        "cSpell.words": ["hass", "homeassistant", "knmi"]
+        }
       }
     }
   },
   "remoteUser": "vscode",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers/features/rust:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": 22
+    },
+    "ghcr.io/devcontainers-extra/features/apt-packages:1": {
+      "packages": ["ffmpeg", "libturbojpeg0"]
+    },
+    "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {
+      "jqVersion": "latest",
+      "yqVersion": "latest"
+    },
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
   }
 }
