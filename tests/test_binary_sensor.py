@@ -1,18 +1,17 @@
-"""Tests for knmi binary_sensor."""
+"""Tests for binary_sensor."""
 
 import pytest
-from freezegun import freeze_time
 from homeassistant.core import HomeAssistant
 
-from . import setup_component, unload_component
+from . import setup_integration, unload_integration
 
 
 @pytest.mark.usefixtures("mocked_data")
 async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant) -> None:
     """Test is_on function on alarm sensor."""
-    config_entry = await setup_component(hass)
+    config_entry = await setup_integration(hass)
 
-    state = hass.states.get("binary_sensor.knmi_warning")
+    state = hass.states.get("binary_sensor.home_warning")
     assert state
     assert state.state == "off"
     assert state.attributes.get("title") == "Vanavond (zeer) zware windstoten"
@@ -26,16 +25,16 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant) -> None:
     assert state.attributes.get("next_code") == "geel"
     assert str(state.attributes.get("timestamp")) == "2024-02-22 18:00:00+01:00"
 
-    await unload_component(hass, config_entry)
+    await unload_integration(hass, config_entry)
 
 
-@pytest.mark.response_json_file("response_alarm.json")
 @pytest.mark.usefixtures("mocked_data")
+@pytest.mark.parametrize("mocked_data", ["response_alarm.json"], indirect=True)
 async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant) -> None:
     """Test is_on function on alarm sensor."""
-    config_entry = await setup_component(hass)
+    config_entry = await setup_integration(hass)
 
-    state = hass.states.get("binary_sensor.knmi_warning")
+    state = hass.states.get("binary_sensor.home_warning")
     assert state
     assert state.state == "on"
     assert state.attributes.get("title") == "Vanavond (zeer) zware windstoten"
@@ -49,16 +48,16 @@ async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant) -> None:
     assert state.attributes.get("next_code") == "geel"
     assert str(state.attributes.get("timestamp")) == "2024-02-22 18:00:00+01:00"
 
-    await unload_component(hass, config_entry)
+    await unload_integration(hass, config_entry)
 
 
-@freeze_time("2023-02-05T03:30:00+01:00")
+@pytest.mark.freeze_time("2023-02-05T03:30:00+01:00")
 @pytest.mark.usefixtures("mocked_data")
 async def test_knmi_binary_sun_sensor_is_off(hass: HomeAssistant) -> None:
     """Test is_on function on sun sensor."""
-    config_entry = await setup_component(hass)
+    config_entry = await setup_integration(hass)
 
-    state = hass.states.get("binary_sensor.knmi_sun")
+    state = hass.states.get("binary_sensor.home_sun")
     assert state
     assert state.state == "off"
     assert str(state.attributes.get("sunrise")) == "2023-02-05 07:57:00+01:00"
@@ -67,17 +66,17 @@ async def test_knmi_binary_sun_sensor_is_off(hass: HomeAssistant) -> None:
     assert state.attributes.get("sun_chance1") == 8
     assert state.attributes.get("sun_chance2") == 14
 
-    await unload_component(hass, config_entry)
+    await unload_integration(hass, config_entry)
 
 
-@freeze_time("2023-02-05T15:30:00+00:00")
+@pytest.mark.freeze_time("2023-02-05T15:30:00+00:00")
 @pytest.mark.usefixtures("mocked_data")
 async def test_knmi_binary_sun_sensor_is_on(hass: HomeAssistant) -> None:
     """Test is_on function on sun sensor."""
-    config_entry = await setup_component(hass)
+    config_entry = await setup_integration(hass)
 
-    state = hass.states.get("binary_sensor.knmi_sun")
+    state = hass.states.get("binary_sensor.home_sun")
     assert state
     assert state.state == "on"
 
-    await unload_component(hass, config_entry)
+    await unload_integration(hass, config_entry)

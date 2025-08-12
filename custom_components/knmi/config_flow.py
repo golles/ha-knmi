@@ -1,6 +1,5 @@
 """Adds config flow for knmi."""
 
-import logging
 from typing import Any
 
 import homeassistant.helpers.config_validation as cv
@@ -8,12 +7,12 @@ import voluptuous as vol
 from homeassistant.config_entries import SOURCE_RECONFIGURE, ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
 from homeassistant.const import CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME, CONF_SCAN_INTERVAL
 from homeassistant.core import callback
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .api import KnmiApiClient, KnmiApiClientApiKeyError, KnmiApiClientCommunicationError, KnmiApiRateLimitError
+from weerlive import WeerliveApi, WeerliveAPIConnectionError, WeerliveAPIKeyError, WeerliveAPIRateLimitError
+
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
 
-_LOGGER: logging.Logger = logging.getLogger(__package__)
 CONFIG_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_NAME): str,
@@ -46,11 +45,11 @@ class KnmiFlowHandler(ConfigFlow, domain=DOMAIN):
                     latitude,
                     longitude,
                 )
-            except KnmiApiClientCommunicationError:
+            except WeerliveAPIConnectionError:
                 errors["base"] = "general"
-            except KnmiApiClientApiKeyError:
+            except WeerliveAPIKeyError:
                 errors["base"] = "api_key"
-            except KnmiApiRateLimitError:
+            except WeerliveAPIRateLimitError:
                 errors["base"] = "daily_limit"
             else:
                 if self.source == SOURCE_RECONFIGURE:
@@ -75,11 +74,11 @@ class KnmiFlowHandler(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def _validate_user_input(self, api_key: str, latitude: str, longitude: str) -> None:
+    async def _validate_user_input(self, api_key: str, latitude: float, longitude: float) -> None:
         """Validate user input."""
-        session = async_create_clientsession(self.hass)
-        client = KnmiApiClient(api_key, latitude, longitude, session)
-        await client.async_get_data()
+        session = async_get_clientsession(self.hass)
+        client = WeerliveApi(api_key, session)
+        await client.latitude_longitude(latitude, longitude)
 
     async def async_step_reconfigure(self, _: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Handle reconfiguration."""

@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run release drafter
         uses: release-drafter/release-drafter@v6
