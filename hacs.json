@@ -2,5 +2,5 @@
   "name": "KNMI",
   "homeassistant": "2025.8.0",
   "zip_release": true,
-  "filename": "ori.zip"
+  "filename": "knmi.zip"
 }
