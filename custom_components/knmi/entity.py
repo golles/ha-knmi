@@ -46,6 +46,7 @@ class KnmiEntity(CoordinatorEntity[KnmiDataUpdateCoordinator]):
             identifiers={(DOMAIN, coordinator.config_entry.entry_id)},
             manufacturer="Weerlive",
             name=coordinator.config_entry.data.get(CONF_NAME),
+            sw_version=None,
         )
 
     @property
