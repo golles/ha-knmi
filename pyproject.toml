@@ -61,7 +61,12 @@ ignore_missing_imports = true
 max-line-length = 150
 
 [tool.pylint."MESSAGES CONTROL"]
-disable = ["abstract-method", "duplicate-code", "unexpected-keyword-arg", "wrong-import-order"]
+disable = [
+  "abstract-method",
+  "duplicate-code",
+  "unexpected-keyword-arg",
+  "wrong-import-order",
+]
 
 [tool.pytest.ini_options]
 addopts = "--cov --cov-report=term --cov-report=xml"
