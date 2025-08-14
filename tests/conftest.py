@@ -50,7 +50,7 @@ def fixture_mock_weerlive_client() -> Generator[AsyncMock]:
 
 @pytest.fixture(name="mocked_data")
 def fixture_mocked_data(request: pytest.FixtureRequest, mock_weerlive_client: AsyncMock) -> None:
-    """Fixture for adding the aresponses response with a configurable JSON file."""
+    """Fixture for mocking a response with a configurable JSON file."""
     json_file = getattr(request, "param", "response.json")
     response_json = load_fixture(json_file)
     mock_response = Response.from_json(response_json)

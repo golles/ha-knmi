@@ -18,11 +18,7 @@ from weerlive import WeerliveApi
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
 from .coordinator import KnmiDataUpdateCoordinator
 
-PLATFORMS: list[Platform] = [
-    Platform.BINARY_SENSOR,
-    Platform.SENSOR,
-    Platform.WEATHER,
-]
+PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.WEATHER]
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 

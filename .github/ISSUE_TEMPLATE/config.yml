@@ -7,3 +7,7 @@ contact_links:
   - name: API documentation
     url: https://weerlive.nl/delen.php
     about: Weerlive API documentation.
+
+  - name: Weerlive library
+    url: https://github.com/golles/python-weerlive
+    about: Python library repository.

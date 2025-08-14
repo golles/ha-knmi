@@ -12,7 +12,7 @@ TO_REDACT = {CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE}
 
 async def async_get_config_entry_diagnostics(_hass: HomeAssistant, config_entry: ConfigEntry[KnmiDataUpdateCoordinator]) -> dict:
     """Return diagnostics for a config entry."""
-    coordinator: KnmiDataUpdateCoordinator = config_entry.runtime_data
+    coordinator = config_entry.runtime_data
 
     return {
         "config_entry": async_redact_data(config_entry.as_dict(), TO_REDACT),
