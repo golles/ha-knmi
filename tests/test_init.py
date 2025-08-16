@@ -12,7 +12,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.knmi import async_migrate_entry, async_setup_entry, async_unload_entry
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
-from weerlive.exceptions import WeerliveAPIError
+from weerlive import WeerliveAPIError
 
 from . import get_mock_config_entry, setup_integration
 
