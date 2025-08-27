@@ -49,7 +49,7 @@ fi
 if [ "$1" == "--devcontainer" ]; then
     log_empty_line 2
     log_yellow "The dev container is ready"
-    log_yellow "Once all the extensions are installed, reload the window (CMD+P -> Developer: Reload Window) to make sure all extensions are activated!"
+    log_yellow "Once all the extensions are installed, reload the window (Command Palette -> Developer: Reload Window) to make sure all extensions are activated!"
 else
     log_empty_line 1
     log_yellow "Done, you should reload your terminal"
