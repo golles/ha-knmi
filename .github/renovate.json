@@ -35,9 +35,14 @@
       "rangeStrategy": "pin"
     },
     {
-      "description": "Let pytest-homeassistant-custom-component control pytest deps",
+      "description": "Python dependencies ignore pytest dependencies",
       "matchManagers": ["pep621"],
-      "matchPackageNames": ["pytest", "pytest-asyncio", "pytest-cov"],
+      "matchPackageNames": [
+        "pytest",
+        "pytest-asyncio",
+        "pytest-cov",
+        "pytest-homeassistant-custom-component"
+      ],
       "enabled": false
     },
     {
