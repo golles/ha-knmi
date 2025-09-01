@@ -48,4 +48,5 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator[Response]):
         try:
             return await self.client.latitude_longitude(latitude=float(latitude), longitude=float(longitude))
         except Exception as exception:
+            _LOGGER.warning("Failed to update data: %s", exception)
             raise UpdateFailed from exception
