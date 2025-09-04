@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run stale
-        uses: actions/stale@v9
+        uses: actions/stale@v10
         with:
           exempt-issue-labels: "no-stale"
           exempt-pr-labels: "no-stale"
