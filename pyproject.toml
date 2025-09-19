@@ -27,7 +27,7 @@ Issues = "https://github.com/golles/ha-knmi/issues"
 
 [dependency-groups]
 dev = [
-  "mypy==1.18.1",
+  "mypy==1.18.2",
   "pre-commit==4.3.0",
   "pylint==3.3.8",
   "pytest",
