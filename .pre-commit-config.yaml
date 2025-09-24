@@ -22,7 +22,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 41.125.2
+    rev: 41.127.2
     hooks:
       - id: renovate-config-validator
 
