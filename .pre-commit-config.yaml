@@ -21,11 +21,6 @@ repos:
         exclude: const.py
       - id: trailing-whitespace
 
-  - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 41.135.5
-    hooks:
-      - id: renovate-config-validator
-
   # CI checks
   # The following tools are all installed locally, so there is no need to use remote repos.
   # The main reason is to not have to worry about version mismatch between the project and pre-commit.
