@@ -143,7 +143,7 @@ async def test_async_forecast_daily(hass: HomeAssistant) -> None:  # pylint: dis
     assert forecast[1]["sun_chance"] == 8  # type: ignore  # noqa: PGH003
 
     assert forecast[2][ATTR_FORECAST_TIME] == "2024-02-16T00:00:00+01:00"
-    assert forecast[2][ATTR_FORECAST_CONDITION] == "rainy"
+    assert forecast[2][ATTR_FORECAST_CONDITION] == "pouring"
     assert forecast[2][ATTR_FORECAST_NATIVE_TEMP_LOW] == 9
     assert forecast[2][ATTR_FORECAST_NATIVE_TEMP] == 10
     assert forecast[2][ATTR_FORECAST_PRECIPITATION_PROBABILITY] == 40
@@ -215,7 +215,7 @@ async def test_async_forecast_hourly(hass: HomeAssistant) -> None:  # pylint: di
     assert forecast[5]["solar_irradiance"] == 0  # type: ignore  # noqa: PGH003
 
     assert forecast[8][ATTR_FORECAST_TIME] == "2024-02-15T07:00:00+01:00"
-    assert forecast[8][ATTR_FORECAST_CONDITION] == "pouring"
+    assert forecast[8][ATTR_FORECAST_CONDITION] == "rainy"
     assert forecast[8][ATTR_FORECAST_NATIVE_TEMP] == 10
     assert Decimal(str(forecast[8][ATTR_FORECAST_NATIVE_PRECIPITATION])) == Decimal("0.9")
     assert forecast[8][ATTR_FORECAST_WIND_BEARING] == 196
