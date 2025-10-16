@@ -873,6 +873,14 @@ dev = [
     { name = "shellcheck-py" },
     { name = "yamllint" },
 ]
+runhass = [
+    { name = "hassil" },
+    { name = "home-assistant-intents" },
+    { name = "mutagen" },
+    { name = "pymicro-vad" },
+    { name = "pyspeex-noise" },
+    { name = "pyturbojpeg" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -892,6 +900,14 @@ dev = [
     { name = "ruff", specifier = "==0.14.0" },
     { name = "shellcheck-py", specifier = "==0.11.0.1" },
     { name = "yamllint", specifier = "==1.37.1" },
+]
+runhass = [
+    { name = "hassil" },
+    { name = "home-assistant-intents" },
+    { name = "mutagen" },
+    { name = "pymicro-vad" },
+    { name = "pyspeex-noise" },
+    { name = "pyturbojpeg" },
 ]
 
 [[package]]
@@ -949,6 +965,19 @@ wheels = [
 ]
 
 [[package]]
+name = "hassil"
+version = "3.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+    { name = "unicode-rbnf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9f/0e/e76d9fc5ec3572f70ceffab89bb8bea85113946090d8e248a60688863056/hassil-3.2.1.tar.gz", hash = "sha256:e566f8534d8c34591664830f738330f9851549c4d8202537588f9176ab805108", size = 59384, upload-time = "2025-10-08T15:31:19.747Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e0/8c/7f2710eb479130e20502c957267ce48f6eafe9ebd5be482178f5fc0acbcc/hassil-3.2.1-py3-none-any.whl", hash = "sha256:7700f3fab2fa4730da75533d262bed2c37cc3c9ffdb865afbb187940107dd498", size = 50729, upload-time = "2025-10-08T15:31:18.2Z" },
+]
+
+[[package]]
 name = "home-assistant-bluetooth"
 version = "1.13.1"
 source = { registry = "https://pypi.org/simple" }
@@ -958,6 +987,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b4/0e/c05ee603cab1adb847a305bc8f1034cbdbc0a5d15169fcf68c0d6d21e33f/home_assistant_bluetooth-1.13.1.tar.gz", hash = "sha256:0ae0e2a8491cc762ee9e694b8bc7665f1e2b4618926f63969a23a2e3a48ce55e", size = 7607, upload-time = "2025-02-04T16:11:15.259Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/85/9b/9904cec885cc32c45e8c22cd7e19d9c342e30074fdb7c58f3d5b33ea1adb/home_assistant_bluetooth-1.13.1-py3-none-any.whl", hash = "sha256:cdf13b5b45f7744165677831e309ee78fbaf0c2866c6b5931e14d1e4e7dae5d7", size = 7915, upload-time = "2025-02-04T16:11:13.163Z" },
+]
+
+[[package]]
+name = "home-assistant-intents"
+version = "2025.10.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/d6/edc1eabeab57514792160d91eb2b208f74df59fb64910de446403c45372b/home_assistant_intents-2025.10.1.tar.gz", hash = "sha256:5cd7201144a858bce315458adb6fd982c738fa7e1530b3483f0fc61b8e3c2b47", size = 2814985, upload-time = "2025-10-01T14:00:18.358Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a1/35/2fa8d7af446b22fca16557b854f7364369b84c3bfb2394e4ebd10a83afeb/home_assistant_intents-2025.10.1-py3-none-any.whl", hash = "sha256:1fe9b2c8d3f2e713b6ecee8f6dc55f5137c06b91ca0af7f5768132d8d0c455d8", size = 2843166, upload-time = "2025-10-01T14:00:16.463Z" },
 ]
 
 [[package]]
@@ -1245,6 +1283,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/dc/80/9b174a92814a3830b7357307a792300f42c9e94664b01dee8e457551fa66/multidict-6.7.0-cp313-cp313t-win_amd64.whl", hash = "sha256:3da4fb467498df97e986af166b12d01f05d2e04f978a9c1c680ea1988e0bc4b6", size = 53104, upload-time = "2025-10-06T14:50:48.851Z" },
     { url = "https://files.pythonhosted.org/packages/cc/28/04baeaf0428d95bb7a7bea0e691ba2f31394338ba424fb0679a9ed0f4c09/multidict-6.7.0-cp313-cp313t-win_arm64.whl", hash = "sha256:b4121773c49a0776461f4a904cdf6264c88e42218aaa8407e803ca8025872792", size = 45503, upload-time = "2025-10-06T14:50:50.16Z" },
     { url = "https://files.pythonhosted.org/packages/b7/da/7d22601b625e241d4f23ef1ebff8acfc60da633c9e7e7922e24d10f592b3/multidict-6.7.0-py3-none-any.whl", hash = "sha256:394fc5c42a333c9ffc3e421a4c85e08580d990e08b99f6bf35b4132114c5dcb3", size = 12317, upload-time = "2025-10-06T14:52:29.272Z" },
+]
+
+[[package]]
+name = "mutagen"
+version = "1.47.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/e6/64bc71b74eef4b68e61eb921dcf72dabd9e4ec4af1e11891bbd312ccbb77/mutagen-1.47.0.tar.gz", hash = "sha256:719fadef0a978c31b4cf3c956261b3c58b6948b32023078a2117b1de09f0fc99", size = 1274186, upload-time = "2023-09-03T16:33:33.411Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b0/7a/620f945b96be1f6ee357d211d5bf74ab1b7fe72a9f1525aafbfe3aee6875/mutagen-1.47.0-py3-none-any.whl", hash = "sha256:edd96f50c5907a9539d8e5bba7245f62c9f520aef333d13392a79a4f70aca719", size = 194391, upload-time = "2023-09-03T16:33:29.955Z" },
 ]
 
 [[package]]
@@ -1665,6 +1712,16 @@ wheels = [
 ]
 
 [[package]]
+name = "pymicro-vad"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/d4/9f5368a2b38add4a156d79487c59f79bb6e9930d90f3b9ae03891f3edae7/pymicro_vad-2.0.0.tar.gz", hash = "sha256:3fa33c4e18feabb5a1e11c734b6bc0432df58c45db5290bd6f340e9e9b529dd8", size = 135792, upload-time = "2025-10-07T20:48:00.971Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7f/cc/09ebd2e4f8da2ba539eb3cc6f09d2a297c0d36a8eda9a2824b7067908943/pymicro_vad-2.0.0-cp39-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:7b6c46a10b3973373c977bd35ab5959415d1d1814eb37a9e87a7866aa75365d5", size = 324364, upload-time = "2025-10-07T20:47:58.66Z" },
+    { url = "https://files.pythonhosted.org/packages/d5/17/2ef84b8cff6ffef2de685d144d2be14e3059e877fcf15190783513e02f42/pymicro_vad-2.0.0-cp39-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:0b4e36dcf0aa780bc332d8cc1e1f301cb5482e51d5245a735046c64aa73b26cf", size = 326341, upload-time = "2025-10-07T20:47:59.856Z" },
+]
+
+[[package]]
 name = "pyobjc-core"
 version = "11.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1741,6 +1798,16 @@ name = "pyric"
 version = "0.1.6.3"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/08/64/a99f27d3b4347486c7bfc0aa516016c46dc4c0f380ffccbd742a61af1eda/PyRIC-0.1.6.3.tar.gz", hash = "sha256:b539b01cafebd2406c00097f94525ea0f8ecd1dd92f7731f43eac0ef16c2ccc9", size = 870401, upload-time = "2016-12-04T07:54:48.374Z" }
+
+[[package]]
+name = "pyspeex-noise"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/39/aa/f257019e3159fccd34091e0acd66fd7527666417c28a3efaae40129007c5/pyspeex_noise-2.0.0.tar.gz", hash = "sha256:6fdb16e59d7a353690661c71e35e2c91972419bfd79dfe37db66ead0e95e7827", size = 49242, upload-time = "2025-10-07T21:47:26.148Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e1/8c/929d47f8ad20507cd7c6bdaa8470a7afbae286a9ca59a976917868d7d644/pyspeex_noise-2.0.0-cp39-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:34928605513a0e48bbe35eec8e532c864fd4691ab03639eb5dcb53af7033b21f", size = 137916, upload-time = "2025-10-07T21:47:23.273Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/35/b02df058b780346e5d6a0b1cebe624e872ae5beb6ada4ffec27cefb1efe0/pyspeex_noise-2.0.0-cp39-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:e26882383f81d474b31158185d88fcf91775b9c7978413a55e46b2d2ac6d41ee", size = 145644, upload-time = "2025-10-07T21:47:24.623Z" },
+]
 
 [[package]]
 name = "pytest"
@@ -1960,6 +2027,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/87/c7/5e1547c44e31da50a
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a4/62/02da182e544a51a5c3ccf4b03ab79df279f9c60c5e82d5e8bec7ca26ac11/python_slugify-8.0.4-py2.py3-none-any.whl", hash = "sha256:276540b79961052b66b7d116620b36518847f52d5fd9e3a70164fc8c50faa6b8", size = 10051, upload-time = "2024-02-08T18:32:43.911Z" },
 ]
+
+[[package]]
+name = "pyturbojpeg"
+version = "1.8.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d2/e8/0cbd6e4f086a3b9261b2539ab5ddb1e3ba0c94d45b47832594d4b4607586/PyTurboJPEG-1.8.2.tar.gz", hash = "sha256:b7d9625bbb2121b923228fc70d0c2b010b386687501f5b50acec4501222e152b", size = 12694, upload-time = "2025-06-22T07:26:45.861Z" }
 
 [[package]]
 name = "pytz"
@@ -2303,6 +2379,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d4/f2/16c8e6f3d82debedeb1b09bec889ad4a1ca8a71d2d269c156dd80d049c2e/ulid_transform-1.4.0.tar.gz", hash = "sha256:5914a3c4277b0d25ebb67f47bfee2167ac858d970249ea275221fb3e5d91c9a0", size = 16023, upload-time = "2025-03-07T10:44:02.653Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5c/1d/c43d3e1bda52a321f6cde3526b3634602958dc8ccf1f20fd6616767fd1a1/ulid_transform-1.4.0-cp313-cp313-manylinux_2_36_x86_64.whl", hash = "sha256:9b1429ca7403696b290e4e97ffadbf8ed0b7470a97ad7e273372c3deae5bfb2f", size = 51566, upload-time = "2025-03-07T10:44:00.79Z" },
+]
+
+[[package]]
+name = "unicode-rbnf"
+version = "2.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/57/1f/d952ba97832647e608700c36b22d1c4476016076c9ed1ce74ae814bea55a/unicode_rbnf-2.4.0.tar.gz", hash = "sha256:6d2f12a7581c69ea6218ee61fafcd2da46e1f9986bdcd0964c5151f7c2a938ac", size = 89069, upload-time = "2025-10-07T20:59:41.3Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4b/21/82f5d435808cba330668a8b69efb180e3ef9739d4998e8cd0381e8c9cb23/unicode_rbnf-2.4.0-py3-none-any.whl", hash = "sha256:0176b30ac9b7b84008d7dc0f23078055dc10d2671fdadfab5747943243e20e2d", size = 141691, upload-time = "2025-10-07T20:59:40.139Z" },
 ]
 
 [[package]]

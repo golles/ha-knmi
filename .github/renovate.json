@@ -46,6 +46,12 @@
       "enabled": false
     },
     {
+      "description": "Ignore Home Assistant runtime dependencies (runhass group)",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["runhass"],
+      "enabled": false
+    },
+    {
       "description": "Python dependencies",
       "matchManagers": ["pep621"],
       "addLabels": ["python"]

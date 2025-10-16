@@ -38,6 +38,14 @@ dev = [
   "shellcheck-py==0.11.0.1",
   "yamllint==1.37.1",
 ]
+runhass = [
+    "hassil",
+    "home_assistant_intents",
+    "mutagen",
+    "pymicro_vad",
+    "pyspeex_noise",
+    "PyTurboJPEG",
+]
 
 [build-system]
 requires = ["hatchling==1.27.0"]
