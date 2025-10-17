@@ -1,6 +1,6 @@
 """Test setup."""
 
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from _pytest.logging import LogCaptureFixture
@@ -57,12 +57,25 @@ async def test_setup_entry_no_api_key(hass: HomeAssistant) -> None:
         await async_setup_entry(hass, config_entry)
 
 
-async def test_async_migrate_entry_v1_to_v2(hass: HomeAssistant, entity_registry: er.EntityRegistry, caplog: LogCaptureFixture) -> None:
-    """Test entry migration, v1 to v2."""
+async def test_async_reload_entry(hass: HomeAssistant) -> None:
+    """Test reloading the entry."""
     config_entry = await setup_integration(hass)
 
-    hass.config_entries.async_update_entry(config_entry, version=1)
-    assert config_entry.version == 1
+    with patch("custom_components.knmi.async_reload_entry") as mock_reload_entry:
+        assert len(mock_reload_entry.mock_calls) == 0
+        hass.config_entries.async_update_entry(config_entry, options={"something": "else"})
+        assert len(mock_reload_entry.mock_calls) == 1
+
+
+async def test_async_migrate_entry_v1_to_v2(hass: HomeAssistant, entity_registry: er.EntityRegistry, caplog: LogCaptureFixture) -> None:
+    """Test entry migration, v1 to v2."""
+    config_entry = MockConfigEntry(
+        domain=DOMAIN,
+        entry_id="test_entry",
+        data={"api_key": "test_key"},
+        version=1,
+    )
+    config_entry.add_to_hass(hass)
 
     mock_entity_id = "weather.knmi_home"
     entity_registry.async_get_or_create(

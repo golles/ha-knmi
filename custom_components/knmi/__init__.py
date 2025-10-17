@@ -45,7 +45,8 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry[KnmiD
     config_entry.runtime_data = coordinator = KnmiDataUpdateCoordinator(
         hass=hass,
         client=client,
-        scan_interval=scan_interval,
+        config_entry=config_entry,
+        update_interval=scan_interval,
     )
 
     await coordinator.async_config_entry_first_refresh()
