@@ -25,7 +25,8 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator[Response]):
         self,
         hass: HomeAssistant,
         client: WeerliveApi,
-        scan_interval: timedelta,
+        config_entry: ConfigEntry,
+        update_interval: timedelta,
     ) -> None:
         """Initialize."""
         self.client = client
@@ -34,7 +35,8 @@ class KnmiDataUpdateCoordinator(DataUpdateCoordinator[Response]):
             hass=hass,
             logger=_LOGGER,
             name=DOMAIN,
-            update_interval=scan_interval,
+            config_entry=config_entry,
+            update_interval=update_interval,
         )
 
     async def _async_update_data(self) -> Response:
