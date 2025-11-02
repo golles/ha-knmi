@@ -19,9 +19,9 @@ async def test_async_update_data_success(hass: HomeAssistant, mock_weerlive_clie
     coordinator = KnmiDataUpdateCoordinator(
         hass=hass,
         client=mock_weerlive_client,
-        scan_interval=timedelta(minutes=5),
+        config_entry=get_mock_config_entry(),
+        update_interval=timedelta(minutes=5),
     )
-    coordinator.config_entry = get_mock_config_entry()
     result = await coordinator._async_update_data()  # pylint: disable=protected-access # noqa: SLF001
     assert isinstance(result, AsyncMock)
     mock_weerlive_client.latitude_longitude.assert_awaited_once_with(
@@ -44,9 +44,9 @@ async def test_async_update_data_missing_coordinates(hass: HomeAssistant, mock_w
     coordinator = KnmiDataUpdateCoordinator(
         hass=hass,
         client=mock_weerlive_client,
-        scan_interval=timedelta(minutes=5),
+        config_entry=config_entry,
+        update_interval=timedelta(minutes=5),
     )
-    coordinator.config_entry = config_entry
     with pytest.raises(UpdateFailed):
         await coordinator._async_update_data()  # pylint: disable=protected-access # noqa: SLF001
 
@@ -57,8 +57,8 @@ async def test_async_update_data_api_failure(hass: HomeAssistant, mock_weerlive_
     coordinator = KnmiDataUpdateCoordinator(
         hass=hass,
         client=mock_weerlive_client,
-        scan_interval=timedelta(minutes=5),
+        config_entry=get_mock_config_entry(),
+        update_interval=timedelta(minutes=5),
     )
-    coordinator.config_entry = get_mock_config_entry()
     with pytest.raises(UpdateFailed):
         await coordinator._async_update_data()  # pylint: disable=protected-access # noqa: SLF001
