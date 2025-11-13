@@ -14,7 +14,8 @@
     {
       "description": "Devcontainer updates",
       "matchManagers": ["devcontainer"],
-      "addLabels": ["devcontainer"]
+      "addLabels": ["devcontainer"],
+      "automerge": false
     },
     {
       "description": "Github actions",
