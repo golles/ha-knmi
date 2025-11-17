@@ -388,16 +388,16 @@ wheels = [
 
 [[package]]
 name = "bleak-retry-connector"
-version = "4.4.3"
+version = "4.4.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bleak" },
     { name = "bluetooth-adapters", marker = "sys_platform == 'linux'" },
     { name = "dbus-fast", marker = "sys_platform == 'linux'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b6/08/8a62e114d5c1a7a0b4fee1c21a845061b0cc03bf617cc8ee7c27b2f164f9/bleak_retry_connector-4.4.3.tar.gz", hash = "sha256:70aa305dbd26eaf0586dd24723daac93ee3dd6a465e9782bf02b711fcbc4a527", size = 18652, upload-time = "2025-08-29T00:43:40.716Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8c/41/384b005fcb7afccb9c02c50da2a4154033286927d38023219b70f5f09d8d/bleak_retry_connector-4.4.4.tar.gz", hash = "sha256:6716c159db3fc0a4a454fc325521d5cdf398594310238ce93b9f534c8608c36c", size = 18637, upload-time = "2025-11-12T18:16:40.264Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/0f/445cbd2cd41ca6af16bcecce50eeda984d49b98e53ece1e80ad5b7fc98e4/bleak_retry_connector-4.4.3-py3-none-any.whl", hash = "sha256:17a478d525706488973b181fc789e960bc3fb4bcd94ccb0eee7b7b682442577b", size = 18610, upload-time = "2025-08-29T00:43:39.26Z" },
+    { url = "https://files.pythonhosted.org/packages/11/e5/caf6e1239967bb31edf97378a721113192e531e3d82e0441603ef2c9cf44/bleak_retry_connector-4.4.4-py3-none-any.whl", hash = "sha256:851c8a1c69821d89edc80f0e93278866e8cebc9c6a9d3aa683f454f9cbe8010a", size = 18620, upload-time = "2025-11-12T18:16:38.697Z" },
 ]
 
 [[package]]
@@ -464,30 +464,30 @@ wheels = [
 
 [[package]]
 name = "boto3"
-version = "1.40.69"
+version = "1.40.74"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "botocore" },
     { name = "jmespath" },
     { name = "s3transfer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/56/36/65d292d14261aedbb9a22e5bf194d84c119c889135b42448db646d06d76b/boto3-1.40.69.tar.gz", hash = "sha256:5273f6bac347331a87db809dff97d8736c50c3be19f2bb36ad08c5131c408976", size = 111628, upload-time = "2025-11-07T20:26:26.949Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/37/0db5fc46548b347255310893f1a47971a1d8eb0dbc46dfb5ace8a1e7d45e/boto3-1.40.74.tar.gz", hash = "sha256:484e46bf394b03a7c31b34f90945ebe1390cb1e2ac61980d128a9079beac87d4", size = 111592, upload-time = "2025-11-14T20:29:10.991Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/2f/65009a8d274cd9c7211807c1a07cce17203ffe76368e3ebc4ca03a7b79de/boto3-1.40.69-py3-none-any.whl", hash = "sha256:c3f710a1990c4be1c0db43b938743d4e404c7f1f06d5f1fa0c8e9b1cea4290b2", size = 139361, upload-time = "2025-11-07T20:26:24.522Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/08/c52751748762901c0ca3c3019e3aa950010217f0fdf9940ebe68e6bb2f5a/boto3-1.40.74-py3-none-any.whl", hash = "sha256:41fc8844b37ae27b24bcabf8369769df246cc12c09453988d0696ad06d6aa9ef", size = 139360, upload-time = "2025-11-14T20:29:09.477Z" },
 ]
 
 [[package]]
 name = "botocore"
-version = "1.40.69"
+version = "1.40.74"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jmespath" },
     { name = "python-dateutil" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e2/73/42499b183ca5cef25c35338ad2636368b0ae2193654642756492e96ee906/botocore-1.40.69.tar.gz", hash = "sha256:df310ddc4d2de5543ba3df4e4b5f9907a2951896d63a9fbae115c26ca0976951", size = 14440352, upload-time = "2025-11-07T20:26:14.276Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/dc/0412505f05286f282a75bb0c650e525ddcfaf3f6f1a05cd8e99d32a2db06/botocore-1.40.74.tar.gz", hash = "sha256:57de0b9ffeada06015b3c7e5186c77d0692b210d9e5efa294f3214df97e2f8ee", size = 14452479, upload-time = "2025-11-14T20:29:00.949Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/61/d6/bf2b91d4a92af6ee70e0689913414463a48cf51c0fc855c98b94bde8e7f3/botocore-1.40.69-py3-none-any.whl", hash = "sha256:5d810efeb9e18f91f32690642fa81ae60e482eefeea0d35ec72da2e3d924c1a5", size = 14103454, upload-time = "2025-11-07T20:26:09.486Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/a2/306dec16e3c84f3ca7aaead0084358c1c7fbe6501f6160844cbc93bc871e/botocore-1.40.74-py3-none-any.whl", hash = "sha256:f39f5763e35e75f0bd91212b7b36120b1536203e8003cd952ef527db79702b15", size = 14117911, upload-time = "2025-11-14T20:28:58.153Z" },
 ]
 
 [[package]]
@@ -501,11 +501,11 @@ wheels = [
 
 [[package]]
 name = "certifi"
-version = "2025.10.5"
+version = "2025.11.12"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4c/5b/b6ce21586237c77ce67d01dc5507039d444b630dd76611bbca2d8e5dcd91/certifi-2025.10.5.tar.gz", hash = "sha256:47c09d31ccf2acf0be3f701ea53595ee7e0b8fa08801c6624be771df09ae7b43", size = 164519, upload-time = "2025-10-05T04:12:15.808Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/8c/58f469717fa48465e4a50c014a0400602d3c437d7c0c468e17ada824da3a/certifi-2025.11.12.tar.gz", hash = "sha256:d8ab5478f2ecd78af242878415affce761ca6bc54a22a27e026d7c25357c3316", size = 160538, upload-time = "2025-11-12T02:54:51.517Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/37/af0d2ef3967ac0d6113837b44a4f0bfe1328c2b9763bd5b1744520e5cfed/certifi-2025.10.5-py3-none-any.whl", hash = "sha256:0f212c2744a9bb6de0c56639a6f68afe01ecd92d91f14ae897c4fe7bbeeef0de", size = 163286, upload-time = "2025-10-05T04:12:14.03Z" },
+    { url = "https://files.pythonhosted.org/packages/70/7d/9bc192684cea499815ff478dfcdc13835ddf401365057044fb721ec6bddb/certifi-2025.11.12-py3-none-any.whl", hash = "sha256:97de8790030bbd5c2d96b7ec782fc2f7820ef8dba6db909ccf95449f2d062d4b", size = 159438, upload-time = "2025-11-12T02:54:49.735Z" },
 ]
 
 [[package]]
@@ -623,11 +623,10 @@ wheels = [
 
 [[package]]
 name = "cronsim"
-version = "2.6"
+version = "2.7"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5b/d8/cfb8d51a51f6076ffa09902c02978c7db9764cca78f4ee832e691d20f44b/cronsim-2.6.tar.gz", hash = "sha256:5aab98716ef90ab5ac6be294b2c3965dbf76dc869f048846a0af74ebb506c10d", size = 20315, upload-time = "2024-11-02T14:34:02.475Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8c/dd/9c40c4e0f4d3cb6cf52eb335e9cc1fa140c1f3a87146fb6987f465b069da/cronsim-2.6-py3-none-any.whl", hash = "sha256:5e153ff8ed64da7ee8d5caac470dbeda8024ab052c3010b1be149772b4801835", size = 13500, upload-time = "2024-12-04T12:53:57.443Z" },
+    { url = "https://files.pythonhosted.org/packages/fb/1a/02f105147f7f2e06ed4f734ff5a6439590bb275a53dd91fc73df6312298a/cronsim-2.7-py3-none-any.whl", hash = "sha256:1e1431fa08c51dc7f72e67e571c7c7a09af26420169b607badd4ca9677ffad1e", size = 14213, upload-time = "2025-10-21T16:38:20.431Z" },
 ]
 
 [[package]]
@@ -673,15 +672,15 @@ wheels = [
 
 [[package]]
 name = "dbus-fast"
-version = "2.45.1"
+version = "3.1.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4d/45/43e2826069e8ed2cb3a3b83da72d39a0fe52ece2eca3cac8ff5e070bbfa4/dbus_fast-2.45.1.tar.gz", hash = "sha256:486195c42c5f8fac77e9c55b575e2c85636cff7db45ebc7a19f680b3b4084314", size = 72517, upload-time = "2025-11-08T22:13:25.28Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/10/ef/779a9b5b489a914c460066ea4e6eb6a1620e16035b07a9f5b400d1ff8f96/dbus_fast-3.1.0.tar.gz", hash = "sha256:9bdb14868c7454fcf0c14ec580e0e9c5b24eddce577ddbe5e471e0e46168e67f", size = 72963, upload-time = "2025-11-16T22:21:16.952Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fa/4a/661af12c94dfa7b53c39d84e70224ef9255f9b7305d3ca545b9abfde2cc6/dbus_fast-2.45.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9251663f9691c6618d8cd889fbd568ef874630f7db9607cc041ce7d6988e5c5e", size = 766081, upload-time = "2025-11-08T22:22:13.513Z" },
-    { url = "https://files.pythonhosted.org/packages/2a/84/f2f549ef6eae446a89d0d22114b2497b2cc6890cabd7529c168a92020b97/dbus_fast-2.45.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:16986f33c5f3af387e23a199690b90a5df61958218af5c396c6a95cc9e21ab92", size = 815904, upload-time = "2025-11-08T22:22:15.299Z" },
-    { url = "https://files.pythonhosted.org/packages/fe/85/978e1805e4a75d666d962844a2c69055ddf1fe9fd58a76d0be11ca85f833/dbus_fast-2.45.1-cp313-cp313-manylinux_2_36_x86_64.whl", hash = "sha256:8c171a9ff6c3b4e3f5a18663409c5f3c4e554536cc34a8e5bcaf183ace6add36", size = 787810, upload-time = "2025-11-08T22:13:23.549Z" },
-    { url = "https://files.pythonhosted.org/packages/00/79/39ae941205fbd01d167789da6792d3d5fbf4049fa567377297b2e4a5f10c/dbus_fast-2.45.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:415afc76202b55bbf8942018d8293e1ea8eb2d64262384f87b0b2b6e73d94da4", size = 772393, upload-time = "2025-11-08T22:22:16.945Z" },
-    { url = "https://files.pythonhosted.org/packages/6b/db/096b362c425e283c40e1cdae199896b6b67d4438ffbd4e94038c8e561778/dbus_fast-2.45.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:efbf5b70aefd26c6362fe33d6f783752c913b78b8855dba862961aa36b1467bf", size = 824230, upload-time = "2025-11-08T22:22:18.476Z" },
+    { url = "https://files.pythonhosted.org/packages/22/ba/fbfdb141d939890629e17b85dd476d27ea5efcf128bc55f1a537d9ce7c3c/dbus_fast-3.1.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9f54672eb8ee196972f64f3502b781949ca7e4628b2b7e7db831b308636f32bb", size = 784409, upload-time = "2025-11-16T22:29:53.084Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/02/0768f4b9f88e73e7f746716d781174ff1e823a287dd5a4e13a944eff890a/dbus_fast-3.1.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:fe0936023a777c2b68395d4cbc70d0d0139a53a40759589967a65bebf4c919ca", size = 833556, upload-time = "2025-11-16T22:29:54.421Z" },
+    { url = "https://files.pythonhosted.org/packages/27/97/402af5396a55b095cd65e68d73c3a77cba2498740274da9239e677e75821/dbus_fast-3.1.0-cp313-cp313-manylinux_2_36_x86_64.whl", hash = "sha256:3bcafd975c14ac34a14c485d21d1c086696693e8572cea079091602d21a7ef23", size = 810195, upload-time = "2025-11-16T22:21:15.11Z" },
+    { url = "https://files.pythonhosted.org/packages/70/e8/12b023e4b1b2f18dd7cdab8945839b6e7ab002768028d44060d19fd04341/dbus_fast-3.1.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:2b80eee32a57769dc3a85c2774dd30adba917d1b829d1c75fbc89dc8a2f0a710", size = 790612, upload-time = "2025-11-16T22:29:56.277Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/82/2dd65cd419275fa0fa09dac9c5c67153b37d7e68ccdb27de7ef0a8a6ca2b/dbus_fast-3.1.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:5103fd81cbe2ebefa8b855934aea218b642548279dcc804bba8a040bf7a4ae52", size = 842208, upload-time = "2025-11-16T22:29:58.019Z" },
 ]
 
 [[package]]
@@ -713,11 +712,11 @@ wheels = [
 
 [[package]]
 name = "execnet"
-version = "2.1.1"
+version = "2.1.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/bb/ff/b4c0dc78fbe20c3e59c0c7334de0c27eb4001a2b2017999af398bf730817/execnet-2.1.1.tar.gz", hash = "sha256:5189b52c6121c24feae288166ab41b32549c7e2348652736540b9e6e7d4e72e3", size = 166524, upload-time = "2024-04-08T09:04:19.245Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/89/780e11f9588d9e7128a3f87788354c7946a9cbb1401ad38a48c4db9a4f07/execnet-2.1.2.tar.gz", hash = "sha256:63d83bfdd9a23e35b9c6a3261412324f964c2ec8dcd8d3c6916ee9373e0befcd", size = 166622, upload-time = "2025-11-12T09:56:37.75Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/43/09/2aea36ff60d16dd8879bdb2f5b3ee0ba8d08cbbdcdfe870e695ce3784385/execnet-2.1.1-py3-none-any.whl", hash = "sha256:26dee51f1b80cebd6d0ca8e74dd8745419761d3bef34163928cbebbdc4749fdc", size = 40612, upload-time = "2024-04-08T09:04:17.414Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/84/02fc1827e8cdded4aa65baef11296a9bbe595c474f0d6d758af082d849fd/execnet-2.1.2-py3-none-any.whl", hash = "sha256:67fba928dd5a544b783f6056f449e5e3931a5c378b128bc18501f7ea79e296ec", size = 40708, upload-time = "2025-11-12T09:56:36.333Z" },
 ]
 
 [[package]]
@@ -1016,7 +1015,7 @@ wheels = [
 
 [[package]]
 name = "homeassistant"
-version = "2025.11.1"
+version = "2025.11.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiodns" },
@@ -1070,9 +1069,9 @@ dependencies = [
     { name = "yarl" },
     { name = "zeroconf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/14/da/4c85cca8ff0ef02acf7c8324127ebef1b7e84f60cb435ce1945949b0711d/homeassistant-2025.11.1.tar.gz", hash = "sha256:5bdc6e59fcfd94241768f83e3b7d779b3331bc17d8eb80ab53bbf0363adaff79", size = 28740335, upload-time = "2025-11-07T21:46:31.744Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/36/d0facce7b5416e0b39d9be35cef8df4fd67a8a1e10f406bd1b84cdd2b01f/homeassistant-2025.11.2.tar.gz", hash = "sha256:8f5d1ad864a715abba29832916b142ac24eab26cbf0f9a7a07040cbe53847bec", size = 28770006, upload-time = "2025-11-14T22:26:30.17Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fa/cc/decb99efecb42cbd322612ccf163c3038e065bd44b602de517e18cdde3b7/homeassistant-2025.11.1-py3-none-any.whl", hash = "sha256:414718321b0bf8f1a8697253c3fabe36742d7e77b8873873e6aab2b5ec1b584e", size = 48189711, upload-time = "2025-11-07T21:46:25.792Z" },
+    { url = "https://files.pythonhosted.org/packages/ca/8d/5cda6acb2478e442572499477b8e540f26203904c2d74569e8abd2d8e195/homeassistant-2025.11.2-py3-none-any.whl", hash = "sha256:823395b05b9da96d94bd11c789c957b8f91c46ac54f5d7def9c766acd5eb44d7", size = 48250894, upload-time = "2025-11-14T22:26:25.306Z" },
 ]
 
 [[package]]
@@ -1762,53 +1761,53 @@ wheels = [
 
 [[package]]
 name = "pyobjc-core"
-version = "12.0"
+version = "12.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ab/dc/6d63019133e39e2b299dfbab786e64997fff0f145c45a417e1dd51faaf3f/pyobjc_core-12.0.tar.gz", hash = "sha256:7e05c805a776149a937b61b892a0459895d32d9002bedc95ce2be31ef1e37a29", size = 991669, upload-time = "2025-10-21T08:26:07.496Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/b6/d5612eb40be4fd5ef88c259339e6313f46ba67577a95d86c3470b951fce0/pyobjc_core-12.1.tar.gz", hash = "sha256:2bb3903f5387f72422145e1466b3ac3f7f0ef2e9960afa9bcd8961c5cbf8bd21", size = 1000532, upload-time = "2025-11-14T10:08:28.292Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/17/6c247bf9d8de2813f6015671f242333534797e81bdac9e85516fb57dfb00/pyobjc_core-12.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:c44b76d8306a130c9eb0cb79d86fd6675c8ba3e5b458e78095d271a10cd38b6a", size = 679700, upload-time = "2025-10-21T07:51:09.518Z" },
-    { url = "https://files.pythonhosted.org/packages/08/a3/1b26c438c78821e5a82b9c02f7b19a86097aeb2c51132d06e159acc22dc2/pyobjc_core-12.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:5c617551e0ab860c49229fcec0135a5cde702485f22254ddc17205eb24b7fc55", size = 721370, upload-time = "2025-10-21T07:51:55.981Z" },
+    { url = "https://files.pythonhosted.org/packages/f4/d2/29e5e536adc07bc3d33dd09f3f7cf844bf7b4981820dc2a91dd810f3c782/pyobjc_core-12.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:01c0cf500596f03e21c23aef9b5f326b9fb1f8f118cf0d8b66749b6cf4cbb37a", size = 677370, upload-time = "2025-11-14T09:33:05.273Z" },
+    { url = "https://files.pythonhosted.org/packages/1b/f0/4b4ed8924cd04e425f2a07269943018d43949afad1c348c3ed4d9d032787/pyobjc_core-12.1-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:177aaca84bb369a483e4961186704f64b2697708046745f8167e818d968c88fc", size = 719586, upload-time = "2025-11-14T09:33:53.302Z" },
 ]
 
 [[package]]
 name = "pyobjc-framework-cocoa"
-version = "12.0"
+version = "12.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyobjc-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/37/6f/89837da349fe7de6476c426f118096b147de923139556d98af1832c64b97/pyobjc_framework_cocoa-12.0.tar.gz", hash = "sha256:02d69305b698015a20fcc8e1296e1528e413d8cf9fdcd590478d359386d76e8a", size = 2771906, upload-time = "2025-10-21T08:30:51.765Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/02/a3/16ca9a15e77c061a9250afbae2eae26f2e1579eb8ca9462ae2d2c71e1169/pyobjc_framework_cocoa-12.1.tar.gz", hash = "sha256:5556c87db95711b985d5efdaaf01c917ddd41d148b1e52a0c66b1a2e2c5c1640", size = 2772191, upload-time = "2025-11-14T10:13:02.069Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fb/29/cfef5f021576976698c6ae195fa304238b9f6716e1b3eb11258d2572afe9/pyobjc_framework_cocoa-12.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:13e573f5093f4158f305b1bac5e1f783881ce2f5f4a69f3c80cb000f76731259", size = 384659, upload-time = "2025-10-21T07:59:34.859Z" },
-    { url = "https://files.pythonhosted.org/packages/f1/37/d2d9a143ab5387815a00f478916a52425c4792678366ef6cedf20b8cc9cd/pyobjc_framework_cocoa-12.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:3b167793cd1b509eaf693140ace9be1f827a2c8686fceb8c599907661f608bc2", size = 388787, upload-time = "2025-10-21T08:00:00.006Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/31/0c2e734165abb46215797bd830c4bdcb780b699854b15f2b6240515edcc6/pyobjc_framework_cocoa-12.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:5a3dcd491cacc2f5a197142b3c556d8aafa3963011110102a093349017705118", size = 384689, upload-time = "2025-11-14T09:41:41.478Z" },
+    { url = "https://files.pythonhosted.org/packages/23/3b/b9f61be7b9f9b4e0a6db18b3c35c4c4d589f2d04e963e2174d38c6555a92/pyobjc_framework_cocoa-12.1-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:914b74328c22d8ca261d78c23ef2befc29776e0b85555973927b338c5734ca44", size = 388843, upload-time = "2025-11-14T09:42:05.719Z" },
 ]
 
 [[package]]
 name = "pyobjc-framework-corebluetooth"
-version = "12.0"
+version = "12.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyobjc-core" },
     { name = "pyobjc-framework-cocoa" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/96/b2/ad9e8516cd73611a3a8f8ff2d7d51b917115f3f7f9e7a9760d5fc4e9dd6b/pyobjc_framework_corebluetooth-12.0.tar.gz", hash = "sha256:61ae2a56c3dcb8b7307d833e7d913bd7c063d11a1ea931158facceb38aae21d3", size = 33587, upload-time = "2025-10-21T08:31:18.036Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/25/d21d6cb3fd249c2c2aa96ee54279f40876a0c93e7161b3304bf21cbd0bfe/pyobjc_framework_corebluetooth-12.1.tar.gz", hash = "sha256:8060c1466d90bbb9100741a1091bb79975d9ba43911c9841599879fc45c2bbe0", size = 33157, upload-time = "2025-11-14T10:13:28.064Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9c/7e/8d6c430d6a282ea496373ef210d451ae716e8ceea1a6a5b3a1155b793150/pyobjc_framework_corebluetooth-12.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:ba02d0a6257cb08a86198e70cb8c0113c81abf5f919be9078912af8eaf6688ae", size = 13241, upload-time = "2025-10-21T08:02:07.722Z" },
-    { url = "https://files.pythonhosted.org/packages/d4/1a/e879130406efdbef2067245af85bbb9ae0053a8e80e69a3603926e1a6cd1/pyobjc_framework_corebluetooth-12.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:7696dbb61074ac657d213717869c93e6c3910369255f426844b85f4b039fb58c", size = 13425, upload-time = "2025-10-21T08:02:09.948Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/6c/831139ebf6a811aed36abfdfad846bc380dcdf4e6fb751a310ce719ddcfd/pyobjc_framework_corebluetooth-12.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:5a894f695e6c672f0260327103a31ad8b98f8d4fb9516a0383db79a82a7e58dc", size = 13229, upload-time = "2025-11-14T09:44:10.463Z" },
+    { url = "https://files.pythonhosted.org/packages/09/3c/3a6fe259a9e0745aa4612dee86b61b4fd7041c44b62642814e146b654463/pyobjc_framework_corebluetooth-12.1-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:1daf07a0047c3ed89fab84ad5f6769537306733b6a6e92e631581a0f419e3f32", size = 13409, upload-time = "2025-11-14T09:44:12.438Z" },
 ]
 
 [[package]]
 name = "pyobjc-framework-libdispatch"
-version = "12.0"
+version = "12.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyobjc-core" },
     { name = "pyobjc-framework-cocoa" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/7e/251ea268ce5a341586c963de758c7ff6dea681c98a1fb6da87f6d0004bd3/pyobjc_framework_libdispatch-12.0.tar.gz", hash = "sha256:2ef31c02670c377d9e2875e74053087b1d96b240d2fc8721cc4c665c05394b3a", size = 38599, upload-time = "2025-10-21T08:34:38.878Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/26/e8/75b6b9b3c88b37723c237e5a7600384ea2d84874548671139db02e76652b/pyobjc_framework_libdispatch-12.1.tar.gz", hash = "sha256:4035535b4fae1b5e976f3e0e38b6e3442ffea1b8aa178d0ca89faa9b8ecdea41", size = 38277, upload-time = "2025-11-14T10:16:46.235Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/b3/e61f3b08e0145918a3e2a2f4450b4d3f3ac6eb251f923d0850a85a984053/pyobjc_framework_libdispatch-12.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:006d492b469b2a1fe3da7df9687f2638d832ef76333e5f7c6ab023bf25703fbf", size = 15681, upload-time = "2025-10-21T08:10:45.758Z" },
-    { url = "https://files.pythonhosted.org/packages/64/e3/7befaf176f09ba2648bcf4506a458ca67379d0c61cdfd00d0cd0690ed394/pyobjc_framework_libdispatch-12.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:bb73f193fab434bd89b4d92d062a645b0068f6a3af50e00df3bc789f94927db6", size = 15948, upload-time = "2025-10-21T08:10:47.797Z" },
+    { url = "https://files.pythonhosted.org/packages/38/3a/d85a74606c89b6b293782adfb18711026ff79159db20fc543740f2ac0bc7/pyobjc_framework_libdispatch-12.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:58ffce5e6bcd7456b4311009480b195b9f22107b7682fb0835d4908af5a68ad0", size = 15668, upload-time = "2025-11-14T09:53:01.354Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/40/49b1c1702114ee972678597393320d7b33f477e9d24f2a62f93d77f23dfb/pyobjc_framework_libdispatch-12.1-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:e9f49517e253716e40a0009412151f527005eec0b9a2311ac63ecac1bdf02332", size = 15938, upload-time = "2025-11-14T09:53:03.461Z" },
 ]
 
 [[package]]
@@ -1931,7 +1930,7 @@ wheels = [
 
 [[package]]
 name = "pytest-homeassistant-custom-component"
-version = "0.13.295"
+version = "0.13.296"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "coverage" },
@@ -1964,9 +1963,9 @@ dependencies = [
     { name = "syrupy" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/48/8e59c974279057026c6fcbe71abd908f8cf5ecff643b2dd7013f3b33e031/pytest_homeassistant_custom_component-0.13.295.tar.gz", hash = "sha256:c28a41433cc265d6f4a5f18c3df6fcc7a1d134142f086f794648ac9eb480c8f5", size = 61526, upload-time = "2025-11-08T05:05:25.262Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/eb/fb/ebf8f85b9471d97bf89757e3d6c9870a8319133399aa7872262eee3220ca/pytest_homeassistant_custom_component-0.13.296.tar.gz", hash = "sha256:ef77378d0adea9b2986a65976dac65a5388582cd5e42fd82e825a70237a7c81a", size = 61563, upload-time = "2025-11-15T05:05:12.762Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/aa/28/4b22fc599a62446396d82d18ff903ed96598e297ad6b97a5746acbd80884/pytest_homeassistant_custom_component-0.13.295-py3-none-any.whl", hash = "sha256:810111e3c4ad44a05da40c41af53b498ce52746361abf9786605d7f78337feac", size = 67040, upload-time = "2025-11-08T05:05:23.2Z" },
+    { url = "https://files.pythonhosted.org/packages/d1/46/53a903414e9202bada3ce6970a4e655dfd374aebffca0ef9175d107c39d3/pytest_homeassistant_custom_component-0.13.296-py3-none-any.whl", hash = "sha256:2bdff6b17c73baa573a1a4efe9fbcf6666d10eea2401e7a149c8681a353922bb", size = 67038, upload-time = "2025-11-15T05:05:11.094Z" },
 ]
 
 [[package]]
