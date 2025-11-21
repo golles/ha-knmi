@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup app
         id: app
