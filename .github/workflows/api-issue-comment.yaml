@@ -1,0 +1,43 @@
+name: API issue comment
+
+on: # yamllint disable-line rule:truthy
+  issues:
+    types:
+      - labeled
+
+jobs:
+  add-comment:
+    name: Add comment to issue with 'API issue' label
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    if: github.event.label.name == 'API issue'
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v6
+
+      - name: Setup app
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.PR2D2_APP_ID }}
+          private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
+
+      - name: Add comment
+        run: gh issue comment "$NUMBER" --body "$BODY"
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          BODY: >
+            Thank you for reporting this issue!
+
+            This appears to be an issue with the external weather service API that this integration uses.
+            Since I don't own or control this service, I'm unable to fix API-related problems directly.
+
+            For the best chance of getting this resolved, I recommend reaching out to the service provider:
+            https://weerlive.nl/over-weerlive-contact.php#contact
+
+            They will be able to investigate and address any issues with their API service.
+
+            Thank you for your understanding!

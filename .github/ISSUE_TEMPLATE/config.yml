@@ -1,5 +1,9 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Report API issue
+    url: https://weerlive.nl/over-weerlive-contact.php#contact
+    about: Report issues related to the API.
+
   - name: API key request
     url: https://weerlive.nl/api/toegang/index.php
     about: Request your free API key.
