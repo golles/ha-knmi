@@ -27,17 +27,19 @@ npm install
 
 if [ "$CI" != "true" ]; then
     # Trust the repo
-    git config --global --add safe.directory /workspaces/ha-knmi
+    git config --global --add safe.directory "$(pwd)"
 
     # Install pre-commit when available
-    if [ -f .pre-commit-config.yaml ]; then
+    if check_uv_package "pre-commit" && [ -f .pre-commit-config.yaml ]; then
         uv run pre-commit install
     fi
 
     # Install auto completions
     mkdir -p ~/.zfunc
     uv generate-shell-completion zsh > ~/.zfunc/_uv
-    uv run ruff generate-shell-completion zsh > ~/.zfunc/_ruff
+    if check_uv_package "ruff"; then
+        uv run ruff generate-shell-completion zsh > ~/.zfunc/_ruff
+    fi
     if command_exists gh &> /dev/null; then
         gh completion -s zsh > ~/.zfunc/_gh
     fi
@@ -52,5 +54,5 @@ if [ "$1" == "--devcontainer" ]; then
     log_yellow "Once all the extensions are installed, reload the window (Command Palette -> Developer: Reload Window) to make sure all extensions are activated!"
 else
     log_empty_line 1
-    log_yellow "Done, you should reload your terminal"
+    log_yellow "Done, you might want to reload your terminal or run \"source .venv/bin/activate\" to activate the virtual environment"
 fi
