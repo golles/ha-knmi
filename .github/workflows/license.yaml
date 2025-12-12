@@ -1,8 +1,9 @@
-name: Update copyright year(s) in license file
+name: License
 
 on: # yamllint disable-line rule:truthy
   schedule:
-    - cron: "0 1 1 1 *"
+    - cron: "0 11 1 1 *"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,7 +21,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup app
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.PR2D2_APP_ID }}
+          private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
+
       - name: Update license
         uses: FantasticFiasco/action-update-license-year@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app.outputs.token }}
+          labels: enhancement
