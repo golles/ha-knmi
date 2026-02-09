@@ -60,23 +60,18 @@ async def test_setup_entry_no_api_key(hass: HomeAssistant) -> None:
 
 async def test_async_reload_entry(hass: HomeAssistant) -> None:
     """Test reloading the entry."""
-    # First, set up the integration
     config_entry = await setup_integration(hass)
 
-    # Patch the async_reload_entry at the module level before the listener is triggered
-    with patch.object(config_entry, "async_on_unload"), patch("custom_components.knmi.async_reload_entry") as mock_reload_entry:
-        # Make the mock_reload_entry async to maintain compatibility
-        mock_reload_entry.return_value = None
+    assert config_entry.state == ConfigEntryState.LOADED
 
-        # Re-register the update listener which is what we're actually testing
-        config_entry.add_update_listener(mock_reload_entry)
-
+    # Mock the config_entries.async_reload method to verify it gets called
+    with patch.object(hass.config_entries, "async_reload") as mock_reload:
         # Update the entry options - this should trigger the reload listener
-        hass.config_entries.async_update_entry(config_entry, options={"something": "else"})
+        hass.config_entries.async_update_entry(config_entry, options={"scan_interval": 600})
         await hass.async_block_till_done()
 
-        # The mock should have been called once
-        assert len(mock_reload_entry.call_args_list) == 1
+        # Verify that async_reload was called with the correct entry ID
+        mock_reload.assert_called_once_with(config_entry.entry_id)
 
 
 async def test_async_migrate_entry_v1_to_v2(hass: HomeAssistant, entity_registry: er.EntityRegistry, caplog: LogCaptureFixture) -> None:
