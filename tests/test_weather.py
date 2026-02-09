@@ -93,7 +93,7 @@ async def test_state(hass: HomeAssistant) -> None:
     """Test state."""
     config_entry = await setup_integration(hass)
 
-    state = hass.states.get("weather.knmi_home")
+    state = hass.states.get("weather.home")
     assert state
 
     assert state.state == "cloudy"
@@ -273,7 +273,7 @@ async def test_warm_snow_fix(hass: HomeAssistant) -> None:
     """Test if we return rainy if the API returns snowy and a temp higher than 6."""
     config_entry = await setup_integration(hass)
 
-    state = hass.states.get("weather.knmi_home")
+    state = hass.states.get("weather.home")
     assert state
     assert state.state == ATTR_CONDITION_RAINY
 
@@ -286,7 +286,7 @@ async def test_real_snow(hass: HomeAssistant) -> None:
     """Test if we return snowy if the API returns snowy and a temp lower than 6."""
     config_entry = await setup_integration(hass)
 
-    state = hass.states.get("weather.knmi_home")
+    state = hass.states.get("weather.home")
     assert state
     assert state.state == ATTR_CONDITION_SNOWY
 
@@ -300,7 +300,7 @@ async def test_sunny_during_day(hass: HomeAssistant) -> None:
     """When the API returns sunny when the sun isn't set, the weather state should be sunny."""
     config_entry = await setup_integration(hass)
 
-    state = hass.states.get("weather.knmi_home")
+    state = hass.states.get("weather.home")
     assert state
     assert state.state == ATTR_CONDITION_SUNNY
 
@@ -314,7 +314,7 @@ async def test_clear_night_during_night(hass: HomeAssistant) -> None:
     """When the API returns sunny when the sun is set, the weather state should be clear night."""
     config_entry = await setup_integration(hass)
 
-    state = hass.states.get("weather.knmi_home")
+    state = hass.states.get("weather.home")
     assert state
     assert state.state == ATTR_CONDITION_CLEAR_NIGHT
 

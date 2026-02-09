@@ -12,12 +12,12 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Natural Language :: English",
   "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: 3",
 ]
 dependencies = [
     "weerlive-api==0.2.2",
-    "homeassistant>=2025.8.0",
+    "homeassistant>=2026.0.0",
 ]
 
 Documentation = "https://github.com/golles/ha-knmi"
@@ -34,7 +34,7 @@ dev = [
   "pytest-asyncio",
   "pytest-cov",
   "pytest-homeassistant-custom-component",
-  "ruff==0.14.14",
+  "ruff==0.14.13",
   "shellcheck-py==0.11.0.1",
   "yamllint==1.38.0",
 ]
@@ -58,7 +58,7 @@ source = ["custom_components/knmi"]
 packages = ["custom_components/knmi"]
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
@@ -99,6 +99,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
   "S101",    # Allow assertions in tests.
+  "SLF001",  # Allow private member access in tests.
   "PLR2004", # Allow magic numbers in tests.
 ]
 
