@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "KNMI weer",
-        "description": "Aanmelden voor een gratis API key: https://weerlive.nl/delen.php",
+        "description": "Aanmelden voor een gratis API key: {weerlive_url}",
         "data": {
           "api_key": "API-sleutel",
           "latitude": "Breedtegraad",
