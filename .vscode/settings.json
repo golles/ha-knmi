@@ -22,6 +22,9 @@
   "ruff.importStrategy": "fromEnvironment",
   "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"],
   "terminal.integrated.defaultProfile.linux": "zsh",
+  "[github-actions-workflow]": {
+    "editor.tabSize": 2
+  },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

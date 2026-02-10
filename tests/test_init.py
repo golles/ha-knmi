@@ -4,17 +4,17 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from _pytest.logging import LogCaptureFixture
+from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.knmi import async_migrate_entry, async_setup_entry, async_unload_entry
+from custom_components.knmi import async_migrate_entry, async_setup_entry
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 from weerlive import WeerliveAPIError
 
-from . import get_mock_config_entry, setup_integration
+from . import get_mock_config_entry, setup_integration, unload_integration
 
 
 async def test_setup_and_unload_entry(hass: HomeAssistant) -> None:
@@ -25,7 +25,7 @@ async def test_setup_and_unload_entry(hass: HomeAssistant) -> None:
     assert isinstance(config_entry.runtime_data, KnmiDataUpdateCoordinator)
 
     # Unload the entry
-    assert await async_unload_entry(hass, config_entry)
+    await unload_integration(hass, config_entry)
 
 
 async def test_setup_entry_exception(hass: HomeAssistant, mock_weerlive_client: AsyncMock) -> None:
@@ -33,13 +33,14 @@ async def test_setup_entry_exception(hass: HomeAssistant, mock_weerlive_client: 
     # Configure the mock to raise an error on latitude_longitude
     mock_weerlive_client.latitude_longitude.side_effect = WeerliveAPIError()
 
-    # Create config entry but don't set it up through HA's system
+    # Create config entry and use HA's setup system which properly sets state
     config_entry = get_mock_config_entry()
     config_entry.add_to_hass(hass)
 
     # This should raise ConfigEntryNotReady due to connection error
-    with pytest.raises(ConfigEntryNotReady):
-        await async_setup_entry(hass, config_entry)
+    # The setup will fail and raise ConfigEntryNotReady
+    assert not await hass.config_entries.async_setup(config_entry.entry_id)
+    assert config_entry.state == ConfigEntryState.SETUP_RETRY
 
 
 async def test_setup_entry_no_api_key(hass: HomeAssistant) -> None:
@@ -61,10 +62,16 @@ async def test_async_reload_entry(hass: HomeAssistant) -> None:
     """Test reloading the entry."""
     config_entry = await setup_integration(hass)
 
-    with patch("custom_components.knmi.async_reload_entry") as mock_reload_entry:
-        assert len(mock_reload_entry.mock_calls) == 0
-        hass.config_entries.async_update_entry(config_entry, options={"something": "else"})
-        assert len(mock_reload_entry.mock_calls) == 1
+    assert config_entry.state == ConfigEntryState.LOADED
+
+    # Mock the config_entries.async_reload method to verify it gets called
+    with patch.object(hass.config_entries, "async_reload") as mock_reload:
+        # Update the entry options - this should trigger the reload listener
+        hass.config_entries.async_update_entry(config_entry, options={"scan_interval": 600})
+        await hass.async_block_till_done()
+
+        # Verify that async_reload was called with the correct entry ID
+        mock_reload.assert_called_once_with(config_entry.entry_id)
 
 
 async def test_async_migrate_entry_v1_to_v2(hass: HomeAssistant, entity_registry: er.EntityRegistry, caplog: LogCaptureFixture) -> None:

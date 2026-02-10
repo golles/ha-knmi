@@ -19,7 +19,6 @@ from homeassistant.components.weather import (
     WeatherEntityDescription,
     WeatherEntityFeature,
 )
-from homeassistant.components.weather import DOMAIN as SENSOR_DOMAIN
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, UnitOfLength, UnitOfPressure, UnitOfSpeed, UnitOfTemperature
 from homeassistant.core import HomeAssistant
@@ -115,7 +114,6 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         self._attr_attribution = self.coordinator.data.api.source
         self._attr_unique_id = f"{DEFAULT_NAME}_{conf_name}".lower()
 
-        self.entity_id = f"{SENSOR_DOMAIN}.{DEFAULT_NAME}_{conf_name}".lower()
         self.entity_description = description
 
     def map_condition(self, value: str | None) -> str | None:

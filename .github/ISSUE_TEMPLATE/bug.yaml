@@ -43,7 +43,7 @@ body:
       required: true
     attributes:
       label: Python version
-      placeholder: "3.13"
+      placeholder: "3.14"
       description: >-
         Can be found in [![System info](https://my.home-assistant.io/badges/system_health.svg)](https://my.home-assistant.io/redirect/system_health/)
 

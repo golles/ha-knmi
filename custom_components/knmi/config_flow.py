@@ -71,6 +71,9 @@ class KnmiFlowHandler(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(CONFIG_SCHEMA, default_data),
+            description_placeholders={
+                "weerlive_url": "https://weerlive.nl/delen.php",
+            },
             errors=errors,
         )
 
