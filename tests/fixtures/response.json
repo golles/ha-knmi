@@ -445,6 +445,7 @@
   "api": [
     {
       "bron": "Bron: Weerdata KNMI/NOAA via Weerlive.nl",
+      "disclaimer": "Deze API is alleen voor studie en hobby, professioneel gebruik via meteoserver.nl",
       "max_verz": 300,
       "rest_verz": 132
     }
