@@ -48,7 +48,7 @@ runhass = [
 ]
 
 [build-system]
-requires = ["hatchling==1.28.0"]
+requires = ["hatchling==1.29.0"]
 build-backend = "hatchling.build"
 
 [tool.coverage.run]
