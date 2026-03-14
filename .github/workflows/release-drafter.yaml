@@ -26,7 +26,7 @@ jobs:
           private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
 
       - name: Run release drafter
-        uses: release-drafter/release-drafter@v6
+        uses: release-drafter/release-drafter@v7
         env:
           GITHUB_TOKEN: ${{ steps.app.outputs.token }}
         with:
