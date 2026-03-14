@@ -27,7 +27,6 @@ jobs:
 
       - name: Run release drafter
         uses: release-drafter/release-drafter@v7
-        env:
-          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
         with:
           config-name: release-drafter.yaml
+          token: ${{ steps.app.outputs.token }}
