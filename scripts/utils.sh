@@ -24,6 +24,18 @@ command_exists() {
     fi
 }
 
+# Check if a Python package is installed using uv pip
+# Usage: check_uv_package package_name
+# - Returns 0 if the package is found, 1 if not.
+check_uv_package() {
+    local package="$1"
+    if uv pip list | grep -q "^${package}[[:space:]]"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Function to log messages in yellow color
 # Usage: log_yellow [string]
 log_yellow() {
