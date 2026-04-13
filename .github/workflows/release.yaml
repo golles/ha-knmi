@@ -41,6 +41,6 @@ jobs:
           zip -r "${{ github.workspace }}/knmi.zip" ./*
 
       - name: Upload release artifacts
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: knmi.zip
