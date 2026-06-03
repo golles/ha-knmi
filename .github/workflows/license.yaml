@@ -17,19 +17,19 @@ jobs:
       pull-requests: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.3
         with:
           fetch-depth: 0
 
       - name: Setup app
         id: app
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@v3.2.0
         with:
           app-id: ${{ secrets.PR2D2_APP_ID }}
           private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
 
       - name: Update license
-        uses: FantasticFiasco/action-update-license-year@v3
+        uses: FantasticFiasco/action-update-license-year@v3.0.4
         with:
           token: ${{ steps.app.outputs.token }}
           labels: enhancement
