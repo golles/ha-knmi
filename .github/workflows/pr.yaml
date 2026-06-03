@@ -23,7 +23,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.3
 
       - name: Dependency review
         uses: actions/dependency-review-action@v5.0.0
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if PR has a required label
-        uses: actions/github-script@v9
+        uses: actions/github-script@v9.0.0
         with:
           script: |
             const requiredLabels = [

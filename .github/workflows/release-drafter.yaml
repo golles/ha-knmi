@@ -16,17 +16,17 @@ jobs:
       contents: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.3
 
       - name: Setup app
         id: app
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@v3.2.0
         with:
           app-id: ${{ secrets.PR2D2_APP_ID }}
           private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
 
       - name: Run release drafter
-        uses: release-drafter/release-drafter@v7
+        uses: release-drafter/release-drafter@v7.3.1
         with:
           config-name: release-drafter.yaml
           token: ${{ steps.app.outputs.token }}
