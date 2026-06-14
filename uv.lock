@@ -1024,7 +1024,7 @@ runhass = [
 [package.metadata]
 requires-dist = [
     { name = "homeassistant", specifier = ">=2026.0.0" },
-    { name = "weerlive-api", specifier = "==0.2.3" },
+    { name = "weerlive-api", specifier = "==0.2.4" },
 ]
 
 [package.metadata.requires-dev]
@@ -2825,7 +2825,7 @@ wheels = [
 
 [[package]]
 name = "weerlive-api"
-version = "0.2.3"
+version = "0.2.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -2833,9 +2833,9 @@ dependencies = [
     { name = "mashumaro" },
     { name = "orjson" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/3c/ac50f45589bd2cd713e7257898e506bb4c0986e733171a7cbec8b1afe6e8/weerlive_api-0.2.3.tar.gz", hash = "sha256:e65de16a246b29a135ea4f8e0ead69081aa763994d4cb8d8c4db9364830772d8", size = 65562, upload-time = "2025-11-25T11:28:30.806Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/90/95/6bbd9446e793fe2ab85c78cbfa8324807637db2161b0017c90878e1735d9/weerlive_api-0.2.4.tar.gz", hash = "sha256:7496b90ac7b76323204ed86e91e0ad4cf9988b30bcdf47f5ca8cfbf5ae70bbab", size = 76576, upload-time = "2026-06-14T18:45:02.732Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/34/f1/b843d0e9460c271606b6a9263e1659b40d289b7526efeea486711eb87977/weerlive_api-0.2.3-py3-none-any.whl", hash = "sha256:2b584f6c16f27761d39cf4a11ab4b1fb6174cb05b83b3d51fc0418eb56fe5e45", size = 7769, upload-time = "2025-11-25T11:28:29.051Z" },
+    { url = "https://files.pythonhosted.org/packages/0e/79/6c03bb9125e6b4f9f9dd1146cfd589dd300289139f0251b5a7c862a0f04e/weerlive_api-0.2.4-py3-none-any.whl", hash = "sha256:4ff78e9d419d84f50e32c5f85816cea8b5d03f6d3143e681bc2b5dea4841dc20", size = 7892, upload-time = "2026-06-14T18:45:01.535Z" },
 ]
 
 [[package]]

@@ -254,6 +254,40 @@ async def test_async_forecast_hourly(hass: HomeAssistant) -> None:  # pylint: di
 
 
 @pytest.mark.usefixtures("mocked_data")
+async def test_async_forecast_daily_skips_missing_day(hass: HomeAssistant) -> None:
+    """Daily forecast entries without a parsed day are skipped."""
+    config_entry = await setup_integration(hass)
+    coordinator: KnmiDataUpdateCoordinator = config_entry.runtime_data
+    description = KnmiWeatherDescription(key="weer")
+    weather = KnmiWeather(config_entry, coordinator, description)
+
+    coordinator.data.daily_forecast[0].day = None
+
+    forecast = await weather.async_forecast_daily()
+    assert forecast
+    assert len(forecast) == 4
+
+    await unload_integration(hass, config_entry)
+
+
+@pytest.mark.usefixtures("mocked_data")
+async def test_async_forecast_hourly_skips_missing_time(hass: HomeAssistant) -> None:
+    """Hourly forecast entries without a parsed time are skipped."""
+    config_entry = await setup_integration(hass)
+    coordinator: KnmiDataUpdateCoordinator = config_entry.runtime_data
+    description = KnmiWeatherDescription(key="weer")
+    weather = KnmiWeather(config_entry, coordinator, description)
+
+    coordinator.data.hourly_forecast[0].time = None
+
+    forecast = await weather.async_forecast_hourly()
+    assert forecast
+    assert len(forecast) == 23
+
+    await unload_integration(hass, config_entry)
+
+
+@pytest.mark.usefixtures("mocked_data")
 async def test_async_forecast_twice_daily(hass: HomeAssistant) -> None:
     """Test twice daily forecast."""
     config_entry = await setup_integration(hass)
