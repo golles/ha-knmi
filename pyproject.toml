@@ -16,7 +16,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "weerlive-api==0.2.3",
+    "weerlive-api==0.2.4",
     "homeassistant>=2026.0.0",
 ]
 
@@ -85,7 +85,7 @@ log_cli_level = "DEBUG"
 
 [tool.ruff]
 line-length = 150
-target-version = "py313"
+target-version = "py314"
 src = ["custom_components/knmi"]
 
 [tool.ruff.lint]

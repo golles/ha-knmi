@@ -182,6 +182,9 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         forecasts: list[Forecast] = []
 
         for daily_forecast in self.coordinator.data.daily_forecast:
+            if daily_forecast.day is None:
+                continue
+
             forecast = Forecast(
                 condition=self.map_condition(daily_forecast.image),
                 datetime=daily_forecast.day.isoformat(),
@@ -205,6 +208,9 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         forecasts: list[Forecast] = []
 
         for hourly_forecast in self.coordinator.data.hourly_forecast:
+            if hourly_forecast.time is None:
+                continue
+
             forecast = Forecast(
                 condition=self.map_condition(hourly_forecast.image),
                 datetime=hourly_forecast.time.isoformat(),
