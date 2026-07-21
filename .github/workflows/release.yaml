@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - name: Check out code from GitHub
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
 
       - name: Setup Python and uv
         uses: astral-sh/setup-uv@v8.3.2
