@@ -93,6 +93,7 @@ select = ["ALL"]
 ignore = [
   "A005",
   "COM812", # Cause conflicts when used with the formatter.
+  "CPY001", # No copyright notices in this project.
   "TC",     # Ignore type-checking blocks.
 ]
 
