@@ -16,9 +16,11 @@ async def test_knmi_binary_alarm_sensor_is_off(hass: HomeAssistant) -> None:
     assert state.state == "off"
     assert state.attributes.get("title") == "Vanavond (zeer) zware windstoten"
     description = [
-        "De eerstkomende uren zijn er geen waarschuwingen van kracht. "
-        "Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. "
-        "De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden."
+        (
+            "De eerstkomende uren zijn er geen waarschuwingen van kracht. "
+            "Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. "
+            "De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden."
+        )
     ]
     assert state.attributes.get("description") == "".join(description).strip()
     assert state.attributes.get("code") == "groen"
@@ -39,9 +41,11 @@ async def test_knmi_binary_alarm_sensor_is_on(hass: HomeAssistant) -> None:
     assert state.state == "on"
     assert state.attributes.get("title") == "Vanavond (zeer) zware windstoten"
     description = [
-        "De eerstkomende uren zijn er geen waarschuwingen van kracht. "
-        "Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. "
-        "De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden."
+        (
+            "De eerstkomende uren zijn er geen waarschuwingen van kracht. "
+            "Vanavond komen er (zeer) zware windstoten voor. Landinwaarts tot 90 km/u, aan de kust tot 110 km/u. "
+            "De wind komt uit een zuidwestelijke richting. Verkeer en buitenactiviteiten kunnen hinder ondervinden."
+        )
     ]
     assert state.attributes.get("description") == "".join(description).strip()
     assert state.attributes.get("code") == "groen"
