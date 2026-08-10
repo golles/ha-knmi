@@ -29,7 +29,7 @@ Issues = "https://github.com/golles/ha-knmi/issues"
 dev = [
   "mypy==2.3.0",
   "pre-commit==4.6.1",
-  "pylint==4.0.6",
+  "pylint==4.0.7",
   "pytest",
   "pytest-asyncio",
   "pytest-cov",
