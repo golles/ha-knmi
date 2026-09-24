@@ -8,7 +8,7 @@
     "node": ">=22.0.0"
   },
   "devDependencies": {
-    "prettier": "3.9.8"
+    "prettier": "3.9.9"
   },
   "scripts": {
     "prettier": "prettier"
