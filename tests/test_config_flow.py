@@ -125,3 +125,21 @@ async def test_options_flow(hass: HomeAssistant) -> None:
     assert config_entry.options == MOCK_UPDATE_CONFIG
 
     await unload_integration(hass, config_entry)
+
+
+async def test_options_flow_reloads_entry(hass: HomeAssistant) -> None:
+    """Test that changing the options reloads the entry."""
+    config_entry = await setup_integration(hass)
+
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+
+    with patch.object(hass.config_entries, "async_schedule_reload") as mock_reload:
+        await hass.config_entries.options.async_configure(
+            result["flow_id"],
+            user_input=MOCK_UPDATE_CONFIG,
+        )
+
+    # OptionsFlowWithReload schedules the reload once the new options are saved.
+    mock_reload.assert_called_once_with(config_entry.entry_id)
+
+    await unload_integration(hass, config_entry)
