@@ -47,7 +47,7 @@ jobs:
           enable-cache: true
 
       - name: Setup Node
-        uses: actions/setup-node@v7.0.0
+        uses: actions/setup-node@v7.1.0
         with:
           cache: npm
 
@@ -72,7 +72,7 @@ jobs:
           enable-cache: true
 
       - name: Setup Node
-        uses: actions/setup-node@v7.0.0
+        uses: actions/setup-node@v7.1.0
         with:
           cache: npm
 
