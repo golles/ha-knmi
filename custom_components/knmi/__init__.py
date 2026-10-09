@@ -52,7 +52,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry[KnmiD
     await coordinator.async_config_entry_first_refresh()
 
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
-    config_entry.async_on_unload(config_entry.add_update_listener(async_reload_entry))
 
     return True
 
@@ -60,11 +59,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry[KnmiD
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry[KnmiDataUpdateCoordinator]) -> bool:
     """Unload a config entry."""
     return await hass.config_entries.async_unload_platforms(config_entry, PLATFORMS)
-
-
-async def async_reload_entry(hass: HomeAssistant, config_entry: ConfigEntry[KnmiDataUpdateCoordinator]) -> None:
-    """Reload config entry."""
-    await hass.config_entries.async_reload(config_entry.entry_id)
 
 
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry[KnmiDataUpdateCoordinator]) -> bool:

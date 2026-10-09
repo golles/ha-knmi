@@ -1,6 +1,6 @@
 """Test setup."""
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 from _pytest.logging import LogCaptureFixture
@@ -56,22 +56,6 @@ async def test_setup_entry_no_api_key(hass: HomeAssistant) -> None:
     # This should raise ValueError due to missing API key
     with pytest.raises(ValueError):  # noqa: PT011
         await async_setup_entry(hass, config_entry)
-
-
-async def test_async_reload_entry(hass: HomeAssistant) -> None:
-    """Test reloading the entry."""
-    config_entry = await setup_integration(hass)
-
-    assert config_entry.state == ConfigEntryState.LOADED
-
-    # Mock the config_entries.async_reload method to verify it gets called
-    with patch.object(hass.config_entries, "async_reload") as mock_reload:
-        # Update the entry options - this should trigger the reload listener
-        hass.config_entries.async_update_entry(config_entry, options={"scan_interval": 600})
-        await hass.async_block_till_done()
-
-        # Verify that async_reload was called with the correct entry ID
-        mock_reload.assert_called_once_with(config_entry.entry_id)
 
 
 async def test_async_migrate_entry_v1_to_v2(hass: HomeAssistant, entity_registry: er.EntityRegistry, caplog: LogCaptureFixture) -> None:
