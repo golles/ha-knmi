@@ -20,6 +20,8 @@ from weerlive import WeerliveApi, WeerliveAPIConnectionError, WeerliveAPIKeyErro
 
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
 
+WEERLIVE_URL = "https://weerlive.nl/delen.php"
+
 CONFIG_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_NAME): str,
@@ -79,7 +81,7 @@ class KnmiFlowHandler(ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(CONFIG_SCHEMA, default_data),
             description_placeholders={
-                "weerlive_url": "https://weerlive.nl/delen.php",
+                "weerlive_url": WEERLIVE_URL,
             },
             errors=errors,
         )
@@ -97,6 +99,9 @@ class KnmiFlowHandler(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(CONFIG_SCHEMA, data),
+            description_placeholders={
+                "weerlive_url": WEERLIVE_URL,
+            },
         )
 
     @staticmethod
