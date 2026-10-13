@@ -23,7 +23,7 @@ jobs:
 
       - name: Setup app
         id: app
-        uses: actions/create-github-app-token@v3.2.0
+        uses: actions/create-github-app-token@v3.3.0
         with:
           app-id: ${{ secrets.PR2D2_APP_ID }}
           private-key: ${{ secrets.PR2D2_APP_PRIVATE_KEY }}
