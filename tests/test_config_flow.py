@@ -86,6 +86,7 @@ async def test_step_reconfigure(hass: HomeAssistant) -> None:
     result = await config_entry.start_reconfigure_flow(hass)
     assert result["type"] == FlowResultType.FORM
     assert result["step_id"] == "user"
+    assert result["description_placeholders"] == {"weerlive_url": "https://weerlive.nl/delen.php"}
 
     result2 = await hass.config_entries.flow.async_configure(
         result["flow_id"],
