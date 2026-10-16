@@ -3,7 +3,7 @@
 from typing import Any
 
 import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
+import probatio
 from homeassistant.config_entries import (
     SOURCE_RECONFIGURE,
     ConfigEntry,
@@ -22,12 +22,12 @@ from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
 
 WEERLIVE_URL = "https://weerlive.nl/delen.php"
 
-CONFIG_SCHEMA = vol.Schema(
+CONFIG_SCHEMA = probatio.Schema(
     {
-        vol.Required(CONF_NAME): str,
-        vol.Required(CONF_LATITUDE): cv.latitude,
-        vol.Required(CONF_LONGITUDE): cv.longitude,
-        vol.Required(CONF_API_KEY): str,
+        probatio.Required(CONF_NAME): str,
+        probatio.Required(CONF_LATITUDE): cv.latitude,
+        probatio.Required(CONF_LONGITUDE): cv.longitude,
+        probatio.Required(CONF_API_KEY): str,
     }
 )
 
@@ -121,12 +121,12 @@ class KnmiOptionsFlowHandler(OptionsFlowWithReload):
 
         return self.async_show_form(
             step_id="init",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Required(
+                    probatio.Required(
                         CONF_SCAN_INTERVAL,
                         default=self.config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
-                    ): vol.All(vol.Coerce(int), vol.Range(min=300, max=86400))
+                    ): probatio.All(probatio.Coerce(int), probatio.Range(min=300, max=86400))
                 }
             ),
         )
