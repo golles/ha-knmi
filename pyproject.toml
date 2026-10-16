@@ -17,7 +17,7 @@ classifiers = [
 ]
 dependencies = [
     "weerlive-api==0.2.4",
-    "homeassistant>=2026.0.0",
+    "homeassistant>=2026.10.0",
 ]
 
 Documentation = "https://github.com/golles/ha-knmi"
