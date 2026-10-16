@@ -948,7 +948,7 @@ runhass = [
 
 [package.metadata]
 requires-dist = [
-    { name = "homeassistant", specifier = ">=2026.0.0" },
+    { name = "homeassistant", specifier = ">=2026.10.0" },
     { name = "weerlive-api", specifier = "==0.2.4" },
 ]
 
