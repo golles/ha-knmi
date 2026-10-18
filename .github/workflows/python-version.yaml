@@ -1,0 +1,18 @@
+name: Python version
+
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request: ~
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-version:
+    name: Python version
+    uses: golles/github-workflows/.github/workflows/python-version.yaml@main
