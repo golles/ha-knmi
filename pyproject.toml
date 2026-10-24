@@ -16,7 +16,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "weerlive-api==0.2.4",
+    "weerlive-api==0.2.5",
     "homeassistant>=2026.10.0",
 ]
 
