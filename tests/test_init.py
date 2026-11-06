@@ -7,7 +7,7 @@ from _pytest.logging import LogCaptureFixture
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant.common import MockConfigEntry
 
 from custom_components.knmi import async_migrate_entry, async_setup_entry
 from custom_components.knmi.const import DOMAIN

@@ -3,8 +3,8 @@
 import pytest
 from homeassistant.components.diagnostics import REDACTED
 from homeassistant.core import HomeAssistant
-from pytest_homeassistant_custom_component.components.diagnostics import get_diagnostics_for_config_entry
-from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
+from pytest_homeassistant.components.diagnostics import get_diagnostics_for_config_entry
+from pytest_homeassistant.typing import ClientSessionGenerator
 
 from custom_components.knmi.const import DOMAIN
 from custom_components.knmi.diagnostics import TO_REDACT

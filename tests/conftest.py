@@ -4,7 +4,7 @@ from collections.abc import Generator
 from unittest.mock import AsyncMock, Mock, PropertyMock, patch
 
 import pytest
-from pytest_homeassistant_custom_component.common import load_fixture
+from pytest_homeassistant.common import load_fixture
 
 from weerlive import Response, WeerliveApi
 
