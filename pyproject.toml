@@ -33,7 +33,7 @@ dev = [
   "pytest",
   "pytest-asyncio",
   "pytest-cov",
-  "pytest-homeassistant-custom-component",
+  "pytest-homeassistant",
   "ruff==0.17.4",
   "shellcheck-py==0.11.0.1",
   "yamllint==1.38.0",
@@ -76,7 +76,7 @@ disable = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-report=term --cov-report=xml"
+addopts = "-p no:respx --cov --cov-report=term --cov-report=xml"
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 log_cli = true
