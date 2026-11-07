@@ -67,7 +67,7 @@ lambdas in its `EntityDescription`.
 - Translations live in `custom_components/knmi/translations/` (`en.json`, `nl.json`). Entity
   names come from `translation_key` on each description — both files must define the key.
   API _data_ (weather descriptions, etc.) is Dutch-only.
-- Tests use `pytest-homeassistant-custom-component`. `tests/conftest.py` auto-patches
+- Tests use `pytest-homeassistant`. `tests/conftest.py` auto-patches
   `WeerliveApi` everywhere and provides a `mocked_data` fixture that loads a JSON fixture from
   `tests/fixtures/` into a `Response`; parametrize it via `@pytest.mark.parametrize(..., indirect=True)`.
   All entities are force-enabled in tests via the `enable_all_entities` fixture.
