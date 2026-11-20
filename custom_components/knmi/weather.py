@@ -21,7 +21,7 @@ from homeassistant.components.weather import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, UnitOfLength, UnitOfPressure, UnitOfSpeed, UnitOfTemperature
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DEFAULT_NAME
@@ -115,6 +115,12 @@ class KnmiWeather(KnmiEntity, WeatherEntity):
         self._attr_unique_id = f"{DEFAULT_NAME}_{conf_name}".lower()
 
         self.entity_description = description
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator and push the new forecasts to subscribers."""
+        super()._handle_coordinator_update()
+        self.coordinator.config_entry.async_create_task(self.hass, self.async_update_listeners(None))
 
     def map_condition(self, value: str | None) -> str | None:
         """Map weather conditions from KNMI to HA."""

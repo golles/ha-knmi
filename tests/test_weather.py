@@ -33,6 +33,7 @@ from homeassistant.components.weather import (
     ATTR_WEATHER_WIND_SPEED,
 )
 from homeassistant.core import HomeAssistant
+from pytest_homeassistant.typing import WebSocketGenerator
 
 from custom_components.knmi.coordinator import KnmiDataUpdateCoordinator
 from custom_components.knmi.weather import KnmiWeather, KnmiWeatherDescription
@@ -283,6 +284,49 @@ async def test_async_forecast_hourly_skips_missing_time(hass: HomeAssistant) -> 
     forecast = await weather.async_forecast_hourly()
     assert forecast
     assert len(forecast) == 23
+
+    await unload_integration(hass, config_entry)
+
+
+@pytest.mark.usefixtures("mocked_data")
+@pytest.mark.parametrize(
+    ("forecast_type", "data_key", "expected_length"),
+    [
+        ("daily", "daily_forecast", 5),
+        ("hourly", "hourly_forecast", 24),
+    ],
+)
+async def test_forecast_subscribers_get_coordinator_updates(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    forecast_type: str,
+    data_key: str,
+    expected_length: int,
+) -> None:
+    """Forecast subscribers get the new forecast after every coordinator update."""
+    config_entry = await setup_integration(hass)
+    coordinator: KnmiDataUpdateCoordinator = config_entry.runtime_data
+
+    client = await hass_ws_client(hass)
+    await client.send_json_auto_id(
+        {
+            "type": "weather/subscribe_forecast",
+            "forecast_type": forecast_type,
+            "entity_id": "weather.home",
+        }
+    )
+    msg = await client.receive_json()
+    assert msg["success"]
+    msg = await client.receive_json()
+    assert len(msg["event"]["forecast"]) == expected_length
+
+    getattr(coordinator.data, data_key).pop(0)
+    coordinator.async_set_updated_data(coordinator.data)
+    await hass.async_block_till_done()
+
+    msg = await client.receive_json(timeout=1)
+    assert msg["event"]["type"] == forecast_type
+    assert len(msg["event"]["forecast"]) == expected_length - 1
 
     await unload_integration(hass, config_entry)
 
